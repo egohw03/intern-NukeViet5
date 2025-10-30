@@ -25,6 +25,10 @@ if ($id <= 0) {
 $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_categories WHERE id = ' . $id;
 $category = $db->query($sql)->fetch();
 
+// Count books in this category
+$sql_books = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books WHERE cat_id = ' . $id;
+$books_count = $db->query($sql_books)->fetchColumn();
+
 if (empty($category)) {
     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=categories');
 }
@@ -62,14 +66,14 @@ if ($nv_Request->isset_request('submit', 'post')) {
             status = :status
             WHERE id = :id';
 
-        $data_update = array();
-        $data_update['title'] = $category['title'];
-        $data_update['alias'] = $alias;
-        $data_update['description'] = $category['description'];
-        $data_update['status'] = $category['status'];
-        $data_update['id'] = $id;
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':title', $category['title'], PDO::PARAM_STR);
+        $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
+        $stmt->bindParam(':description', $category['description'], PDO::PARAM_STR);
+        $stmt->bindParam(':status', $category['status'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-        if ($db->query($sql, $data_update)) {
+        if ($stmt->execute()) {
             nv_insert_logs(NV_LANG_DATA, $module_name, 'Edit category', 'ID: ' . $id, $admin_info['userid']);
             $nv_Cache->delMod($module_name);
             nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=categories');
@@ -88,12 +92,17 @@ $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
 
-$xtpl->assign('DATA', $category);
+$xtpl->assign('CAT', $category);
+$xtpl->assign('CAT.book_count', $books_count);
+
+if ($books_count > 0) {
+$xtpl->assign('CONFIRM_MESSAGE', 'Thể loại này có ' . $books_count . ' cuốn sách. Bạn có chắc chắn muốn sửa? Việc sửa sẽ ảnh hưởng đến tất cả sách trong thể loại này.');
+$xtpl->parse('main.has_books_warning');
+    $xtpl->parse('main.confirm');
+}
 
 if ($category['status'] == 1) {
-    $xtpl->assign('STATUS_ACTIVE', 'selected="selected"');
-} else {
-    $xtpl->assign('STATUS_INACTIVE', 'selected="selected"');
+    $xtpl->assign('CAT.status_checked', 'checked');
 }
 
 if (!empty($error)) {

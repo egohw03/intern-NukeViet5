@@ -60,9 +60,9 @@
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="submit" name="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> {LANG.update}
-                            </button>
+                        <button type="submit" name="submit" class="btn btn-primary" <!-- BEGIN: confirm -->onclick="return confirm('{CONFIRM_MESSAGE}')"<!-- END: confirm -->>
+                        <i class="fas fa-save"></i> {LANG.update}
+                        </button>
                             <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=categories" class="btn btn-secondary">
                                 {LANG.cancel}
                             </a>
