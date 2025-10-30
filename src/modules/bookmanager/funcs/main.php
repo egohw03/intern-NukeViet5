@@ -18,6 +18,16 @@ $array_data = [];
 $cat_id = $nv_Request->get_int('cat_id', 'get', 0);
 $search_query = $nv_Request->get_title('q', 'get', '');
 
+// Handle add to cart
+$added = false;
+if ($nv_Request->isset_request('add_to_cart', 'post') && defined('NV_IS_USER')) {
+    $book_id = $nv_Request->get_int('book_id', 'post', 0);
+    $quantity = $nv_Request->get_int('quantity', 'post', 1);
+    if (nv_add_to_cart($book_id, $quantity)) {
+        $added = true;
+    }
+}
+
 // Build WHERE clause
 $where = [];
 $params = [];
@@ -87,10 +97,37 @@ if (!empty($array_data)) {
         } else {
             $xtpl->parse('main.book_loop.no_image');
         }
+        if (defined('NV_IS_USER')) {
+            $xtpl->parse('main.book_loop.add_to_cart');
+        }
         $xtpl->parse('main.book_loop');
     }
 } else {
     $xtpl->parse('main.no_books');
+}
+
+// Success message
+if ($added) {
+    $xtpl->assign('SUCCESS_MESSAGE', $lang_module['added_to_cart']);
+    $xtpl->parse('main.success');
+}
+
+// Cart link
+$cart_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart';
+$xtpl->assign('CART_LINK', $cart_link);
+
+// Add to cart for logged in users
+if (defined('NV_IS_USER')) {
+    foreach ($array_data as &$book) {
+        $book['add_to_cart_link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $book['id'] . '#add_to_cart';
+        $xtpl->assign('BOOK', $book);
+        $xtpl->parse('main.book_loop.add_to_cart');
+    }
+}
+
+// Cart link
+if (defined('NV_IS_USER')) {
+    $xtpl->parse('main.cart_link');
 }
 
 // No pagination - show all books

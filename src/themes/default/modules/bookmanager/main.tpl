@@ -10,6 +10,12 @@
         <!-- END: user_logged_in -->
     </div>
 
+    <!-- BEGIN: success -->
+    <div style="background: #d4edda; color: #155724; padding: 15px; border: 1px solid #c3e6cb; border-radius: 4px; margin-bottom: 20px;">
+        {SUCCESS_MESSAGE}
+    </div>
+    <!-- END: success -->
+
     <!-- Search and Filter -->
     <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px;">
         <form method="get" action="{NV_BASE_SITEURL}index.php" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: end;">
@@ -59,9 +65,18 @@
                 <p style="margin: 0 0 5px 0; color: #666; font-size: 14px;">Tac gia: {BOOK.author}</p>
                 <p style="margin: 0 0 15px 0; color: #666; font-size: 14px;">Danh muc: {BOOK.cat_title}</p>
                 <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: bold; color: #007bff; font-size: 18px;">{BOOK.price_format}</span>
-                    <a href="{BOOK.link}" style="padding: 6px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">Xem chi tiet</a>
+                <span style="font-weight: bold; color: #007bff; font-size: 18px;">{BOOK.price_format}</span>
+                <a href="{BOOK.link}" style="padding: 6px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">Xem chi tiet</a>
                 </div>
+                <!-- BEGIN: add_to_cart -->
+                <div style="margin-top: 10px;">
+                    <form method="post" action="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: flex; gap: 10px; align-items: center;">
+                        <input type="hidden" name="book_id" value="{BOOK.id}" />
+                        <input type="number" name="quantity" value="1" min="1" max="10" style="width: 60px; padding: 4px; border: 1px solid #ccc; border-radius: 4px;" />
+                        <button type="submit" name="add_to_cart" value="1" style="padding: 6px 12px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">Thêm vào giỏ</button>
+                    </form>
+                </div>
+                <!-- END: add_to_cart -->
             </div>
         </div>
         <!-- END: book_loop -->
@@ -75,5 +90,11 @@
         <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Xem tat ca sach</a>
     </div>
     <!-- END: no_books -->
+
+    <!-- BEGIN: cart_link -->
+    <div style=\"text-align: center; margin-top: 30px;\">
+        <a href=\"{CART_LINK}\" style=\"display: inline-block; padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 16px;\">Xem giỏ hàng</a>
+    </div>
+    <!-- END: cart_link -->
 </div>
 <!-- END: main -->

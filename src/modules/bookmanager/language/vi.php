@@ -125,6 +125,7 @@ $lang_module['top_selling_books'] = 'Sản phẩm bán chạy nhất';
 $lang_module['total_sold'] = 'Tổng bán';
 $lang_module['low_stock_alerts'] = 'Cảnh báo tồn kho thấp';
 $lang_module['cart'] = 'Giỏ hàng';
+$lang_module['added_to_cart'] = 'Đã thêm vào giỏ hàng thành công!';
 $lang_module['checkout'] = 'Thanh toán';
 $lang_module['add_to_cart'] = 'Thêm vào giỏ';
 $lang_module['buy_now'] = 'Mua ngay';
