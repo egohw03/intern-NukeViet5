@@ -133,16 +133,13 @@ $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
 $book['image_url'] = !empty($book['image']) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $book['image'] : '';
 
-$xtpl->assign('DATA', $book);
+$xtpl->assign('BOOK', $book);
+$xtpl->assign('IMAGE_URL', $book['image_url']);
 $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&id=' . $id);
 $xtpl->assign('BACK_LINK', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
 $xtpl->assign('CURRENT_YEAR', date('Y'));
 
-if ($book['status'] == 1) {
-    $xtpl->assign('DATA.status_1_selected', 'selected');
-} else {
-    $xtpl->assign('DATA.status_0_selected', 'selected');
-}
+$xtpl->assign('BOOK.status_checked', ($book['status'] == 1) ? 'checked' : '');
 
 if (!empty($book['image'])) {
     $xtpl->parse('main.current_image');
@@ -156,7 +153,7 @@ if (!empty($errors)) {
 // Assign categories to template
 foreach ($categories as $cat) {
     $xtpl->assign('CAT', $cat);
-    $xtpl->parse('main.category');
+    $xtpl->parse('main.cat_option');
 }
 
 $xtpl->parse('main');

@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">{LANG.edit_book}: {BOOK.title}</h1>
         <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> {LANG.back}
+        {LANG.back}
         </a>
     </div>
 
@@ -129,7 +129,7 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" name="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> {LANG.update}
+                            {LANG.update}
                             </button>
                             <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-secondary">
                                 {LANG.cancel}

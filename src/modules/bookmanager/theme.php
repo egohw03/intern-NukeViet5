@@ -56,24 +56,30 @@ function book_main_theme($books, $categories, $cat_id, $base_url, $page, $num_pa
     // Books
     if (!empty($books)) {
         foreach ($books as $book) {
+            // Format price
+            $book['price_format'] = number_format($book['price'], 0, ',', '.') . ' VND';
+
+            // Get category title
+            $book['category_title'] = isset($categories[$book['cat_id']]) ? $categories[$book['cat_id']]['title'] : '';
+
             $xtpl->assign('BOOK', $book);
             if (!empty($book['image_url'])) {
-                $xtpl->parse('main.book.image');
+                $xtpl->parse('main.book_loop.image');
             } else {
-                $xtpl->parse('main.book.no_image');
+                $xtpl->parse('main.book_loop.no_image');
             }
             if ($book['stock_quantity'] > 0) {
-                $xtpl->parse('main.book.in_stock');
+                $xtpl->parse('main.book_loop.in_stock');
                 if (defined('NV_IS_USER')) {
-                    $xtpl->parse('main.book.can_add_cart');
+                    $xtpl->parse('main.book_loop.can_add_cart');
                 } else {
-                    $xtpl->parse('main.book.cannot_add_cart');
+                    $xtpl->parse('main.book_loop.cannot_add_cart');
                 }
             } else {
-                $xtpl->parse('main.book.out_of_stock');
-                $xtpl->parse('main.book.cannot_add_cart');
+                $xtpl->parse('main.book_loop.out_of_stock');
+                $xtpl->parse('main.book_loop.cannot_add_cart');
             }
-            $xtpl->parse('main.book');
+            $xtpl->parse('main.book_loop');
         }
 
         // Pagination
@@ -346,23 +352,29 @@ function book_main_ajax_theme($books, $categories, $cat_id, $base_url, $page, $n
     // Books
     if (!empty($books)) {
         foreach ($books as $book) {
+            // Format price
+            $book['price_format'] = number_format($book['price'], 0, ',', '.') . ' VND';
+
+            // Get category title
+            $book['category_title'] = isset($categories[$book['cat_id']]) ? $categories[$book['cat_id']]['title'] : '';
+
             if (!empty($book['image_url'])) {
-                $xtpl->parse('main.book.image');
+                $xtpl->parse('main.book_loop.image');
             } else {
-                $xtpl->parse('main.book.no_image');
+                $xtpl->parse('main.book_loop.no_image');
             }
             if ($book['stock_quantity'] > 0) {
-                $xtpl->parse('main.book.in_stock');
+                $xtpl->parse('main.book_loop.in_stock');
                 if (defined('NV_IS_USER')) {
-                    $xtpl->parse('main.book.can_add_cart');
+                    $xtpl->parse('main.book_loop.can_add_cart');
                 } else {
-                    $xtpl->parse('main.book.cannot_add_cart');
+                    $xtpl->parse('main.book_loop.cannot_add_cart');
                 }
             } else {
-                $xtpl->parse('main.book.out_of_stock');
-                $xtpl->parse('main.book.cannot_add_cart');
+                $xtpl->parse('main.book_loop.out_of_stock');
+                $xtpl->parse('main.book_loop.cannot_add_cart');
             }
-            $xtpl->parse('main.book');
+            $xtpl->parse('main.book_loop');
         }
 
         // Pagination

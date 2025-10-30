@@ -113,7 +113,7 @@
                             </div>
 
                             <button type="submit" name="place_order" class="btn btn-success btn-lg w-100">
-                                <i class="fas fa-credit-card"></i> {LANG.place_order}
+                            {LANG.place_order}
                             </button>
 
                             <small class="text-muted text-center d-block mt-2">
@@ -130,22 +130,22 @@
                         <div class="card-body">
                             <!-- BEGIN: cod_info -->
                             <div class="alert alert-info">
-                                <i class="fas fa-truck"></i> <strong>{LANG.cod}:</strong> {LANG.cod_description}
+                            <strong>{LANG.cod}:</strong> {LANG.cod_description}
                             </div>
                             <!-- END: cod_info -->
 
                             <!-- BEGIN: bank_info -->
                             <div class="alert alert-info">
-                                <i class="fas fa-university"></i> <strong>{LANG.bank_transfer}:</strong>
-                                <br>Ngân hàng: Vietcombank
-                                <br>Số tài khoản: 1234567890
-                                <br>Chủ tài khoản: CONG TY TNHH BOOKSTORE
+                            <strong>{LANG.bank_transfer}:</strong>
+                            <br>Ngân hàng: Vietcombank
+                            <br>Số tài khoản: 1234567890
+                            <br>Chủ tài khoản: CONG TY TNHH BOOKSTORE
                             </div>
                             <!-- END: bank_info -->
 
                             <!-- BEGIN: card_info -->
                             <div class="alert alert-info">
-                                <i class="fas fa-credit-card"></i> <strong>{LANG.credit_card}:</strong> {LANG.card_description}
+                            <strong>{LANG.credit_card}:</strong> {LANG.card_description}
                             </div>
                             <!-- END: card_info -->
                         </div>

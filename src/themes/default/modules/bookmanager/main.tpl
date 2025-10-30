@@ -41,31 +41,84 @@
             </div>
         </div>
 
-        <!-- Books Grid -->
+        <!-- Books Table -->
         <div class="col-md-12">
-            <!-- BEGIN: book_loop -->
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <h6 class="card-title">
-                            <a href="{BOOK.link}" class="text-decoration-none">{BOOK.title}</a>
-                        </h6>
-                        <p class="card-text small text-muted">{BOOK.author}</p>
-                        <p class="card-text text-primary fw-bold">{BOOK.price_format}</p>
-                        <a href="{BOOK.link}" class="btn btn-primary btn-sm">{LANG.view_detail}</a>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">{LANG.book_list}</h5>
+                </div>
+        <div class="card-body p-0">
+        <div class="table-responsive">
+        <table class="table table-hover table-striped mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center" style="width: 80px;">{LANG.image}</th>
+                        <th>{LANG.title}</th>
+                            <th style="width: 150px;">{LANG.author}</th>
+                                <th class="text-center" style="width: 120px;">{LANG.price}</th>
+                                <th class="text-center" style="width: 100px;">{LANG.stock_status}</th>
+                                    <th class="text-center" style="width: 120px;">{LANG.actions}</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                    <!-- BEGIN: book_loop -->
+                    <tr>
+                    <td class="text-center" data-label="{LANG.image}">
+                    <!-- BEGIN: image -->
+                    <img src="{BOOK.image_url}" alt="{BOOK.title}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                    <!-- END: image -->
+                    <!-- BEGIN: no_image -->
+                    <div class="bg-light rounded d-flex align-items-center justify-content-center mx-auto" style="width: 50px; height: 50px; font-size: 24px; font-weight: bold; color: #6c757d;">
+                    ?
                     </div>
-                </div>
-            </div>
-            <!-- END: book_loop -->
+                    <!-- END: no_image -->
+                    </td>
+                    <td data-label="{LANG.title}">
+                    <div>
+                    <h6 class="mb-1">
+                    <a href="{BOOK.link}" class="text-decoration-none text-dark">{BOOK.title}</a>
+                    </h6>
+                    <small class="text-muted">{LANG.category}: {BOOK.category_title}</small>
+                    </div>
+                    </td>
+                    <td data-label="{LANG.author}">
+                    <span class="fw-medium">{BOOK.author}</span>
+                    </td>
+                    <td class="text-center" data-label="{LANG.price}">
+                    <span class="fw-bold text-primary fs-6">{BOOK.price_format}</span>
+                    </td>
+                    <td class="text-center" data-label="{LANG.stock_status}">
+                    <!-- BEGIN: in_stock -->
+                    <span class="badge bg-success">{LANG.in_stock} ({BOOK.stock_quantity})</span>
+                    <!-- END: in_stock -->
+                    <!-- BEGIN: out_of_stock -->
+                    <span class="badge bg-danger">{LANG.out_of_stock}</span>
+                    <!-- END: out_of_stock -->
+                    </td>
+                    <td class="text-center" data-label="{LANG.actions}">
+                    <a href="{BOOK.link}" class="btn btn-primary btn-sm">
+                    {LANG.view_detail}
+                    </a>
+                    <!-- BEGIN: can_add_cart -->
+                    <button type="button" class="btn btn-success btn-sm ms-1" onclick="addToCart({BOOK.id})">
+                    {LANG.add_to_cart}
+                    </button>
+                    <!-- END: can_add_cart -->
+                    </td>
+                    </tr>
+                                <!-- END: book_loop -->
+                            </tbody>
+                        </table>
+                    </div>
 
-            <!-- BEGIN: no_books -->
-            <div class="col-12">
-                <div class="alert alert-info text-center">
-                    <h4>{LANG.no_books}</h4>
-                    <p>{LANG.no_books_message}</p>
+                    <!-- BEGIN: no_books -->
+                    <div class="text-center py-5">
+                    <h4 class="text-muted">{LANG.no_books}</h4>
+                    <p class="text-muted">{LANG.no_books_message}</p>
+                    </div>
+                    <!-- END: no_books -->
                 </div>
             </div>
-            <!-- END: no_books -->
         </div>
     </div>
 

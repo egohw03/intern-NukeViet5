@@ -119,20 +119,16 @@ while ($row = $result->fetch()) {
 $xtpl = new XTemplate('add.tpl', NV_ROOTDIR . '/themes/' . $global_config['admin_theme'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
-$xtpl->assign('DATA', $book);
+$xtpl->assign('BOOK', $book);
 $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
 $xtpl->assign('BACK_LINK', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
 $xtpl->assign('CURRENT_YEAR', date('Y'));
 
-if ($book['status'] == 1) {
-    $xtpl->assign('DATA.status_1_selected', 'selected');
-} else {
-    $xtpl->assign('DATA.status_0_selected', 'selected');
-}
+$xtpl->assign('BOOK.status_checked', ($book['status'] == 1) ? 'checked' : '');
 
 foreach ($categories as $cat) {
     $xtpl->assign('CAT', $cat);
-    $xtpl->parse('main.category');
+    $xtpl->parse('main.cat_option');
 }
 
 if (!empty($errors)) {

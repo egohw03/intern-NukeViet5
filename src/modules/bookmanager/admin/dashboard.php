@@ -53,15 +53,23 @@ $xtpl->assign('ORDERS_COMPLETED', $orders_completed);
 $xtpl->assign('ORDERS_CANCELLED', $orders_cancelled);
 
 // Top books
-foreach ($top_books as $book) {
-    $xtpl->assign('TOP_BOOK', $book);
-    $xtpl->parse('main.top_book');
+if (!empty($top_books)) {
+    foreach ($top_books as $book) {
+        $xtpl->assign('TOP_BOOK', $book);
+        $xtpl->parse('main.top_book');
+    }
+} else {
+    $xtpl->parse('main.no_top_books');
 }
 
 // Low stock
-foreach ($low_stock as $book) {
-    $xtpl->assign('LOW_STOCK', $book);
-    $xtpl->parse('main.low_stock');
+if (!empty($low_stock)) {
+    foreach ($low_stock as $book) {
+        $xtpl->assign('LOW_STOCK', $book);
+        $xtpl->parse('main.low_stock');
+    }
+} else {
+    $xtpl->parse('main.no_low_stock');
 }
 
 $xtpl->parse('main');

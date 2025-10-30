@@ -40,7 +40,7 @@
 
                         <div class="d-flex justify-content-between">
                             <button type="submit" name="update_cart" class="btn btn-secondary">
-                                <i class="fas fa-sync"></i> {LANG.update_cart}
+                            {LANG.update_cart}
                             </button>
                             <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-outline-primary">
                                 {LANG.continue_shopping}
@@ -67,7 +67,7 @@
                         <strong class="text-primary h5">{TOTAL}</strong>
                     </div>
                     <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=checkout" class="btn btn-success btn-lg w-100">
-                        <i class="fas fa-credit-card"></i> {LANG.checkout_now}
+                    {LANG.checkout_now}
                     </a>
                 </div>
             </div>
@@ -78,12 +78,11 @@
     <!-- Empty Cart -->
     <!-- BEGIN: empty_cart -->
     <div class="text-center py-5">
-        <i class="fas fa-shopping-cart fa-5x text-muted mb-3"></i>
-        <h3>{LANG.cart_empty}</h3>
-        <p class="text-muted">{LANG.cart_empty_message}</p>
-        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-primary">
-            {LANG.continue_shopping}
-        </a>
+    <h3 class="text-muted">{LANG.cart_empty}</h3>
+    <p class="text-muted">{LANG.cart_empty_message}</p>
+    <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-primary">
+        {LANG.continue_shopping}
+    </a>
     </div>
     <!-- END: empty_cart -->
 </div>

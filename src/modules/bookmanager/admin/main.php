@@ -21,40 +21,51 @@ $page_title = $nv_Lang->getModule('book_list');
 $cat_id = $nv_Request->get_int('cat_id', 'get', 0);
 $status_filter = $nv_Request->get_int('status', 'get', -1);
 $search_query = $nv_Request->get_title('q', 'get', '');
+$page = $nv_Request->get_int('page', 'get', 1);
+$per_page = 20;
 
 // Build WHERE clause
 $where = [];
 $params = [];
 
 if ($cat_id > 0) {
-    $where[] = 'b.cat_id = :cat_id';
-    $params[':cat_id'] = $cat_id;
+    $where[] = 'b.cat_id = ?';
+    $params[] = $cat_id;
 }
 
 if ($status_filter >= 0) {
-    $where[] = 'b.status = :status';
-    $params[':status'] = $status_filter;
+    $where[] = 'b.status = ?';
+    $params[] = $status_filter;
 }
 
 if (!empty($search_query)) {
-    $where[] = '(b.title LIKE :query OR b.author LIKE :query OR b.isbn LIKE :query)';
-    $params[':query'] = '%' . $search_query . '%';
+    $where[] = '(b.title LIKE ? OR b.author LIKE ? OR b.publisher LIKE ? OR b.isbn LIKE ? OR b.description LIKE ?)';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
 }
 
 $where_clause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
+
+// Count total records
+$sql_count = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books b ' . $where_clause;
+$stmt_count = $db->prepare($sql_count);
+$stmt_count->execute($params);
+$total_records = $stmt_count->fetchColumn();
+$total_pages = ceil($total_records / $per_page);
+$offset = ($page - 1) * $per_page;
 
 // Get books with category information
 $sql = 'SELECT b.*, c.title as cat_title FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books b
 LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_categories c ON b.cat_id = c.id
 ' . $where_clause . '
 ORDER BY b.add_time DESC
-LIMIT 50'; // Limit for admin view
+LIMIT ' . $offset . ', ' . $per_page;
 
 $stmt = $db->prepare($sql);
-foreach ($params as $key => $value) {
-    $stmt->bindValue($key, $value);
-}
-$stmt->execute();
+$stmt->execute($params);
 $result = $stmt;
 
 $processed_books = [];
@@ -128,15 +139,50 @@ if (!empty($processed_books)) {
         $book['edit_time'] = !empty($book['edit_time']) ? nv_date('d/m/Y H:i', $book['edit_time']) : '';
 
         $xtpl->assign('BOOK', $book);
+        if (!empty($book['image'])) {
+            $xtpl->parse('main.book_loop.image');
+        } else {
+            $xtpl->parse('main.book_loop.no_image');
+        }
         $xtpl->parse('main.book_loop');
     }
 } else {
     $xtpl->parse('main.no_books');
 }
 
-// Pagination (simplified)
-$total_pages = 1; // For now, keep it simple
+// Pagination
 if ($total_pages > 1) {
+    $base_url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
+    if ($cat_id > 0) $base_url .= '&cat_id=' . $cat_id;
+    if ($status_filter >= 0) $base_url .= '&status=' . $status_filter;
+    if (!empty($search_query)) $base_url .= '&q=' . urlencode($search_query);
+
+    // Previous
+    if ($page > 1) {
+        $xtpl->assign('PREV', ['link' => $base_url . '&page=' . ($page - 1), 'attr' => '', 'disabled' => '']);
+    } else {
+        $xtpl->assign('PREV', ['link' => '#', 'attr' => 'tabindex="-1" aria-disabled="true"', 'disabled' => 'disabled']);
+    }
+    $xtpl->parse('main.generate_page.prev');
+
+    // Pages
+    for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++) {
+        $xtpl->assign('PAGE', [
+            'num' => $i,
+            'link' => $base_url . '&page=' . $i,
+            'current' => ($i == $page) ? 'active' : ''
+        ]);
+        $xtpl->parse('main.generate_page.page');
+    }
+
+    // Next
+    if ($page < $total_pages) {
+        $xtpl->assign('NEXT', ['link' => $base_url . '&page=' . ($page + 1), 'attr' => '', 'disabled' => '']);
+    } else {
+        $xtpl->assign('NEXT', ['link' => '#', 'attr' => 'tabindex="-1" aria-disabled="true"', 'disabled' => 'disabled']);
+    }
+    $xtpl->parse('main.generate_page.next');
+
     $xtpl->parse('main.generate_page');
 }
 
