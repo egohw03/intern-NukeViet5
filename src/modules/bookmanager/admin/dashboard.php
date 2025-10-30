@@ -15,6 +15,12 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $nv_Lang->getModule('dashboard');
 
+// Basic statistics
+$total_books = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books WHERE status = 1')->fetchColumn();
+$total_categories = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_categories WHERE status = 1')->fetchColumn();
+$total_orders = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders')->fetchColumn();
+$total_reviews = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_reviews WHERE status = 1')->fetchColumn();
+
 // Revenue statistics
 $revenue_today = $db->query('SELECT SUM(total_amount) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE order_status = 2 AND DATE(FROM_UNIXTIME(add_time)) = CURDATE()')->fetchColumn();
 $revenue_week = $db->query('SELECT SUM(total_amount) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE order_status = 2 AND FROM_UNIXTIME(add_time) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')->fetchColumn();
@@ -44,6 +50,13 @@ $xtpl = new XTemplate('dashboard.tpl', NV_ROOTDIR . '/themes/' . $global_config[
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
 
+// Basic stats
+$xtpl->assign('TOTAL_BOOKS', $total_books);
+$xtpl->assign('TOTAL_CATEGORIES', $total_categories);
+$xtpl->assign('TOTAL_ORDERS', $total_orders);
+$xtpl->assign('TOTAL_REVIEWS', $total_reviews);
+
+// Revenue stats
 $xtpl->assign('REVENUE_TODAY', ($revenue_today ? number_format($revenue_today, 0, ',', '.') : '0') . ' VND');
 $xtpl->assign('REVENUE_WEEK', ($revenue_week ? number_format($revenue_week, 0, ',', '.') : '0') . ' VND');
 $xtpl->assign('REVENUE_MONTH', ($revenue_month ? number_format($revenue_month, 0, ',', '.') : '0') . ' VND');

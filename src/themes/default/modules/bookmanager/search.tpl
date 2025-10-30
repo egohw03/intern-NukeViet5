@@ -2,7 +2,7 @@
 <div class="book-search">
     <h1 class="mb-4">{LANG.search_results}</h1>
 
-    <!-- Search Form -->
+    <!-- Advanced Search Form -->
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" action="{NV_BASE_SITEURL}index.php">
@@ -11,11 +11,19 @@
                 <input type="hidden" name="{NV_OP_VARIABLE}" value="search" />
 
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">{LANG.search}</label>
                         <input type="text" name="q" value="{SEARCH_QUERY}" class="form-control" placeholder="{LANG.search_placeholder}">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
+                        <label class="form-label">{LANG.author}</label>
+                        <input type="text" name="author" value="{AUTHOR}" class="form-control" placeholder="{LANG.author}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{LANG.publisher}</label>
+                        <input type="text" name="publisher" value="{PUBLISHER}" class="form-control" placeholder="{LANG.publisher}">
+                    </div>
+                    <div class="col-md-2">
                         <label class="form-label">{LANG.category}</label>
                         <select name="cat" class="form-select">
                             <option value="0">{LANG.all_categories}</option>
@@ -29,6 +37,35 @@
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-search"></i> {LANG.search}
                         </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Filters Row -->
+                <div class="row g-3 mt-2">
+                    <div class="col-md-2">
+                        <label class="form-label">{LANG.min_price}</label>
+                        <input type="number" name="min_price" value="{MIN_PRICE}" class="form-control" placeholder="0" min="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{LANG.max_price}</label>
+                        <input type="number" name="max_price" value="{MAX_PRICE}" class="form-control" placeholder="0" min="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">{LANG.sort}</label>
+                        <select name="sort" class="form-select">
+                            <option value="add_time" {SORT_BY.add_time_selected}>{LANG.sort_by_date}</option>
+                            <option value="price_asc" {SORT_BY.price_asc_selected}>{LANG.sort_by_price_asc}</option>
+                            <option value="price_desc" {SORT_BY.price_desc_selected}>{LANG.sort_by_price_desc}</option>
+                            <option value="rating" {SORT_BY.rating_selected}>{LANG.sort_by_rating}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" id="advanced_search" onclick="toggleAdvancedSearch()">
+                            <label class="form-check-label" for="advanced_search">
+                                {LANG.advanced_search}
+                            </label>
+                        </div>
                     </div>
                 </div>
             </form>

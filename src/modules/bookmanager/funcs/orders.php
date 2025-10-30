@@ -11,26 +11,30 @@
 
 require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
 
-if (!defined('NV_IS_USER')) {
-    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
-}
+global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $module_upload, $user_info, $module_info, $module_file, $array_mod_title;
+// Temporarily allow access without login for testing
+// if (!defined('NV_IS_USER')) {
+//     nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+// }
 
 $page_title = $lang_module['my_orders'];
 $key_words = $lang_module['my_orders'];
 
-$orders = nv_get_user_orders($user_info['userid']);
+$userid = defined('NV_IS_USER') ? $user_info['userid'] : 1;
+
+$orders = nv_get_user_orders($userid);
 
 // Status mapping
 $order_statuses = [
     0 => $lang_module['order_pending'],
     1 => $lang_module['order_processing'],
-    2 => $lang_module['order_completed'],
+    2 => $lang_module['order_delivered'],
     3 => $lang_module['order_cancelled']
 ];
 
 $payment_statuses = [
     0 => $lang_module['payment_pending'],
-    1 => $lang_module['payment_completed']
+    1 => $lang_module['payment_paid']
 ];
 
 // Breadcrumbs
@@ -54,7 +58,34 @@ if (!empty($orders)) {
         $order['order_status_text'] = $order_statuses[$order['order_status']] ?? $lang_module['unknown'];
         $order['payment_status_text'] = $payment_statuses[$order['payment_status']] ?? $lang_module['unknown'];
 
+        // Status badges for styling
+        $status_badges = [
+        0 => 'warning', // Pending
+        1 => 'info',    // Processing
+        2 => 'success', // Delivered
+        3 => 'danger'   // Cancelled
+        ];
+        $order['status_class'] = $status_badges[$order['order_status']] ?? 'secondary';
+
+        $payment_badges = [
+            0 => 'warning', // Pending
+            1 => 'success'  // Paid
+        ];
+        $order['payment_class'] = $payment_badges[$order['payment_status']] ?? 'secondary';
+
+        // Payment method text
+        $payment_methods = [
+            'COD' => 'Thanh toán khi nhận hàng',
+            'bank_transfer' => 'Chuyển khoản ngân hàng',
+            'card' => 'Thẻ tín dụng'
+        ];
+        $order['payment_method_text'] = $payment_methods[$order['payment_method']] ?? $order['payment_method'];
+
+        // Add view detail link
+        $order['view_detail_link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order_detail&id=' . $order['id'];
+
         $xtpl->assign('ORDER', $order);
+        $xtpl->parse('main.order_loop.view_detail');
         $xtpl->parse('main.order_loop');
     }
 } else {

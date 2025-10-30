@@ -21,10 +21,10 @@ $coupons = [];
 while ($coupon = $result->fetch()) {
     $coupon['start_time'] = nv_date('d/m/Y H:i', $coupon['start_time']);
     $coupon['end_time'] = nv_date('d/m/Y H:i', $coupon['end_time']);
-    $coupon['type_text'] = $coupon['type'] ? $nv_Lang->getModule('fixed_amount') : $nv_Lang->getModule('percentage');
+    $coupon['type_text'] = ($coupon['discount_type'] ?? 'percentage') == 'fixed' ? $nv_Lang->getModule('fixed_amount') : $nv_Lang->getModule('percentage');
     $coupon['status_text'] = $coupon['status'] ? $nv_Lang->getModule('active') : $nv_Lang->getModule('inactive');
     $coupon['status_class'] = $coupon['status'] ? 'success' : 'danger';
-    $coupon['value_format'] = $coupon['type'] ? number_format($coupon['value'], 0, ',', '.') . ' VNĐ' : $coupon['value'] . '%';
+    $coupon['value_format'] = ($coupon['discount_type'] ?? 'percentage') == 'fixed' ? number_format(($coupon['discount_value'] ?? 0), 0, ',', '.') . ' VNĐ' : ($coupon['discount_value'] ?? 0) . '%';
     $coupons[] = $coupon;
 }
 

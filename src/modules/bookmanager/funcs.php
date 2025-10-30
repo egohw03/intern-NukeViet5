@@ -22,7 +22,11 @@ $array_op[] = 'detail';
 $array_op[] = 'cart';
 $array_op[] = 'checkout';
 $array_op[] = 'orders';
+$array_op[] = 'order_detail';
 $array_op[] = 'search';
+$array_op[] = 'address';
+$array_op[] = 'success';
+$array_op[] = 'payment';
 
 // Default function
 $op = in_array($op, $array_op) ? $op : 'main';

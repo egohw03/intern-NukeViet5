@@ -9,7 +9,15 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
+// Enable error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
+
+global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $module_upload, $user_info, $module_info, $module_file, $array_mod_title;
+
+
 
 if (!defined('NV_IS_USER')) {
     nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
@@ -20,9 +28,9 @@ $key_words = $lang_module['cart'];
 
 $cart = nv_get_cart();
 $total = nv_get_cart_total();
+$total_items = array_sum(array_column($cart, 'quantity'));
 
-// Debug: Uncomment to check cart data
-// echo '<pre>Cart: '; print_r($cart); echo '<br>Total: ' . $total; echo '</pre>'; exit;
+
 
 // Handle update cart
 if ($nv_Request->isset_request('update_cart', 'post')) {
@@ -51,10 +59,13 @@ $array_mod_title[] = [
     'title' => $lang_module['cart']
 ];
 
+
+
 // Template
 $xtpl = new XTemplate('cart.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
+$xtpl->assign('TOTAL_ITEMS', $total_items);
 $xtpl->assign('TOTAL', nv_format_price($total));
 
 if (!empty($cart)) {
@@ -74,13 +85,19 @@ if (!empty($cart)) {
     }
 
     $xtpl->parse('main.cart_items');
+
+    // Parse checkout separately
     $xtpl->parse('main.checkout');
+
+
 } else {
     $xtpl->parse('main.empty_cart');
 }
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
+
+
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

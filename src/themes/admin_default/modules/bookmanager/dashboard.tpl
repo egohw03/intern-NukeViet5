@@ -11,6 +11,46 @@
 
     <div class="container-fluid">
 
+    <!-- Basic Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">{LANG.total_books}</h6>
+                        <h3 class="stat-value text-primary">{TOTAL_BOOKS}</h3>
+                        <div class="stat-desc">Sách trong kho</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">{LANG.total_categories}</h6>
+                        <h3 class="stat-value text-info">{TOTAL_CATEGORIES}</h3>
+                        <div class="stat-desc">Danh mục sách</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">{LANG.total_orders}</h6>
+                        <h3 class="stat-value text-warning">{TOTAL_ORDERS}</h3>
+                        <div class="stat-desc">Tổng đơn hàng</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">{LANG.total_reviews}</h6>
+                        <h3 class="stat-value text-success">{TOTAL_REVIEWS}</h3>
+                        <div class="stat-desc">Đánh giá sách</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Revenue Stats -->
         <div class="row mb-4">
             <div class="col-md-4 mb-3">

@@ -157,14 +157,9 @@ if (!empty($add_cart_error)) {
 
 
 
-// Add to cart for logged in users
+// User logged in flag
 if (defined('NV_IS_USER')) {
-    foreach ($array_data as &$book) {
-        $book['add_to_cart_link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $book['id'] . '#add_to_cart';
-        $xtpl->assign('BOOK', $book);
-        $xtpl->parse('main.book_loop.add_to_cart');
-    }
-    $xtpl->parse('main.user_logged_in');
+$xtpl->parse('main.user_logged_in');
 }
 
 // Pagination

@@ -1,92 +1,140 @@
 <!-- BEGIN: main -->
-<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
-    <div style="text-align: center; margin-bottom: 30px;">
-        <h1 style="font-size: 28px; margin-bottom: 20px;">Gio hang cua ban</h1>
-        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
-            Quay lai mua sam
-        </a>
+<div class="container my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="text-primary mb-2">
+                <i class="fas fa-shopping-cart"></i> {LANG.cart}
+            </h2>
+            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> {LANG.continue_shopping}
+            </a>
+        </div>
     </div>
 
     <!-- BEGIN: cart_items -->
-    <form method="post" action="">
-        <div style="background: white; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px;">
-            <div style="padding: 15px 20px; border-bottom: 1px solid #ddd; background: #f8f9fa;">
-                <h3 style="margin: 0;">San pham trong gio hang</h3>
-            </div>
-            <div style="padding: 20px;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid #ddd;">
-                            <th style="padding: 10px; text-align: center; width: 80px;">Anh</th>
-                            <th style="padding: 10px;">Sach</th>
-                            <th style="padding: 10px; text-align: center; width: 120px;">Don gia</th>
-                            <th style="padding: 10px; text-align: center; width: 120px;">So luong</th>
-                            <th style="padding: 10px; text-align: center; width: 120px;">Thanh tien</th>
-                            <th style="padding: 10px; text-align: center; width: 80px;">Xoa</th>
+    <div class="card">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Giỏ hàng của bạn</h5>
+        </div>
+
+        <div class="card-body p-0">
+            <form method="post" action="">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0" width="60">Ảnh</th>
+                            <th class="border-0">Sản phẩm</th>
+                            <th class="border-0 text-center" width="120">Đơn giá</th>
+                            <th class="border-0 text-center" width="140">Số lượng</th>
+                            <th class="border-0 text-center" width="120">Thành tiền</th>
+                            <th class="border-0 text-center" width="60">Xóa</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- BEGIN: item -->
-                        <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 10px; text-align: center;">
-                        <!-- BEGIN: image -->
-                        <img src="{ITEM.image_url}" alt="{ITEM.title}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                        <!-- END: image -->
-                        <!-- BEGIN: no_image -->
-                        <div style="width: 50px; height: 50px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
-                        [S]
-                        </div>
-                        <!-- END: no_image -->
-                        </td>
-                        <td style="padding: 10px;">
-                        <div style="font-weight: bold;">{ITEM.title}</div>
-                        <small style="color: #666;">{ITEM.author}</small>
-                        </td>
-                        <td style="padding: 10px; text-align: center; font-weight: bold;">{ITEM.price_format}</td>
-                        <td style="padding: 10px; text-align: center;">
-                        <input type="number" name="quantity[{ITEM.book_id}]" value="{ITEM.quantity}" min="1" max="{ITEM.stock_quantity}" style="width: 80px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center;">
-                        </td>
-                        <td style="padding: 10px; text-align: center; font-weight: bold; color: #007bff;">{ITEM.subtotal}</td>
-                        <td style="padding: 10px; text-align: center;">
-                        <a href="{ITEM.remove_link}" style="display: inline-block; padding: 5px 10px; background: #dc3545; color: white; text-decoration: none; border-radius: 4px; font-size: 12px;" onclick="return confirm('Ban co chac chan muon xoa sach nay khoi gio hang?')">Xoa</a>
-                        </td>
+                        <tr>
+                            <td class="align-middle">
+                                <!-- BEGIN: image -->
+                                <img src="{ITEM.image_url}" alt="{ITEM.title}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                                <!-- END: image -->
+                                <!-- BEGIN: no_image -->
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                    <i class="fas fa-book text-muted"></i>
+                                </div>
+                                <!-- END: no_image -->
+                            </td>
+                            <td class="align-middle">
+                                <div class="fw-bold">{ITEM.title}</div>
+                                <small class="text-muted">{ITEM.author}</small>
+                            </td>
+                            <td class="align-middle text-center fw-bold text-primary">
+                                {ITEM.price_format}
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="input-group input-group-sm" style="width: 120px; margin: 0 auto;">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeQuantity('{ITEM.book_id}', -1)">-</button>
+                                    <input type="number" name="quantity[{ITEM.book_id}]" value="{ITEM.quantity}" min="1" max="{ITEM.stock_quantity}"
+                                           class="form-control form-control-sm text-center" onchange="updateTotal()">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeQuantity('{ITEM.book_id}', 1)">+</button>
+                                </div>
+                            </td>
+                            <td class="align-middle text-center fw-bold text-success">
+                                {ITEM.subtotal}
+                            </td>
+                            <td class="align-middle text-center">
+                                <a href="{ITEM.remove_link}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Xóa sản phẩm này?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                         <!-- END: item -->
                     </tbody>
                 </table>
-            </div>
-            <div style="padding: 15px 20px; border-top: 1px solid #ddd; background: #f8f9fa; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-            <button type="submit" name="update_cart" style="padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">
-                    Cap nhat gio hang
-                </button>
-                    <button type="submit" name="clear_cart" style="padding: 8px 15px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="return confirm('{LANG.confirm_clear_cart}')">
-                    {LANG.clear_cart}
-                    </button>
-                </div>
-                <h3 style="margin: 0; color: #007bff;">Tong tien: {TOTAL}</h3>
-            </div>
-        </div>
 
-        <!-- BEGIN: checkout -->
-        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
-            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=checkout" style="display: inline-block; padding: 15px 30px; background: #28a745; color: white; text-decoration: none; border-radius: 4px; font-size: 18px;">
-                Tien hanh thanh toan
-            </a>
+                <!-- Cart Actions -->
+                <div class="card-footer bg-light">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2">
+                                <button type="submit" name="update_cart" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-sync"></i> {LANG.update_cart}
+                                </button>
+                                <button type="submit" name="clear_cart" class="btn btn-outline-danger btn-sm" onclick="return confirm('{LANG.confirm_clear_cart}')">
+                                    <i class="fas fa-trash"></i> {LANG.clear_cart}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="d-flex align-items-center justify-content-end gap-3">
+                                <div>
+                                    <strong class="text-primary fs-5">{TOTAL}</strong>
+                                    <small class="text-muted d-block">Tổng cộng</small>
+                                </div>
+                                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=checkout"
+                                   class="btn btn-success btn-lg">
+                                    <i class="fas fa-credit-card me-2"></i>Thanh toán
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <!-- END: checkout -->
-    </form>
+    </div>
     <!-- END: cart_items -->
 
     <!-- BEGIN: empty_cart -->
-    <div style="background: white; padding: 50px 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
-        <div style="font-size: 64px; color: #6c757d; margin-bottom: 20px;">[GIO]</div>
-        <h2 style="margin: 0 0 10px 0; color: #333;">Gio hang trong</h2>
-        <p style="margin: 0 0 20px 0; color: #666;">Ban chua them san pham nao vao gio hang.</p>
-        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
-            Mua sam ngay
-        </a>
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <div class="text-muted mb-4">
+                <i class="fas fa-shopping-cart fa-4x"></i>
+            </div>
+            <h4 class="text-muted mb-3">{LANG.cart_empty}</h4>
+            <p class="text-muted mb-4">{LANG.cart_empty_message}</p>
+            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-primary">
+                <i class="fas fa-shopping-bag me-2"></i>{LANG.shop_now}
+            </a>
+        </div>
     </div>
     <!-- END: empty_cart -->
 </div>
+
+<!-- Simple JavaScript -->
+<script>
+function changeQuantity(bookId, change) {
+    var input = document.querySelector('input[name="quantity[' + bookId + ']"]');
+    var currentValue = parseInt(input.value);
+    var newValue = currentValue + change;
+
+    if (newValue >= 1 && newValue <= parseInt(input.max)) {
+        input.value = newValue;
+    }
+}
+
+function updateTotal() {
+    // Simple form submission for now
+    console.log('Quantity updated');
+}
+</script>
 <!-- END: main -->

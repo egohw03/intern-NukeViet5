@@ -37,10 +37,28 @@
             <div class="col-lg-8 mb-4">
                 <!-- Customer Information -->
                 <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Thông tin giao hàng</h5>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Thông tin giao hàng</h5>
+                    <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=address" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-address-book"></i> Quản lý địa chỉ
+                        </a>
                     </div>
                     <div class="card-body">
+                    <!-- BEGIN: saved_addresses -->
+                        <div class="mb-3">
+                            <label class="form-label">Chọn địa chỉ giao hàng đã lưu</label>
+                            <select name="saved_address" class="form-select" onchange="fillAddress(this.value)">
+                                <option value="">-- Chọn địa chỉ --</option>
+                                <!-- BEGIN: address -->
+                                <option value="{ADDRESS.id}" data-name="{ADDRESS.full_name}" data-phone="{ADDRESS.phone}" data-address="{ADDRESS.address}">
+                                    {ADDRESS.full_name} - {ADDRESS.phone} ({ADDRESS.address|truncate:50})
+                                    <!-- BEGIN: default --> [Mặc định]<!-- END: default -->
+                                </option>
+                                <!-- END: address -->
+                            </select>
+                        </div>
+                        <!-- END: saved_addresses -->
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Họ tên <span class="text-danger">*</span></label>
@@ -59,9 +77,9 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Phương thức thanh toán</label>
                                 <select name="payment_method" class="form-select">
-                                    <option value="COD">Thanh toán khi nhận hàng (COD)</option>
-                                    <option value="Bank Transfer">Chuyển khoản ngân hàng</option>
-                                    <option value="Credit Card">Thẻ tín dụng</option>
+                                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                                <option value="bank_transfer">Chuyển khoản ngân hàng</option>
+                                <option value="card">Thẻ tín dụng</option>
                                 </select>
                             </div>
                         </div>
@@ -145,4 +163,23 @@
     </form>
     <!-- END: checkout_form -->
 </div>
+
+<script>
+function fillAddress(addressId) {
+    if (!addressId) return;
+
+    var select = document.querySelector('select[name="saved_address"]');
+    var option = select.querySelector('option[value="' + addressId + '"]');
+
+    if (option) {
+        var name = option.getAttribute('data-name');
+        var phone = option.getAttribute('data-phone');
+        var address = option.getAttribute('data-address');
+
+        document.querySelector('input[name="customer_name"]').value = name;
+        document.querySelector('input[name="customer_phone"]').value = phone;
+        document.querySelector('textarea[name="customer_address"]').value = address;
+    }
+}
+</script>
 <!-- END: main -->

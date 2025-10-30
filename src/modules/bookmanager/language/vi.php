@@ -30,6 +30,7 @@ $lang_module['orders'] = 'Quản lý đơn hàng';
 $lang_module['view_order'] = 'Xem đơn hàng';
 $lang_module['update_order_status'] = 'Cập nhật trạng thái đơn hàng';
 $lang_module['order_detail'] = 'Chi tiết đơn hàng';
+$lang_module['my_orders'] = 'Đơn hàng của tôi';
 $lang_module['customer_info'] = 'Thông tin khách hàng';
 $lang_module['order_info'] = 'Thông tin đơn hàng';
 $lang_module['quantity'] = 'Số lượng';
@@ -97,6 +98,7 @@ $lang_module['order_delivered'] = 'Đã giao';
 $lang_module['order_cancelled'] = 'Đã hủy';
 $lang_module['payment_pending'] = 'Chưa thanh toán';
 $lang_module['payment_paid'] = 'Đã thanh toán';
+$lang_module['unknown'] = 'Không xác định';
 $lang_module['category_select'] = 'Chọn thể loại';
 $lang_module['detail'] = 'Chi tiết sách';
 $lang_module['books'] = 'Sách';
@@ -138,6 +140,8 @@ $lang_module['total'] = 'Tổng cộng';
 $lang_module['remove'] = 'Xóa';
 $lang_module['update_cart'] = 'Cập nhật giỏ hàng';
 $lang_module['continue_shopping'] = 'Tiếp tục mua sắm';
+$lang_module['cart_empty'] = 'Giỏ hàng trống';
+$lang_module['cart_empty_message'] = 'Bạn chưa thêm sản phẩm nào vào giỏ hàng.';
 $lang_module['checkout_now'] = 'Thanh toán ngay';
 $lang_module['customer_name'] = 'Họ và tên';
 $lang_module['customer_email'] = 'Email';
@@ -214,6 +218,14 @@ $lang_module['default_address'] = 'Địa chỉ mặc định';
 $lang_module['search_placeholder'] = 'Tìm kiếm sách theo tên, tác giả...';
 $lang_module['all_categories'] = 'Tất cả thể loại';
 $lang_module['no_search_results'] = 'Không tìm thấy kết quả nào';
+$lang_module['advanced_search'] = 'Tìm kiếm nâng cao';
+$lang_module['min_price'] = 'Giá từ';
+$lang_module['max_price'] = 'Giá đến';
+$lang_module['sort'] = 'Sắp xếp';
+$lang_module['sort_by_date'] = 'Mới nhất';
+$lang_module['sort_by_price_asc'] = 'Giá thấp đến cao';
+$lang_module['sort_by_price_desc'] = 'Giá cao đến thấp';
+$lang_module['sort_by_rating'] = 'Đánh giá cao nhất';
 
 // New features - Order status
 $lang_module['order_pending'] = 'Chờ xử lý';
@@ -253,6 +265,9 @@ $lang_module['view_orders'] = 'Xem đơn hàng của tôi';
 $lang_module['order_note_placeholder'] = 'Ví dụ: Giao hàng vào buổi sáng, hoặc ghi chú đặc biệt...';
 $lang_module['no_orders'] = 'Chưa có đơn hàng nào';
 $lang_module['no_orders_message'] = 'Bạn chưa có đơn hàng nào trong hệ thống.';
+$lang_module['no_orders_title'] = 'Bạn chưa có đơn hàng nào';
+$lang_module['no_orders_description'] = 'Hãy bắt đầu mua sắm để có đơn hàng đầu tiên.';
+$lang_module['shop_now'] = 'Mua sắm ngay';
 $lang_module['no_categories'] = 'Chưa có thể loại nào';
 $lang_module['no_categories_message'] = 'Hệ thống chưa có thể loại sách nào.';
 $lang_module['add_first_category'] = 'Thêm thể loại đầu tiên';
@@ -288,6 +303,11 @@ $lang_module['search_placeholder'] = 'Tìm kiếm theo tên sách...';
 $lang_module['add_first_book'] = 'Thêm cuốn sách đầu tiên';
 $lang_module['no_books_message'] = 'Chưa có cuốn sách nào trong hệ thống.';
 $lang_module['usage_stats'] = 'Thống kê sử dụng';
+
+// Order detail
+$lang_module['order_detail'] = 'Chi tiết đơn hàng';
+$lang_module['order_summary'] = 'Tóm tắt đơn hàng';
+$lang_module['back_to_orders'] = 'Quay lại đơn hàng';
 
 // Admin menu
 $lang_module['reviews'] = 'Quản lý đánh giá';

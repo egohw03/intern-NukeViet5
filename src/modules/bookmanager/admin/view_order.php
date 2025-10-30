@@ -11,6 +11,8 @@
 if (!defined('NV_IS_FILE_ADMIN'))
     die('Stop!!!');
 
+global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $global_config, $module_upload;
+
 $id = $nv_Request->get_int('id', 'get', 0);
 
 if ($id <= 0) {
