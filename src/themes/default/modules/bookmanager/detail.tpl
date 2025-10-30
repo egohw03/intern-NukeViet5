@@ -1,67 +1,67 @@
 <!-- BEGIN: main -->
-<div class="book-detail">
-    <div class="row">
-        <!-- Book Image -->
-        <div class="col-md-4">
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; margin-bottom: 30px;">
+        <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
             <!-- BEGIN: image -->
-            <img src="{BOOK.image_url}" alt="{BOOK.title}" class="img-fluid rounded shadow">
+            <img src="{BOOK.image_url}" alt="{BOOK.title}" style="max-height: 300px; max-width: 100%; margin-bottom: 20px;">
             <!-- END: image -->
             <!-- BEGIN: no_image -->
-            <div class="bg-light rounded p-5 text-center">
-                <i class="fas fa-book fa-5x text-muted"></i>
+            <div style="height: 300px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <span style="font-size: 72px; color: #6c757d;">[SACH]</span>
             </div>
             <!-- END: no_image -->
+
+            <h2 style="color: #007bff; margin: 0 0 10px 0;">{BOOK.price_format}</h2>
+            <p style="color: #666; margin: 0;">Con {BOOK.stock_quantity} cuon trong kho</p>
         </div>
 
-        <!-- Book Info -->
-        <div class="col-md-8">
-            <h1 class="mb-3">{BOOK.title}</h1>
-            <p class="text-muted mb-2"><strong>{LANG.author}:</strong> {BOOK.author}</p>
-            <p class="text-muted mb-2"><strong>{LANG.category}:</strong> {BOOK.category}</p>
-            <p class="h4 text-primary mb-3"><strong>{BOOK.price_format}</strong></p>
+        <div>
+            <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px;">
+                <h1 style="margin: 0 0 20px 0; font-size: 24px;">{BOOK.title}</h1>
 
-            <!-- Stock Status -->
-            <!-- BEGIN: in_stock -->
-            <p class="text-success"><i class="fas fa-check-circle"></i> {LANG.in_stock} ({BOOK.stock_quantity})</p>
-            <form method="post" class="mb-3">
-                <div class="row g-2">
-                    <div class="col-auto">
-                        <input type="number" name="quantity" value="1" min="1" max="{BOOK.stock_quantity}" class="form-control">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div><strong>Tac gia:</strong> {BOOK.author}</div>
+                    <div><strong>Nha xuat ban:</strong> {BOOK.publisher}</div>
+                    <div><strong>Nam xuat ban:</strong> {BOOK.publish_year}</div>
+                    <div><strong>ISBN:</strong> {BOOK.isbn}</div>
+                    <div><strong>Danh muc:</strong> {BOOK.cat_title}</div>
+                    <div><strong>Ngay them:</strong> {BOOK.add_time}</div>
+                </div>
+
+                <!-- BEGIN: success -->
+                <div style="background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+                    [OK] {SUCCESS_MESSAGE}
+                </div>
+                <!-- END: success -->
+
+                <!-- BEGIN: add_to_cart -->
+                <form method="post" action="" style="display: flex; gap: 15px; align-items: end;">
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">So luong</label>
+                        <input type="number" name="quantity" value="1" min="1" max="{BOOK.stock_quantity}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     </div>
-                    <div class="col-auto">
-                        <button type="submit" name="add_to_cart" class="btn btn-primary">
-                            <i class="fas fa-cart-plus"></i> {LANG.add_to_cart}
+                    <div style="flex: 2;">
+                        <button type="submit" name="add_to_cart" style="width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                            Them vao gio hang
                         </button>
                     </div>
+                </form>
+                <!-- END: add_to_cart -->
+
+                <!-- BEGIN: login_required -->
+                <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+                    [INFO] Ban can <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;nv=users&amp;nvredir={NV_REDIRECT}" style="color: #856404;">dang nhap</a> de them sach vao gio hang.
                 </div>
-            </form>
-            <!-- END: in_stock -->
-
-            <!-- BEGIN: out_of_stock -->
-            <p class="text-danger"><i class="fas fa-times-circle"></i> {LANG.out_of_stock}</p>
-            <!-- END: out_of_stock -->
-
-            <!-- BEGIN: login_required -->
-            <div class="alert alert-warning">
-                <i class="fas fa-info-circle"></i> {LANG.login_required}
-                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}=users" class="btn btn-primary btn-sm ms-2">
-                    {GLANG.login}
-                </a>
+                <!-- END: login_required -->
             </div>
-            <!-- END: login_required -->
-        </div>
-    </div>
 
-    <!-- Description -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <h3>{LANG.description}</h3>
+            <!-- Description -->
             <!-- BEGIN: description -->
-            <div class="mt-3">{BOOK.description}</div>
+            <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+                <h3 style="margin: 0 0 15px 0;">Mo ta sach</h3>
+                <div>{BOOK.description}</div>
+            </div>
             <!-- END: description -->
-            <!-- BEGIN: no_description -->
-            <p class="text-muted">{LANG.no_description}</p>
-            <!-- END: no_description -->
         </div>
     </div>
 </div>

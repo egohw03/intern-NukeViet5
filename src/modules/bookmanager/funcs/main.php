@@ -9,71 +9,94 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-if (!defined('NV_IS_MOD_BOOKMANAGER')) {
-    die('Stop!!!');
-}
-$page_title = $nv_Lang->getModule('books');
+require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
+
+$page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
-$description = $module_info['description'];
 
-// Filter by category
+$array_data = [];
 $cat_id = $nv_Request->get_int('cat_id', 'get', 0);
-$categories = [];
-$sql = 'SELECT id, title, alias FROM ' . NV_PREFIXLANG . '_' . $module_data . '_categories WHERE status = 1 ORDER BY weight ASC';
-$result = $db->query($sql);
-while ($row = $result->fetch()) {
-    $categories[$row['id']] = $row;
-}
+$search_query = $nv_Request->get_title('q', 'get', '');
 
-// Get books
-$where = 'WHERE status = 1';
-if ($cat_id > 0 && isset($categories[$cat_id])) {
-    $where .= ' AND cat_id = ' . $cat_id;
-    $page_title = $categories[$cat_id]['title'] . ' - ' . $page_title;
-}
+// Build WHERE clause
+$where = [];
+$params = [];
 
-$page = $nv_Request->get_int('page', 'get', 1);
-$per_page = 5;
-$full_size = $nv_Request->get_int('full_size', 'get', 0);
-$base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name;
 if ($cat_id > 0) {
-    $base_url .= '&cat_id=' . $cat_id;
-}
-if ($full_size) {
-    $base_url .= '&full_size=1';
+    $where[] = 'b.cat_id = ?';
+    $params[] = $cat_id;
 }
 
-$sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books ' . $where . ' ORDER BY add_time DESC LIMIT ' . (($page - 1) * $per_page) . ', ' . $per_page;
-$result = $db->query($sql);
-$books = [];
+if (!empty($search_query)) {
+    $where[] = '(b.title LIKE ? OR b.author LIKE ? OR b.publisher LIKE ? OR b.description LIKE ?)';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+}
+
+$where[] = 'b.status = 1';
+$where_clause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
+
+// Get all books
+$sql = 'SELECT b.*, c.title as cat_title FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books b
+LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_categories c ON b.cat_id = c.id
+' . $where_clause . '
+ORDER BY b.add_time DESC';
+
+$stmt = $db->prepare($sql);
+$stmt->execute($params);
+$result = $stmt;
+
 while ($row = $result->fetch()) {
     $row['image_url'] = !empty($row['image']) ? NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['image'] : '';
+    $row['price_format'] = nv_format_price($row['price']);
     $row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $row['id'];
-    $books[] = $row;
+    $array_data[] = $row;
 }
 
-$result = $db->query('SELECT FOUND_ROWS()');
-$all_page = $result->fetchColumn();
-$num_pages = ceil($all_page / $per_page);
+// Categories for filter
+$categories = nv_get_categories();
 
-if ($cat_id > 0) {
-    $array_mod_title[] = [
-        'title' => $categories[$cat_id]['title'],
-        'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&cat_id=' . $cat_id
-    ];
+// Breadcrumbs
+$array_mod_title[] = [
+    'title' => $module_info['custom_title'],
+    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name
+];
+
+// Template
+$xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
+$xtpl->assign('LANG', $lang_module);
+$xtpl->assign('MODULE_NAME', $module_name);
+$xtpl->assign('OP', $op);
+$xtpl->assign('SEARCH_QUERY', $search_query);
+
+// Categories filter
+foreach ($categories as $cat) {
+    $cat['selected'] = ($cat['id'] == $cat_id) ? 'selected' : '';
+    $xtpl->assign('CAT', $cat);
+    $xtpl->parse('main.cat_filter');
 }
 
-// Check if AJAX request
-$isAjax = $nv_Request->get_int('nv_ajax', 'get', 0) || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-
-if ($isAjax) {
-    // Return only books content for AJAX
-    $ajax_content = book_main_ajax_theme($books, $categories, $cat_id, $base_url, $page, $num_pages, $full_size);
-    echo $ajax_content;
-    exit;
+// Books
+if (!empty($array_data)) {
+    foreach ($array_data as $book) {
+        $xtpl->assign('BOOK', $book);
+        if (!empty($book['image'])) {
+            $xtpl->parse('main.book_loop.image');
+        } else {
+            $xtpl->parse('main.book_loop.no_image');
+        }
+        $xtpl->parse('main.book_loop');
+    }
+} else {
+    $xtpl->parse('main.no_books');
 }
 
-$contents = book_main_theme($books, $categories, $cat_id, $base_url, $page, $num_pages, $full_size);
+// No pagination - show all books
+
+$xtpl->parse('main');
+$contents = $xtpl->text('main');
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

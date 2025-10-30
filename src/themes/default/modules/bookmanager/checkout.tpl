@@ -1,158 +1,122 @@
 <!-- BEGIN: main -->
-<div class="checkout-page">
-    <div class="container">
-        <h1 class="mb-4">{LANG.checkout}</h1>
-
-        <!-- BEGIN: error -->
-        <div class="alert alert-danger mb-4">
-            <ul class="mb-0">
-                <!-- BEGIN: error_item -->
-                <li>{ERROR}</li>
-                <!-- END: error_item -->
-            </ul>
+<div class="checkout">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">Thanh toán</h1>
+                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=cart" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại giỏ hàng
+                </a>
+            </div>
         </div>
-        <!-- END: error -->
+    </div>
 
-        <form method="post" action="">
-            <div class="row">
+    <!-- BEGIN: success -->
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <div class="text-success mb-3">
+                <i class="fas fa-check-circle fa-4x"></i>
+            </div>
+            <h4 class="text-success">Đặt hàng thành công!</h4>
+            <p class="mb-3">Cảm ơn bạn đã đặt hàng. Mã đơn hàng của bạn là: <strong class="text-primary">{ORDER_CODE}</strong></p>
+            <div class="d-flex justify-content-center gap-2">
+                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" class="btn btn-primary">
+                    <i class="fas fa-list"></i> Xem đơn hàng
+                </a>
+                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-outline-primary">
+                    <i class="fas fa-shopping-bag"></i> Tiếp tục mua sắm
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- END: success -->
+
+    <!-- BEGIN: checkout_form -->
+    <form method="post" action="">
+        <div class="row">
+            <div class="col-lg-8 mb-4">
                 <!-- Customer Information -->
-                <div class="col-lg-8 mb-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">{LANG.customer_info}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">{LANG.customer_name} <span class="text-danger">*</span></label>
-                                        <input type="text" name="customer_name" value="{CUSTOMER.name}" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">{LANG.customer_email} <span class="text-danger">*</span></label>
-                                        <input type="email" name="customer_email" value="{CUSTOMER.email}" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">{LANG.customer_phone} <span class="text-danger">*</span></label>
-                                        <input type="tel" name="customer_phone" value="{CUSTOMER.phone}" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">{LANG.payment_method} <span class="text-danger">*</span></label>
-                                        <select name="payment_method" class="form-select" required>
-                                            <option value="">{LANG.select_payment_method}</option>
-                                            <option value="COD" {PAYMENT.cod_selected}>{LANG.cod}</option>
-                                            <option value="Bank Transfer" {PAYMENT.bank_selected}>{LANG.bank_transfer}</option>
-                                            <option value="Credit Card" {PAYMENT.card_selected}>{LANG.credit_card}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">{LANG.customer_address} <span class="text-danger">*</span></label>
-                                <textarea name="customer_address" class="form-control" rows="3" required>{CUSTOMER.address}</textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">{LANG.order_note}</label>
-                                <textarea name="order_note" class="form-control" rows="2" placeholder="{LANG.order_note_placeholder}"></textarea>
-                            </div>
-                        </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Thông tin giao hàng</h5>
                     </div>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="col-lg-4">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="mb-0">{LANG.order_summary}</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Họ tên <span class="text-danger">*</span></label>
+                                <input type="text" name="customer_name" value="{CUSTOMER_NAME}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" name="customer_email" value="{CUSTOMER_EMAIL}" class="form-control" required>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <!-- Order Items -->
-                            <div class="order-items mb-3">
-                                <!-- BEGIN: item -->
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div class="flex-grow-1">
-                                        <small class="fw-bold">{ITEM.title}</small>
-                                        <br>
-                                        <small class="text-muted">{ITEM.quantity} x {ITEM.price_format}</small>
-                                    </div>
-                                    <div class="text-end">
-                                        <strong>{ITEM.subtotal_format}</strong>
-                                    </div>
-                                </div>
-                                <!-- END: item -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                <input type="tel" name="customer_phone" class="form-control" required>
                             </div>
-
-                            <hr>
-
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>{LANG.subtotal}:</span>
-                                <strong>{SUBTOTAL}</strong>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phương thức thanh toán</label>
+                                <select name="payment_method" class="form-select">
+                                    <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                                    <option value="Bank Transfer">Chuyển khoản ngân hàng</option>
+                                    <option value="Credit Card">Thẻ tín dụng</option>
+                                </select>
                             </div>
-
-                            <!-- BEGIN: discount -->
-                            <div class="d-flex justify-content-between mb-2 text-success">
-                                <span>{LANG.discount} ({COUPON_CODE}):</span>
-                                <strong>-{DISCOUNT}</strong>
-                            </div>
-                            <!-- END: discount -->
-
-                            <div class="d-flex justify-content-between mb-3 border-top pt-3">
-                                <span class="fw-bold">{LANG.total_amount}:</span>
-                                <strong class="text-primary h5">{TOTAL}</strong>
-                            </div>
-
-                            <button type="submit" name="place_order" class="btn btn-success btn-lg w-100">
-                            {LANG.place_order}
-                            </button>
-
-                            <small class="text-muted text-center d-block mt-2">
-                                {LANG.secure_payment}
-                            </small>
                         </div>
-                    </div>
-
-                    <!-- Payment Info -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="mb-0">{LANG.payment_info}</h6>
-                        </div>
-                        <div class="card-body">
-                            <!-- BEGIN: cod_info -->
-                            <div class="alert alert-info">
-                            <strong>{LANG.cod}:</strong> {LANG.cod_description}
-                            </div>
-                            <!-- END: cod_info -->
-
-                            <!-- BEGIN: bank_info -->
-                            <div class="alert alert-info">
-                            <strong>{LANG.bank_transfer}:</strong>
-                            <br>Ngân hàng: Vietcombank
-                            <br>Số tài khoản: 1234567890
-                            <br>Chủ tài khoản: CONG TY TNHH BOOKSTORE
-                            </div>
-                            <!-- END: bank_info -->
-
-                            <!-- BEGIN: card_info -->
-                            <div class="alert alert-info">
-                            <strong>{LANG.credit_card}:</strong> {LANG.card_description}
-                            </div>
-                            <!-- END: card_info -->
+                        <div class="mb-3">
+                            <label class="form-label">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+                            <textarea name="customer_address" rows="3" class="form-control" placeholder="Nhập địa chỉ chi tiết..." required></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+
+            <div class="col-lg-4">
+                <!-- Order Summary -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tóm tắt đơn hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <tbody>
+                                    <!-- BEGIN: cart_items -->
+                                    <tr>
+                                        <td>
+                                            <div class="fw-semibold">{ITEM.title}</div>
+                                            <small class="text-muted">x{ITEM.quantity}</small>
+                                        </td>
+                                        <td class="text-end">{ITEM.subtotal}</td>
+                                    </tr>
+                                    <!-- END: cart_items -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="border-top">
+                                        <th class="text-end">Tổng cộng:</th>
+                                        <th class="text-end text-primary">{TOTAL}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="d-grid mt-3">
+                            <button type="submit" name="checkout" class="btn btn-success btn-lg">
+                                <i class="fas fa-check"></i> Đặt hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <small>Sau khi đặt hàng thành công, bạn sẽ nhận được mã đơn hàng để theo dõi.</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- END: checkout_form -->
 </div>
 <!-- END: main -->

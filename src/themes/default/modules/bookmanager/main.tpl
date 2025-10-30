@@ -1,150 +1,79 @@
 <!-- BEGIN: main -->
-<div class="bookmanager-main">
-    <div class="row">
-        <!-- Filters -->
-        <div class="col-md-12 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">{LANG.books}</h5>
-                </div>
-                <div class="card-body">
-                    <form method="get" action="{NV_BASE_SITEURL}index.php">
-                        <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}" />
-                        <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}" />
-                        <input type="hidden" name="{NV_OP_VARIABLE}" value="" />
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <select name="cat_id" class="form-select" onchange="this.form.submit()">
-                                    <option value="0">{LANG.all_categories}</option>
-                                    <!-- BEGIN: cat_filter -->
-                                    <option value="{CAT.id}" {CAT.selected}>{CAT.title}</option>
-                                    <!-- END: cat_filter -->
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <select name="sort" class="form-select" onchange="this.form.submit()">
-                                    <option value="add_time" {SORT.add_time}>{LANG.sort_newest}</option>
-                                    <option value="title" {SORT.title}>{LANG.sort_title}</option>
-                                    <option value="price" {SORT.price}>{LANG.sort_price}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <select name="order" class="form-select" onchange="this.form.submit()">
-                                    <option value="desc" {ORDER.desc}>{LANG.sort_desc}</option>
-                                    <option value="asc" {ORDER.asc}>{LANG.sort_asc}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="bookmanager-container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="font-size: 28px; margin-bottom: 20px;">Cửa hàng sách</h1>
+        <!-- BEGIN: user_logged_in -->
+        <div style="margin-bottom: 20px;">
+            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=cart" style="display: inline-block; padding: 10px 20px; margin: 0 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Giỏ hàng</a>
+            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" style="display: inline-block; padding: 10px 20px; margin: 0 10px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Đơn hàng</a>
         </div>
-
-        <!-- Books Table -->
-        <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="mb-0">{LANG.book_list}</h5>
-                </div>
-        <div class="card-body p-0">
-        <div class="table-responsive">
-        <table class="table table-hover table-striped mb-0">
-            <thead class="table-dark">
-                <tr>
-                    <th class="text-center" style="width: 80px;">{LANG.image}</th>
-                        <th>{LANG.title}</th>
-                            <th style="width: 150px;">{LANG.author}</th>
-                                <th class="text-center" style="width: 120px;">{LANG.price}</th>
-                                <th class="text-center" style="width: 100px;">{LANG.stock_status}</th>
-                                    <th class="text-center" style="width: 120px;">{LANG.actions}</th>
-                            </tr>
-                        </thead>
-                    <tbody>
-                    <!-- BEGIN: book_loop -->
-                    <tr>
-                    <td class="text-center" data-label="{LANG.image}">
-                    <!-- BEGIN: image -->
-                    <img src="{BOOK.image_url}" alt="{BOOK.title}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
-                    <!-- END: image -->
-                    <!-- BEGIN: no_image -->
-                    <div class="bg-light rounded d-flex align-items-center justify-content-center mx-auto" style="width: 50px; height: 50px; font-size: 24px; font-weight: bold; color: #6c757d;">
-                    ?
-                    </div>
-                    <!-- END: no_image -->
-                    </td>
-                    <td data-label="{LANG.title}">
-                    <div>
-                    <h6 class="mb-1">
-                    <a href="{BOOK.link}" class="text-decoration-none text-dark">{BOOK.title}</a>
-                    </h6>
-                    <small class="text-muted">{LANG.category}: {BOOK.category_title}</small>
-                    </div>
-                    </td>
-                    <td data-label="{LANG.author}">
-                    <span class="fw-medium">{BOOK.author}</span>
-                    </td>
-                    <td class="text-center" data-label="{LANG.price}">
-                    <span class="fw-bold text-primary fs-6">{BOOK.price_format}</span>
-                    </td>
-                    <td class="text-center" data-label="{LANG.stock_status}">
-                    <!-- BEGIN: in_stock -->
-                    <span class="badge bg-success">{LANG.in_stock} ({BOOK.stock_quantity})</span>
-                    <!-- END: in_stock -->
-                    <!-- BEGIN: out_of_stock -->
-                    <span class="badge bg-danger">{LANG.out_of_stock}</span>
-                    <!-- END: out_of_stock -->
-                    </td>
-                    <td class="text-center" data-label="{LANG.actions}">
-                    <a href="{BOOK.link}" class="btn btn-primary btn-sm">
-                    {LANG.view_detail}
-                    </a>
-                    <!-- BEGIN: can_add_cart -->
-                    <button type="button" class="btn btn-success btn-sm ms-1" onclick="addToCart({BOOK.id})">
-                    {LANG.add_to_cart}
-                    </button>
-                    <!-- END: can_add_cart -->
-                    </td>
-                    </tr>
-                                <!-- END: book_loop -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- BEGIN: no_books -->
-                    <div class="text-center py-5">
-                    <h4 class="text-muted">{LANG.no_books}</h4>
-                    <p class="text-muted">{LANG.no_books_message}</p>
-                    </div>
-                    <!-- END: no_books -->
-                </div>
-            </div>
-        </div>
+        <!-- END: user_logged_in -->
     </div>
 
-    <!-- Pagination -->
-    <!-- BEGIN: generate_page -->
-    <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <!-- BEGIN: prev -->
-            <li class="page-item {PREV.disabled}">
-                <a class="page-link" href="{PREV.link}" {PREV.attr}>{LANG.prev}</a>
-            </li>
-            <!-- END: prev -->
+    <!-- Search and Filter -->
+    <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px;">
+        <form method="get" action="{NV_BASE_SITEURL}index.php" style="display: flex; flex-wrap: wrap; gap: 15px; align-items: end;">
+            <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}" />
+            <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}" />
 
-            <!-- BEGIN: page -->
-            <li class="page-item {PAGE.current}">
-                <a class="page-link" href="{PAGE.link}">{PAGE.num}</a>
-            </li>
-            <!-- END: page -->
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Danh mục</label>
+                <select name="cat_id" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" onchange="this.form.submit()">
+                    <option value="0">Tất cả danh mục</option>
+                    <!-- BEGIN: cat_filter -->
+                    <option value="{CAT.id}" {CAT.selected}>{CAT.title}</option>
+                    <!-- END: cat_filter -->
+                </select>
+            </div>
 
-            <!-- BEGIN: next -->
-            <li class="page-item {NEXT.disabled}">
-                <a class="page-link" href="{NEXT.link}" {NEXT.attr}>{LANG.next}</a>
-            </li>
-            <!-- END: next -->
-        </ul>
-    </nav>
-    <!-- END: generate_page -->
+            <div style="flex: 2; min-width: 200px;">
+                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Tìm kiếm</label>
+                <div style="display: flex;">
+                    <input type="text" name="q" value="{SEARCH_QUERY}" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px 0 0 4px;" placeholder="Tên sách, tác giả...">
+                    <button type="submit" style="padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 0 4px 4px 0; cursor: pointer;">Tim</button>
+                </div>
+            </div>
+
+            <div style="min-width: 120px;">
+                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 8px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; width: 100%; text-align: center;">Xoa loc</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Books Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+        <!-- BEGIN: book_loop -->
+        <div style="background: white; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;">
+            <div style="height: 200px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                <!-- BEGIN: image -->
+                <img src="{BOOK.image_url}" alt="{BOOK.title}" style="max-height: 180px; max-width: 100%;">
+                <!-- END: image -->
+                <!-- BEGIN: no_image -->
+                <div style="color: #6c757d; font-size: 48px;">[SACH]</div>
+                <!-- END: no_image -->
+            </div>
+            <div style="padding: 15px; flex: 1; display: flex; flex-direction: column;">
+                <h3 style="margin: 0 0 10px 0; font-size: 16px; line-height: 1.3;">
+                    <a href="{BOOK.link}" style="color: #007bff; text-decoration: none;">{BOOK.title}</a>
+                </h3>
+                <p style="margin: 0 0 5px 0; color: #666; font-size: 14px;">Tac gia: {BOOK.author}</p>
+                <p style="margin: 0 0 15px 0; color: #666; font-size: 14px;">Danh muc: {BOOK.cat_title}</p>
+                <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold; color: #007bff; font-size: 18px;">{BOOK.price_format}</span>
+                    <a href="{BOOK.link}" style="padding: 6px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;">Xem chi tiet</a>
+                </div>
+            </div>
+        </div>
+        <!-- END: book_loop -->
+    </div>
+
+    <!-- BEGIN: no_books -->
+    <div style="text-align: center; padding: 50px 20px; background: white; border: 1px solid #ddd; border-radius: 8px;">
+        <div style="color: #6c757d; font-size: 64px; margin-bottom: 20px;">[SACH]</div>
+        <h2 style="margin: 0 0 10px 0; color: #333;">Khong tim thay sach nao</h2>
+        <p style="margin: 0 0 20px 0; color: #666;">Hay thu tim kiem voi tu khoa khac hoac chon danh muc khac.</p>
+        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">Xem tat ca sach</a>
+    </div>
+    <!-- END: no_books -->
 </div>
 <!-- END: main -->
