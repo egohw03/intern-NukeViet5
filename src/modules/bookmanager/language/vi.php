@@ -126,6 +126,9 @@ $lang_module['total_sold'] = 'Tổng bán';
 $lang_module['low_stock_alerts'] = 'Cảnh báo tồn kho thấp';
 $lang_module['cart'] = 'Giỏ hàng';
 $lang_module['added_to_cart'] = 'Đã thêm vào giỏ hàng thành công!';
+$lang_module['clear_cart'] = 'Xóa tất cả';
+$lang_module['confirm_clear_cart'] = 'Bạn có chắc chắn muốn xóa tất cả sản phẩm khỏi giỏ hàng?';
+$lang_module['welcome_user'] = 'Xin chào';
 $lang_module['checkout'] = 'Thanh toán';
 $lang_module['add_to_cart'] = 'Thêm vào giỏ';
 $lang_module['buy_now'] = 'Mua ngay';
@@ -197,6 +200,7 @@ $lang_module['remove_coupon'] = 'Xóa mã giảm giá';
 $lang_module['invalid_coupon'] = 'Mã giảm giá không hợp lệ hoặc đã hết hạn';
 $lang_module['coupon_applied'] = 'Mã giảm giá đã được áp dụng';
 $lang_module['no_coupons'] = 'Chưa có mã giảm giá nào';
+$lang_module['enter_coupon_code'] = 'Nhập mã giảm giá';
 
 // New features - Addresses
 $lang_module['addresses'] = 'Địa chỉ giao hàng';

@@ -237,9 +237,32 @@ function nv_get_cart_total()
 }
 
 /**
+ * Get cart item count
+ */
+function nv_get_cart_count()
+{
+    $cart = nv_get_cart();
+    $count = 0;
+
+    foreach ($cart as $item) {
+        $count += $item['quantity'];
+    }
+
+    return $count;
+}
+
+/**
  * Create order
  */
 function nv_create_order($customer_info, $payment_method = 'COD')
+{
+    return nv_create_order_with_coupon($customer_info, $payment_method, 0, 0);
+}
+
+/**
+ * Create order with coupon
+ */
+function nv_create_order_with_coupon($customer_info, $payment_method = 'COD', $coupon_id = 0, $discount = 0)
 {
     global $db, $module_data, $user_info;
 
@@ -253,13 +276,13 @@ function nv_create_order($customer_info, $payment_method = 'COD')
     }
 
     $userid = $user_info['userid'];
-    $total_amount = nv_get_cart_total();
+    $total_amount = nv_get_cart_total() - $discount;
     $order_code = 'ORD' . date('ymdHis') . rand(100, 999);
 
     // Insert order
     $sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_orders
-    (userid, order_code, customer_name, customer_email, customer_phone, customer_address, total_amount, order_status, payment_status, payment_method, add_time)
-    VALUES (:userid, :order_code, :customer_name, :customer_email, :customer_phone, :customer_address, :total_amount, 0, 0, :payment_method, :add_time)';
+    (userid, order_code, customer_name, customer_email, customer_phone, customer_address, total_amount, discount_amount, coupon_id, order_status, payment_status, payment_method, add_time)
+    VALUES (:userid, :order_code, :customer_name, :customer_email, :customer_phone, :customer_address, :total_amount, :discount_amount, :coupon_id, 0, 0, :payment_method, :add_time)';
 
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
@@ -269,6 +292,8 @@ function nv_create_order($customer_info, $payment_method = 'COD')
     $stmt->bindParam(':customer_phone', $customer_info['phone'], PDO::PARAM_STR);
     $stmt->bindParam(':customer_address', $customer_info['address'], PDO::PARAM_STR);
     $stmt->bindParam(':total_amount', $total_amount, PDO::PARAM_STR);
+    $stmt->bindParam(':discount_amount', $discount, PDO::PARAM_STR);
+    $stmt->bindParam(':coupon_id', $coupon_id, PDO::PARAM_INT);
     $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
     $stmt->bindValue(':add_time', NV_CURRENTTIME, PDO::PARAM_INT);
 
@@ -278,6 +303,11 @@ function nv_create_order($customer_info, $payment_method = 'COD')
         // Insert order items
         foreach ($cart as $item) {
             $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
+        }
+
+        // Record coupon usage
+        if ($coupon_id > 0) {
+            $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_coupon_usage (coupon_id, order_id, userid, used_time) VALUES (' . $coupon_id . ', ' . $order_id . ', ' . $userid . ', ' . NV_CURRENTTIME . ')');
         }
 
         // Clear cart
@@ -305,4 +335,62 @@ function nv_get_user_orders($userid)
     }
 
     return $orders;
+}
+
+/**
+ * Apply coupon
+ */
+function nv_apply_coupon($code, $total)
+{
+    global $db, $module_data;
+
+    $code = trim($code);
+    if (empty($code)) {
+        return ['valid' => false, 'message' => 'Mã giảm giá không hợp lệ'];
+    }
+
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupons WHERE code = :code AND status = 1 AND (expiry_date = 0 OR expiry_date > ' . NV_CURRENTTIME . ')';
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':code', $code, PDO::PARAM_STR);
+    $stmt->execute();
+    $coupon = $stmt->fetch();
+
+    if (!$coupon) {
+        return ['valid' => false, 'message' => 'Mã giảm giá không tồn tại hoặc đã hết hạn'];
+    }
+
+    // Check usage limit
+    if ($coupon['usage_limit'] > 0) {
+        $used_count = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupon_usage WHERE coupon_id = ' . $coupon['id'])->fetchColumn();
+        if ($used_count >= $coupon['usage_limit']) {
+            return ['valid' => false, 'message' => 'Mã giảm giá đã đạt giới hạn sử dụng'];
+        }
+    }
+
+    // Calculate discount
+    if ($coupon['discount_type'] == 'percentage') {
+        $discount = $total * ($coupon['discount_value'] / 100);
+        if ($coupon['max_discount'] > 0 && $discount > $coupon['max_discount']) {
+            $discount = $coupon['max_discount'];
+        }
+    } else {
+        $discount = $coupon['discount_value'];
+    }
+
+    return [
+        'valid' => true,
+        'discount' => $discount,
+        'coupon' => $coupon
+    ];
+}
+
+/**
+ * Get coupon by ID
+ */
+function nv_get_coupon($id)
+{
+    global $db, $module_data;
+
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupons WHERE id = ' . intval($id);
+    return $db->query($sql)->fetch();
 }

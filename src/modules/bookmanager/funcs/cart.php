@@ -21,6 +21,9 @@ $key_words = $lang_module['cart'];
 $cart = nv_get_cart();
 $total = nv_get_cart_total();
 
+// Debug: Uncomment to check cart data
+// echo '<pre>Cart: '; print_r($cart); echo '<br>Total: ' . $total; echo '</pre>'; exit;
+
 // Handle update cart
 if ($nv_Request->isset_request('update_cart', 'post')) {
     $quantities = $nv_Request->get_array('quantity', 'post');
@@ -37,11 +40,13 @@ if ($remove_id > 0) {
     nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart');
 }
 
+// Handle clear cart
+if ($nv_Request->isset_request('clear_cart', 'post')) {
+    $db->query('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cart WHERE userid = ' . $user_info['userid']);
+    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart');
+}
+
 // Breadcrumbs
-$array_mod_title[] = [
-    'title' => $module_info['custom_title'],
-    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name
-];
 $array_mod_title[] = [
     'title' => $lang_module['cart']
 ];
@@ -65,9 +70,10 @@ if (!empty($cart)) {
         } else {
             $xtpl->parse('main.cart_items.no_image');
         }
-        $xtpl->parse('main.cart_items');
+        $xtpl->parse('main.cart_items.item');
     }
 
+    $xtpl->parse('main.cart_items');
     $xtpl->parse('main.checkout');
 } else {
     $xtpl->parse('main.empty_cart');
