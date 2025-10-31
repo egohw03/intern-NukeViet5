@@ -486,7 +486,7 @@ function nv_update_order_payment_status($order_code, $payment_status)
  */
 function nv_send_order_confirmation_email($order_code, $customer_info)
 {
-    global $db, $module_data, $module_name, $lang_module;
+    global $db, $module_data, $module_name, $lang_module, $global_config;
 
     // Get order details
     $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE order_code = :order_code';
@@ -544,11 +544,8 @@ Thông tin giao hàng:
 ";
 
     // Send email using Nukeviet's mail function
-    return nv_sendmail([
-    'to' => $customer_info['email'],
-    'subject' => $subject,
-    'message' => $message
-    ]);
+    $from = $global_config['site_email'];
+    return nv_sendmail($from, $customer_info['email'], $subject, $message);
 }
 
 /**
