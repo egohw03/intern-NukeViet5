@@ -47,6 +47,54 @@ $coupon_message = $coupon_result['message'];
 }
 }
 
+// Load form values from session if not submitting
+if (!$nv_Request->isset_request('checkout', 'post') && !$nv_Request->isset_request('apply_coupon', 'post')) {
+    $customer_name = $_SESSION['checkout_form']['customer_name'] ?? $user_info['full_name'];
+    $customer_email = $_SESSION['checkout_form']['customer_email'] ?? $user_info['email'];
+    $customer_phone = $_SESSION['checkout_form']['customer_phone'] ?? ($default_address['phone'] ?? '');
+    $customer_address = $_SESSION['checkout_form']['customer_address'] ?? ($default_address['address'] ?? '');
+    $payment_method = $_SESSION['checkout_form']['payment_method'] ?? 'COD';
+    $coupon_code_input = $_SESSION['checkout_form']['coupon_code'] ?? '';
+    $saved_address_id = $_SESSION['checkout_form']['saved_address_id'] ?? 0;
+} else {
+    // Preserve form values
+    $customer_name = $nv_Request->get_title('customer_name', 'post', $user_info['full_name']);
+    $customer_email = $nv_Request->get_title('customer_email', 'post', $user_info['email']);
+    $customer_phone = $nv_Request->get_title('customer_phone', 'post', $default_address['phone'] ?? '');
+    $customer_address = $nv_Request->get_textarea('customer_address', 'post', $default_address['address'] ?? '', 'br');
+    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
+    // Normalize payment method values
+    if ($payment_method == 'Bank Transfer') {
+        $payment_method = 'bank_transfer';
+    } elseif ($payment_method == 'Credit Card') {
+        $payment_method = 'card';
+    }
+    $saved_address_id = $nv_Request->get_int('saved_address', 'post', 0);
+    if ($saved_address_id > 0 && $customer_name == $user_info['full_name'] && $customer_phone == ($default_address['phone'] ?? '') && $customer_address == ($default_address['address'] ?? '')) {
+        // If user selected a saved address and hasn't modified the inputs, use the selected address
+        foreach ($all_addresses as $addr) {
+            if ($addr['id'] == $saved_address_id) {
+                $customer_name = $addr['full_name'];
+                $customer_phone = $addr['phone'];
+                $customer_address = $addr['address'];
+                break;
+            }
+        }
+    }
+    $coupon_code_input = $nv_Request->get_title('coupon_code', 'post', '');
+}
+
+// Save to session
+$_SESSION['checkout_form'] = [
+    'customer_name' => $customer_name,
+    'customer_email' => $customer_email,
+    'customer_phone' => $customer_phone,
+    'customer_address' => $customer_address,
+    'payment_method' => $payment_method,
+    'coupon_code' => $coupon_code_input,
+    'saved_address_id' => $saved_address_id,
+];
+
 $final_total = $total - $discount;
 $order_created = false;
 $order_code = '';
@@ -97,6 +145,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         }
     }
 }
+}
 
 // Breadcrumbs
 $array_mod_title[] = [
@@ -130,9 +179,11 @@ if ($order_created) {
     // Saved addresses
     if (!empty($all_addresses)) {
         foreach ($all_addresses as $address) {
+            $address['selected'] = ($address['id'] == $saved_address_id) ? 'selected' : '';
+            $address['address_truncated'] = mb_strlen($address['address']) > 50 ? mb_substr($address['address'], 0, 50) . '...' : $address['address'];
             $xtpl->assign('ADDRESS', $address);
-        if ($address['is_default']) {
-            $xtpl->parse('main.checkout_form.saved_addresses.address.default');
+            if ($address['is_default']) {
+                $xtpl->parse('main.checkout_form.saved_addresses.address.default');
             }
             $xtpl->parse('main.checkout_form.saved_addresses.address');
         }
@@ -140,11 +191,19 @@ if ($order_created) {
     }
 
     // Pre-fill user info
-    $xtpl->assign('CUSTOMER_NAME', $user_info['full_name']);
-    $xtpl->assign('CUSTOMER_EMAIL', $user_info['email']);
-    if ($default_address) {
-        $xtpl->assign('CUSTOMER_PHONE', $default_address['phone']);
-        $xtpl->assign('CUSTOMER_ADDRESS', $default_address['address']);
+    $xtpl->assign('CUSTOMER_NAME', $customer_name);
+    $xtpl->assign('CUSTOMER_EMAIL', $customer_email);
+    $xtpl->assign('CUSTOMER_PHONE', $customer_phone);
+    $xtpl->assign('CUSTOMER_ADDRESS', $customer_address);
+    $xtpl->assign('COUPON_CODE', $coupon_code_input);
+
+    // Payment method selected
+    if ($payment_method == 'COD') {
+        $xtpl->parse('main.checkout_form.cod_selected');
+    } elseif ($payment_method == 'bank_transfer') {
+        $xtpl->parse('main.checkout_form.bank_selected');
+    } elseif ($payment_method == 'card') {
+        $xtpl->parse('main.checkout_form.card_selected');
     }
 
     // Coupon message
