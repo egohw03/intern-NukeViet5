@@ -19,9 +19,11 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
 
-    
+    <!-- BEGIN: admin_message -->
+    <div style="background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 4px; margin-bottom: 20px;">{ADMIN_MESSAGE}</div>
+    <!-- END: admin_message -->
 
         <!-- Filter Tabs -->
         <div style="background: white; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px;">
@@ -100,24 +102,26 @@
                         </div>
                         </td>
                             <td style="padding: 12px; border-bottom: 1px solid #eee;">
-                            <form method="post" action="" style="display: inline;">
-                            <select name="order_status" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
-                            <option value="0" {ORDER.order_status_0_selected}>Chờ xử lý</option>
-                            <option value="1" {ORDER.order_status_1_selected}>Đang xử lý</option>
-                            <option value="2" {ORDER.order_status_2_selected}>Đã giao</option>
-                            <option value="3" {ORDER.order_status_3_selected}>Đã hủy</option>
-                            </select>
-                            </form>
+                                <form method="post" action="" style="display: inline;">
+                                    <select name="order_status" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+                                        <option value="0" {ORDER.order_status_0_selected}>Chờ xử lý</option>
+                                    <option value="1" {ORDER.order_status_1_selected}>Đang xử lý</option>
+                                        <option value="2" {ORDER.order_status_2_selected}>Đã giao</option>
+                                        <option value="3" {ORDER.order_status_3_selected}>Đã hủy</option>
+                                    </select>
+                                    <input type="hidden" name="order_id" value="{ORDER.id}">
+                                    <button type="submit" name="update_status" style="padding: 4px 8px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 14px; margin-left: 5px; cursor: pointer;">Cập nhật</button>
+                                </form>
                             </td>
                             <td style="padding: 12px; border-bottom: 1px solid #eee;">
-                            <form method="post" action="" style="display: inline;">
-                            <select name="payment_status" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
-                            <option value="0" {ORDER.payment_status_0_selected}>Chưa thanh toán</option>
-                            <option value="1" {ORDER.payment_status_1_selected}>Đã thanh toán</option>
-                            </select>
-                            <input type="hidden" name="order_id" value="{ORDER.id}">
-                            <button type="submit" name="update_status" style="padding: 4px 8px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 14px; margin-left: 5px; cursor: pointer;">Cập nhật</button>
-                            </form>
+                                <form method="post" action="" style="display: inline;">
+                                    <select name="payment_status" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+                                        <option value="0" {ORDER.payment_status_0_selected}>Chưa thanh toán</option>
+                                        <option value="1" {ORDER.payment_status_1_selected}>Đã thanh toán</option>
+                                    </select>
+                                    <input type="hidden" name="order_id" value="{ORDER.id}">
+                                    <button type="submit" name="update_status" style="padding: 4px 8px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 14px; margin-left: 5px; cursor: pointer;">Cập nhật</button>
+                                </form>
                             </td>
                             <td style="padding: 12px; border-bottom: 1px solid #eee;">
                             <small style="color: #666;">{ORDER.add_time}</small>

@@ -20,8 +20,12 @@ $page_title = $nv_Lang->getModule('orders');
 // Handle update status
 if ($nv_Request->isset_request('update_status', 'post')) {
     $order_id = $nv_Request->get_int('order_id', 'post', 0);
-    $order_status = $nv_Request->get_int('order_status', 'post', 0);
-    $payment_status = $nv_Request->get_int('payment_status', 'post', 0);
+
+    // Get current values
+    $current = $db->query('SELECT order_status, payment_status FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE id = ' . $order_id)->fetch();
+
+    $order_status = $nv_Request->isset_request('order_status', 'post') ? $nv_Request->get_int('order_status', 'post', $current['order_status']) : $current['order_status'];
+    $payment_status = $nv_Request->isset_request('payment_status', 'post') ? $nv_Request->get_int('payment_status', 'post', $current['payment_status']) : $current['payment_status'];
 
     if ($order_id > 0) {
         $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_orders SET order_status = :order_status, payment_status = :payment_status WHERE id = :id';
@@ -29,8 +33,11 @@ if ($nv_Request->isset_request('update_status', 'post')) {
         $stmt->bindParam(':order_status', $order_status, PDO::PARAM_INT);
         $stmt->bindParam(':payment_status', $payment_status, PDO::PARAM_INT);
         $stmt->bindParam(':id', $order_id, PDO::PARAM_INT);
-        $stmt->execute();
-
+        if ($stmt->execute()) {
+            $_SESSION['admin_message'] = 'Cập nhật trạng thái thành công';
+        } else {
+            $_SESSION['admin_message'] = 'Lỗi cập nhật';
+        }
         nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders');
     }
 }
@@ -43,6 +50,12 @@ $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
+
+if (!empty($_SESSION['admin_message'])) {
+    $xtpl->assign('ADMIN_MESSAGE', $_SESSION['admin_message']);
+    $xtpl->parse('main.admin_message');
+    unset($_SESSION['admin_message']);
+}
 
 // Filter by status
 $status_filter = $nv_Request->get_int('status', 'get', -1);
