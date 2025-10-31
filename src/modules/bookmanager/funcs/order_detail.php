@@ -80,10 +80,6 @@ $order['payment_class'] = $payment_badges[$order['payment_status']] ?? 'secondar
 
 // Breadcrumbs
 $array_mod_title[] = [
-    'title' => $module_info['custom_title'],
-    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name
-];
-$array_mod_title[] = [
     'title' => $lang_module['my_orders'],
     'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders'
 ];

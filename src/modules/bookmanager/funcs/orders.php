@@ -39,10 +39,6 @@ $payment_statuses = [
 
 // Breadcrumbs
 $array_mod_title[] = [
-    'title' => $module_info['custom_title'],
-    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name
-];
-$array_mod_title[] = [
     'title' => $lang_module['my_orders']
 ];
 
