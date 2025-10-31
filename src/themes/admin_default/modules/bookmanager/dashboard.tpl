@@ -41,11 +41,52 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
+            <div class="stat-card">
+            <div class="stat-content">
+            <h6 class="stat-title">{LANG.total_reviews}</h6>
+            <h3 class="stat-value text-success">{TOTAL_REVIEWS}</h3>
+            <div class="stat-desc">Đánh giá sách</div>
+            </div>
+            </div>
+            </div>
+            
+        </div>
+
+        <!-- Coupon Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
                 <div class="stat-card">
                     <div class="stat-content">
-                        <h6 class="stat-title">{LANG.total_reviews}</h6>
-                        <h3 class="stat-value text-success">{TOTAL_REVIEWS}</h3>
-                        <div class="stat-desc">Đánh giá sách</div>
+                        <h6 class="stat-title">{LANG.total_coupons}</h6>
+                        <h3 class="stat-value text-danger">{TOTAL_COUPONS}</h3>
+                        <div class="stat-desc">Mã giảm giá</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">Sử dụng coupon</h6>
+                        <h3 class="stat-value text-info">{TOTAL_COUPON_USAGE}</h3>
+                        <div class="stat-desc">Lần sử dụng</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">Coupon hoạt động</h6>
+                        <h3 class="stat-value text-primary">{ACTIVE_COUPONS}</h3>
+                        <div class="stat-desc">Coupon active</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <h6 class="stat-title">Tỷ lệ sử dụng</h6>
+                        <h3 class="stat-value text-warning">{USAGE_RATE}%</h3>
+                        <div class="stat-desc">Trung bình/coupon</div>
                     </div>
                 </div>
             </div>

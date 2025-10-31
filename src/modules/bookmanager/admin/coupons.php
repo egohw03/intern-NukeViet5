@@ -23,8 +23,9 @@ while ($coupon = $result->fetch()) {
     $coupon['end_time'] = nv_date('d/m/Y H:i', $coupon['end_time']);
     $coupon['type_text'] = ($coupon['discount_type'] ?? 'percentage') == 'fixed' ? $nv_Lang->getModule('fixed_amount') : $nv_Lang->getModule('percentage');
     $coupon['status_text'] = $coupon['status'] ? $nv_Lang->getModule('active') : $nv_Lang->getModule('inactive');
-    $coupon['status_class'] = $coupon['status'] ? 'success' : 'danger';
+    $coupon['status_color'] = $coupon['status'] ? '#28a745' : '#dc3545';
     $coupon['value_format'] = ($coupon['discount_type'] ?? 'percentage') == 'fixed' ? number_format(($coupon['discount_value'] ?? 0), 0, ',', '.') . ' VNĐ' : ($coupon['discount_value'] ?? 0) . '%';
+    $coupon['used_count'] = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupon_usage WHERE coupon_id = ' . $coupon['id'])->fetchColumn();
     $coupons[] = $coupon;
 }
 
