@@ -149,6 +149,9 @@ while ($row = $result->fetch()) {
         $row['payment_status_' . $i . '_selected'] = $row['payment_status'] == $i ? 'selected' : '';
     }
 
+    // Add customer initial
+    $row['customer_initial'] = strtoupper(substr($row['customer_name'], 0, 1));
+
     $array[$row['id']] = $row;
 }
 

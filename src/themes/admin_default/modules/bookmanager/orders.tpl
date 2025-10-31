@@ -79,7 +79,7 @@
                         <td style="padding: 12px; border-bottom: 1px solid #eee;">
                         <div style="display: flex; align-items: center;">
                         <div style="background: #007bff; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; font-size: 16px; font-weight: bold; margin-right: 10px;">
-                        {ORDER.customer_name|substr:0:1|upper}
+                        {ORDER.customer_initial}
                         </div>
                         <div>
                         <strong style="color: #333;">{ORDER.customer_name}</strong>
