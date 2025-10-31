@@ -27,6 +27,11 @@ if ($nv_Request->isset_request('update_status', 'post')) {
     $order_status = $nv_Request->isset_request('order_status', 'post') ? $nv_Request->get_int('order_status', 'post', $current['order_status']) : $current['order_status'];
     $payment_status = $nv_Request->isset_request('payment_status', 'post') ? $nv_Request->get_int('payment_status', 'post', $current['payment_status']) : $current['payment_status'];
 
+    // Logic: if order_status is delivered (2), set payment_status to paid (1)
+    if ($order_status == 2) {
+        $payment_status = 1;
+    }
+
     if ($order_id > 0) {
         $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_orders SET order_status = :order_status, payment_status = :payment_status WHERE id = :id';
         $stmt = $db->prepare($sql);
@@ -161,6 +166,9 @@ while ($row = $result->fetch()) {
     for ($i = 0; $i <= 1; $i++) {
         $row['payment_status_' . $i . '_selected'] = $row['payment_status'] == $i ? 'selected' : '';
     }
+
+    // Disable payment paid option if order status is pending or cancelled
+    $row['payment_disabled'] = ($row['order_status'] == 0 || $row['order_status'] == 3) ? 'disabled' : '';
 
     // Add customer initial
     $row['customer_initial'] = strtoupper(substr($row['customer_name'], 0, 1));

@@ -115,9 +115,9 @@
                             </td>
                             <td style="padding: 12px; border-bottom: 1px solid #eee;">
                                 <form method="post" action="" style="display: inline;">
-                                    <select name="payment_status" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+                                    <select name="payment_status" id="payment_status_{ORDER.id}" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
                                         <option value="0" {ORDER.payment_status_0_selected}>Chưa thanh toán</option>
-                                        <option value="1" {ORDER.payment_status_1_selected}>Đã thanh toán</option>
+                                        <option value="1" {ORDER.payment_status_1_selected} {ORDER.payment_disabled}>Đã thanh toán</option>
                                     </select>
                                     <input type="hidden" name="order_id" value="{ORDER.id}">
                                     <button type="submit" name="update_status" style="padding: 4px 8px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 14px; margin-left: 5px; cursor: pointer;">Cập nhật</button>
