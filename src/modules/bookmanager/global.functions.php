@@ -488,6 +488,12 @@ function nv_send_order_confirmation_email($order_code, $customer_info)
 {
     global $db, $module_data, $module_name, $lang_module, $global_config;
 
+    // Skip sending email if disabled in development
+    if (defined('NV_IS_DEVELOPMENT') && NV_IS_DEVELOPMENT === true) {
+        error_log('Email sending skipped in development mode for order: ' . $order_code);
+        return true;
+    }
+
     // Get order details
     $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE order_code = :order_code';
     $stmt = $db->prepare($sql);
@@ -545,7 +551,14 @@ Thông tin giao hàng:
 
     // Send email using Nukeviet's mail function
     $from = $global_config['site_email'];
-    return nv_sendmail($from, $customer_info['email'], $subject, $message);
+    $result = nv_sendmail($from, $customer_info['email'], $subject, $message);
+
+    // Log if email sending failed
+    if (!$result) {
+        error_log('Failed to send order confirmation email for order: ' . $order_code . ' to: ' . $customer_info['email']);
+    }
+
+    return $result;
 }
 
 /**

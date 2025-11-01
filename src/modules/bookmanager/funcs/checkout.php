@@ -132,8 +132,13 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         } else {
             $order_code = nv_create_order_with_coupon($customer_info, $payment_method, $coupon_applied ? $coupon_result['coupon']['id'] : 0, $discount);
             if ($order_code) {
-    // Send confirmation email
-    nv_send_order_confirmation_email($order_code, $customer_info);
+    // Send confirmation email (don't fail the order if email fails)
+    try {
+        nv_send_order_confirmation_email($order_code, $customer_info);
+    } catch (Exception $e) {
+        // Log email error but don't stop the order process
+        error_log('Email sending failed: ' . $e->getMessage());
+    }
 
         if ($payment_method == 'card') {
                 // Redirect to VNPay payment gateway
