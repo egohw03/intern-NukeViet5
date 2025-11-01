@@ -70,13 +70,13 @@
             <table style="width: 100%; border-collapse: collapse; font-size: 18px;">
                 <thead>
                     <tr style="background: #007bff; color: #fff;">
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Mã đơn hàng</th>
-                        <th style="padding: 20px; font-size: 20px;">Khách hàng</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Tổng tiền</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Trạng thái</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Thanh toán</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Thời gian</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Thao tác</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 140px;">Mã đơn hàng</th>
+                        <th style="padding: 20px; font-size: 20px; width: 120px;">Khách hàng</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Tổng tiền</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Trạng thái</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Thanh toán</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 140px;">Thời gian</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
