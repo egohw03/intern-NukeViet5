@@ -1,42 +1,32 @@
 <!-- BEGIN: main -->
-<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <h1 style="margin: 0; font-size: 28px;">Thanh toán</h1>
-        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=cart" style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">
-            <i class="fas fa-arrow-left"></i> Quay lại giỏ hàng
-        </a>
-    </div>
+<div style="width: 100%; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
+<h1 style="margin: 0; font-size: 42px; color: #2c3e50; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">💳 Thanh toán</h1>
+<a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=cart" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 18px; font-weight: 600; box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">⬅️ Quay lại giỏ hàng</a>
+</div>
 
     <!-- BEGIN: success -->
-    <div style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
-        <div style="color: #28a745; margin-bottom: 20px;">
-            <i class="fas fa-check-circle" style="font-size: 64px;"></i>
-        </div>
-        <h4 style="color: #28a745; margin: 0 0 15px 0;">Đặt hàng thành công!</h4>
-        <p style="margin: 0 0 20px 0;">Cảm ơn bạn đã đặt hàng. Mã đơn hàng của bạn là: <strong style="color: #007bff;">{ORDER_CODE}</strong></p>
-        <div style="display: flex; justify-content: center; gap: 15px;">
-            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-list"></i> Xem đơn hàng
-            </a>
-            <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px;">
-                <i class="fas fa-shopping-bag"></i> Tiếp tục mua sắm
-            </a>
-        </div>
+    <div style="background: linear-gradient(135deg, #d4edda 0%, #a3d9a4 100%); padding: 50px; border: 4px solid #28a745; border-radius: 20px; text-align: center; box-shadow: 0 15px 40px rgba(40, 167, 69, 0.2);">
+    <div style="font-size: 96px; margin-bottom: 30px; text-shadow: 4px 4px 8px rgba(0,0,0,0.1);">✅</div>
+    <h2 style="color: #28a745; margin: 0 0 20px 0; font-size: 36px; font-weight: 700;">🎉 Đặt hàng thành công!</h2>
+    <p style="margin: 0 0 30px 0; font-size: 20px; color: #155724;">Cảm ơn bạn đã đặt hàng. Mã đơn hàng của bạn là: <strong style="color: #007bff; font-size: 24px; background: rgba(0,123,255,0.1); padding: 5px 10px; border-radius: 5px;">{ORDER_CODE}</strong></p>
+    <div style="display: flex; justify-content: center; gap: 25px;">
+        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" style="display: inline-block; padding: 18px 35px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; text-decoration: none; border-radius: 12px; font-size: 18px; font-weight: 600; box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">📋 Xem đơn hàng</a>
+        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 18px 35px; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; text-decoration: none; border-radius: 12px; font-size: 18px; font-weight: 600; box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">🛍️ Tiếp tục mua sắm</a>
+    </div>
     </div>
     <!-- END: success -->
 
     <!-- BEGIN: checkout_form -->
     <form method="post" action="">
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
-            <div>
-                <!-- Customer Information -->
-                <div style="background: white; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px;">
-                <div style="background: #f8f9fa; padding: 15px; border-bottom: 1px solid #ddd; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <h5 style="margin: 0;">Thông tin giao hàng</h5>
-                    <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=address" style="padding: 6px 12px; background: transparent; color: #007bff; text-decoration: none; border: 1px solid #007bff; border-radius: 4px; font-size: 14px;">
-                            <i class="fas fa-address-book"></i> Quản lý địa chỉ
-                        </a>
-                    </div>
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 50px;">
+    <div>
+    <!-- Customer Information -->
+    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border: 4px solid #17a2b8; border-radius: 20px; margin-bottom: 40px; box-shadow: 0 15px 40px rgba(23, 162, 184, 0.2);">
+    <div style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); padding: 25px; color: white; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;">
+    <h4 style="margin: 0; font-size: 24px; font-weight: 700;">📍 Thông tin giao hàng</h4>
+    <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=address" style="padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border: 2px solid white; border-radius: 8px; font-size: 16px; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='white'; this.style.color='#17a2b8';" onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.color='white';">📒 Quản lý địa chỉ</a>
+    </div>
                     <div style="padding: 20px;">
                     <!-- BEGIN: saved_addresses -->
                         <div style="margin-bottom: 20px;">
