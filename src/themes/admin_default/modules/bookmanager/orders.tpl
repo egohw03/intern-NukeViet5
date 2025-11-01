@@ -1,8 +1,8 @@
 <!-- INCLUDE: shared_styles.tpl -->
 
 <!-- BEGIN: main -->
-<div style="width: 100%; font-size: 20px; line-height: 1.8; padding: 25px; background: #f8f9fa;">
-<div style="margin-bottom: 35px; overflow: hidden;">
+<div id="orders" style="width: 100%; font-size: 20px; line-height: 1.8; padding: 25px; background: #f8f9fa;">
+<div style="margin-bottom: 35px;">
 <div style="float: left;">
 <h1 style="font-size: 32px; margin: 0; color: #333;">{LANG.orders}</h1>
 <p style="font-size: 18px; color: #666; margin: 5px 0 0;">Tổng cộng: {TOTAL_ORDERS} đơn hàng</p>
@@ -14,6 +14,7 @@
 </a>
 <!-- END: export_button -->
 </div>
+<div style="clear: both;"></div>
 </div>
 
 
@@ -43,18 +44,20 @@
 <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=3" style="float: left; padding: 12px 20px; background: {CANCELLED_ACTIVE_BG}; color: {CANCELLED_ACTIVE_COLOR}; border: 2px solid #dc3545; border-radius: 8px; font-size: 16px; font-weight: bold; text-decoration: none; margin-right: 15px; margin-bottom: 10px;">
 {LANG.order_cancelled} <span style="background: #dc3545; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 8px;">{CANCELLED_COUNT}</span>
 </a>
+<div style="clear: both;"></div>
 </div>
 </div>
 
     <!-- Orders Table -->
     <div style="background: #fff; border: 3px solid #333; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
-        <div style="padding: 25px; background: #f8f9fa; border-bottom: 2px solid #333; overflow: hidden;">
+        <div style="padding: 25px; background: #f8f9fa; border-bottom: 2px solid #333;">
     <div style="float: left;">
     <h2 style="font-size: 24px; margin: 0; color: #333;">{LANG.orders}</h2>
     </div>
     <div style="float: right;">
     <p style="font-size: 18px; color: #666; margin: 0;">Hiển thị {TOTAL_ORDERS} đơn hàng</p>
     </div>
+    <div style="clear: both;"></div>
     </div>
     <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; font-size: 18px;">
@@ -79,7 +82,7 @@
                                 <!-- END: transaction_id -->
                             </td>
                             <td style="padding: 20px;">
-                                <div style="overflow: hidden;">
+                                <div>
                                     <div style="float: left; width: 45px; height: 45px; background: #007bff; color: #fff; border-radius: 50%; text-align: center; line-height: 45px; font-size: 18px; font-weight: bold; margin-right: 15px;">
                                         {ORDER.customer_initial}
                                     </div>
@@ -87,6 +90,7 @@
                                         <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px;">{ORDER.customer_name}</div>
                                         <div style="font-size: 14px; color: #666;">{ORDER.customer_email}</div>
                                     </div>
+                                    <div style="clear: both;"></div>
                                 </div>
                             </td>
                             <td style="padding: 20px;">
@@ -167,6 +171,8 @@
         </div>
     </div>
     <!-- END: generate_page -->
+
+    <div style="clear: both;"></div>
 
     <!-- INCLUDE: admin_scripts.tpl -->
 </div>
