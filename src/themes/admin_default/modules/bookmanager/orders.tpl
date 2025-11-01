@@ -20,8 +20,9 @@
     <!-- Quick Filters -->
     <div style="background: #fff; border: 3px solid #007bff; padding: 25px; border-radius: 15px; margin-bottom: 35px; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
         <form method="get" action="{NV_BASE_ADMINURL}index.php" style="display: grid; grid-template-columns: 1fr 1fr 2fr 1fr; gap: 20px; align-items: end;">
-            <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}" />
-            <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}" />
+        <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}" />
+        <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}" />
+            <input type="hidden" name="{NV_OP_VARIABLE}" value="{OP}" />
 
             <div>
                 <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 8px; color: #333;">Trạng thái đơn hàng</label>
