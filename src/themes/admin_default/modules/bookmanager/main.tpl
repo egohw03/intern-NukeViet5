@@ -67,12 +67,12 @@
                 <thead>
                     <tr style="background: #007bff; color: #fff;">
                         <th style="padding: 20px; text-align: center; font-size: 20px; width: 80px;">Ảnh</th>
-                        <th style="padding: 20px; font-size: 20px;">Sách & Tác giả</th>
-                        <th style="padding: 20px; font-size: 20px; width: 150px;">Danh mục</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Giá</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 100px;">Tồn kho</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 120px;">Trạng thái</th>
-                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 180px;">Thao tác</th>
+                        <th style="padding: 20px; font-size: 20px; width: 250px;">Sách & Tác giả</th>
+                        <th style="padding: 20px; font-size: 20px; width: 160px;">Danh mục</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Giá</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 110px;">Tồn kho</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Trạng thái</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px; width: 160px;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
