@@ -18,7 +18,7 @@ $lang_translator['copyright'] = '@Copyright (C) 2009-2025 VINADES.,JSC. All righ
 $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
-$lang_module['main'] = 'Quản lý sách';
+$lang_module['main'] = 'Cửa hàng sách';
 $lang_module['add_book'] = 'Thêm sách';
 $lang_module['edit_book'] = 'Sửa sách';
 $lang_module['delete_book'] = 'Xóa sách';

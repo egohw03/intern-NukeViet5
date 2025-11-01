@@ -19,7 +19,7 @@ $lang_translator['copyright'] = '@Copyright (C) 2009-2025 VINADES.,JSC. All righ
 $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
-$lang_module['main'] = 'Book Management';
+$lang_module['main'] = 'Book Store';
 $lang_module['add_book'] = 'Add Book';
 $lang_module['edit_book'] = 'Edit Book';
 $lang_module['delete_book'] = 'Delete Book';

@@ -1,4 +1,7 @@
 <!-- BEGIN: main -->
+<style>
+.breadcrumbs-wrap { display: none !important; }
+</style>
 <div style="width: 100%; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; margin-bottom: 60px;">
 <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 35px; border: 4px solid #007bff; border-radius: 20px; text-align: center; box-shadow: 0 15px 40px rgba(0, 123, 255, 0.2);">
