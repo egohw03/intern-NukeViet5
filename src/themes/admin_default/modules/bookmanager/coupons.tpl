@@ -38,50 +38,48 @@
                         <div style="display: flex; align-items: center;">
 
                         <div>
-                        <strong style="color: #007bff; font-size: 16px;">{COUPON.code}</strong>
+                        <strong style="color: #007bff; font-size: 18px;">{COUPON.code}</strong>
                         <br>
                         <small style="color: #666;">ID: {COUPON.id}</small>
                         </div>
                         </div>
                         </td>
-                            <td style="padding: 15px; border-bottom: 1px solid #eee;">
-                            <div>
-                            <strong style="color: #28a745; font-size: 16px;">{COUPON.value_format}</strong>
-                            <br>
-                            <small style="color: #666;">{COUPON.type_text}</small>
-                            </div>
-                            </td>
-                            <td style="padding: 15px; border-bottom: 1px solid #eee;">
-                            <div>
-                            <small style="color: #666;">
-                            {COUPON.start_time}
-                            </small>
-                            <br>
-                            <small style="color: #666;">
-                            {COUPON.end_time}
-                            </small>
-                            </div>
-                            </td>
-                            <td style="padding: 15px; border-bottom: 1px solid #eee;">
-                            <div style="display: flex; align-items: center;">
-                            <div>
-                            <strong style="font-size: 16px;">{COUPON.used_count}</strong>
-                            <small style="color: #666; display: block;">lần sử dụng</small>
-                            </div>
-                            </div>
-                            </td>
-                            <td style="padding: 15px; border-bottom: 1px solid #eee;">
-                            <span style="background: {COUPON.status_color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">{COUPON.status_text}</span>
-                            </td>
-                            <td style="padding: 15px; border-bottom: 1px solid #eee; text-align: center;">
-                            <div style="display: flex; gap: 5px; justify-content: center;">
-                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=coupons&action=edit&id={COUPON.id}" style="padding: 8px 12px; background: transparent; color: #007bff; text-decoration: none; border: 1px solid #007bff; border-radius: 4px; font-size: 14px;" title="{GLANG.edit}">
+                        <td style="padding: 20px;">
+                        <div>
+                        <strong style="color: #28a745; font-size: 18px;">{COUPON.value_format}</strong>
+                        <br>
+                        <small style="color: #666;">{COUPON.type_text}</small>
+                        </div>
+                        </td>
+                        <td style="padding: 20px;">
+                        <div>
+                        <small style="color: #666;">
+                        {COUPON.start_time}
+                        </small>
+                        <br>
+                        <small style="color: #666;">
+                        {COUPON.end_time}
+                        </small>
+                        </div>
+                        </td>
+                        <td style="padding: 20px;">
+                        <div style="display: flex; align-items: center;">
+                        <div>
+                        <strong style="font-size: 18px;">{COUPON.used_count}</strong>
+                        <small style="color: #666; display: block;">lần sử dụng</small>
+                        </div>
+                        </div>
+                        </td>
+                        <td style="padding: 20px;">
+                        <span style="background: {COUPON.status_color}; color: white; padding: 8px 12px; border-radius: 6px; font-size: 16px; font-weight: bold;">{COUPON.status_text}</span>
+                        </td>
+                            <td style="padding: 20px; text-align: center;">
+                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=coupons&action=edit&id={COUPON.id}" style="padding: 8px 16px; background: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 16px; margin-right: 10px;" title="{GLANG.edit}">
                             Sửa
                             </a>
-                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=coupons&action=delete&id={COUPON.id}" style="padding: 8px 12px; background: transparent; color: #dc3545; text-decoration: none; border: 1px solid #dc3545; border-radius: 4px; font-size: 14px;" title="{GLANG.delete}" onclick="return confirm('{LANG.confirm_delete}')">
+                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=coupons&action=delete&id={COUPON.id}" style="padding: 8px 16px; background: #dc3545; color: #fff; text-decoration: none; border-radius: 6px; font-size: 16px;" title="{GLANG.delete}" onclick="return confirm('{LANG.confirm_delete}')">
                             Xóa
                             </a>
-                            </div>
                             </td>
                         </tr>
                         <!-- END: coupon_loop -->
