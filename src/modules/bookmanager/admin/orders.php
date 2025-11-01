@@ -64,13 +64,17 @@ if (!empty($_SESSION['admin_message'])) {
 
 // Filter by status
 $status_filter = $nv_Request->get_int('status', 'get', -1);
+$page = $nv_Request->get_int('page', 'get', 1);
+$per_page = 20;
+
 $where = '';
 if ($status_filter >= 0) {
     $where = ' WHERE order_status = ' . $status_filter;
 }
 
-// Get orders
-$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders' . $where . ' ORDER BY add_time DESC';
+// Get orders with pagination
+$offset = ($page - 1) * $per_page;
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders' . $where . ' ORDER BY add_time DESC LIMIT ' . $per_page . ' OFFSET ' . $offset;
 $result = $db->query($sql);
 
 // Get counts for tabs
@@ -87,21 +91,28 @@ $processing_count = $counts[1] ?? 0;
 $delivered_count = $counts[2] ?? 0;
 $cancelled_count = $counts[3] ?? 0;
 
+// Get total for current filter
+$total_records = $all_count;
+if ($status_filter >= 0) {
+    $total_records = $counts[$status_filter] ?? 0;
+}
+
 $xtpl->assign('ALL_COUNT', $all_count);
 $xtpl->assign('PENDING_COUNT', $pending_count);
 $xtpl->assign('PROCESSING_COUNT', $processing_count);
 $xtpl->assign('DELIVERED_COUNT', $delivered_count);
 $xtpl->assign('CANCELLED_COUNT', $cancelled_count);
+$xtpl->assign('TOTAL_ORDERS', $total_records);
 
 // Set active tab
 $all_bg = $status_filter == -1 ? '#007bff' : 'transparent';
 $all_color = $status_filter == -1 ? 'white' : '#007bff';
 $pending_bg = $status_filter == 0 ? '#ffc107' : 'transparent';
 $pending_color = $status_filter == 0 ? 'black' : '#ffc107';
-$processing_bg = $status_filter == 1 ? '#0dcaf0' : 'transparent';
-$processing_color = $status_filter == 1 ? 'white' : '#0dcaf0';
-$delivered_bg = $status_filter == 2 ? '#198754' : 'transparent';
-$delivered_color = $status_filter == 2 ? 'white' : '#198754';
+$processing_bg = $status_filter == 1 ? '#17a2b8' : 'transparent';
+$processing_color = $status_filter == 1 ? 'white' : '#17a2b8';
+$delivered_bg = $status_filter == 2 ? '#28a745' : 'transparent';
+$delivered_color = $status_filter == 2 ? 'white' : '#28a745';
 $cancelled_bg = $status_filter == 3 ? '#dc3545' : 'transparent';
 $cancelled_color = $status_filter == 3 ? 'white' : '#dc3545';
 
@@ -177,18 +188,53 @@ while ($row = $result->fetch()) {
 }
 
 if (!empty($array)) {
-    foreach ($array as $order) {
-        $order['LINK_VIEW'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view_order&amp;id=' . $order['id'];
-        $xtpl->assign('ORDER', $order);
-        $xtpl->parse('main.order_loop');
-    }
+foreach ($array as $order) {
+$order['LINK_VIEW'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view_order&amp;id=' . $order['id'];
+$xtpl->assign('ORDER', $order);
+$xtpl->parse('main.order_loop');
+}
 } else {
-    $xtpl->parse('main.no_orders');
+$xtpl->parse('main.no_orders');
+}
+
+// Generate page
+$base_url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders';
+if ($status_filter >= 0) {
+    $base_url .= '&status=' . $status_filter;
+}
+
+$total_pages = ceil($total_records / $per_page);
+if ($total_pages > 1) {
+// Previous
+if ($page > 1) {
+$xtpl->assign('PREV', ['link' => $base_url . '&page=' . ($page - 1), 'attr' => '', 'style' => '', 'color' => '#007bff']);
+    $xtpl->parse('main.generate_page.prev');
+}
+
+// Pages
+    for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++) {
+    $xtpl->assign('PAGE', [
+        'num' => $i,
+    'link' => $base_url . '&page=' . $i,
+'style' => ($i == $page) ? 'background: #007bff; color: white; border-color: #007bff;' : '',
+'border' => '#007bff',
+'color' => ($i == $page) ? 'white' : '#007bff'
+]);
+$xtpl->parse('main.generate_page.page');
+}
+
+// Next
+    if ($page < $total_pages) {
+    $xtpl->assign('NEXT', ['link' => $base_url . '&page=' . ($page + 1), 'attr' => '', 'style' => '', 'color' => '#007bff']);
+    $xtpl->parse('main.generate_page.next');
+}
+
+$xtpl->parse('main.generate_page');
 }
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');
 
-include (NV_ROOTDIR . "/includes/header.php");
+include NV_ROOTDIR . '/includes/header.php';
 echo nv_admin_theme($contents);
-include (NV_ROOTDIR . "/includes/footer.php");
+include NV_ROOTDIR . '/includes/footer.php';

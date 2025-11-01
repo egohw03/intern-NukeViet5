@@ -312,3 +312,9 @@ $lang_module['back_to_orders'] = 'Quay lại đơn hàng';
 // Admin menu
 $lang_module['reviews'] = 'Quản lý đánh giá';
 $lang_module['coupons'] = 'Quản lý mã giảm giá';
+
+// Additional template keys for orders page
+$lang_module['filter_orders'] = 'Lọc đơn hàng';
+$lang_module['showing'] = 'Hiển thị';
+$lang_module['export'] = 'Xuất Excel';
+$lang_module['all'] = 'Tất cả';
