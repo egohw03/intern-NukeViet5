@@ -47,6 +47,7 @@ if (!empty($categories)) {
         // Status formatting
         $cat['status_class'] = $cat['status'] ? 'success' : 'danger';
         $cat['status_text'] = $cat['status'] ? $lang_module['active'] : $lang_module['inactive'];
+        $cat['status_color'] = $cat['status'] ? '#28a745' : '#dc3545';
         $cat['bg_class'] = $cat['level'] > 0 ? 'bg-light' : '';
 
         // Subcategory count (simplified)

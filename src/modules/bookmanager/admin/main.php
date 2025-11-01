@@ -72,6 +72,8 @@ $processed_books = [];
 while ($book = $result->fetch()) {
 $book['status_class'] = $book['status'] ? 'success' : 'danger';
 $book['status_text'] = $book['status'] ? $nv_Lang->getModule('active') : $nv_Lang->getModule('inactive');
+$book['status_color'] = $book['status'] ? '#28a745' : '#dc3545';
+$book['stock_color'] = $book['stock_quantity'] > 10 ? '#28a745' : ($book['stock_quantity'] > 0 ? '#ffc107' : '#dc3545');
 $book['add_time'] = nv_date('d/m/Y H:i', $book['add_time']);
 $book['price_format'] = number_format($book['price'], 0, ',', '.') . ' VNĐ';
 $book['edit_link'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=edit&id=' . $book['id'];

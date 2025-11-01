@@ -1,144 +1,82 @@
 <!-- BEGIN: main -->
-<div class="book-form">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">{LANG.edit_book}: {BOOK.title}</h1>
-        <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-secondary">
-        {LANG.back}
-        </a>
-    </div>
+<div style="width: 100%; font-size: 16px; line-height: 1.6;">
+    <h1 style="font-size: 24px; margin-bottom: 20px; color: #333;">{LANG.edit_book}: {BOOK.title}</h1>
 
     <!-- BEGIN: error -->
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            <!-- BEGIN: error_item -->
-            <li>{ERROR}</li>
-            <!-- END: error_item -->
-        </ul>
-    </div>
+    <div style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 20px;">{ERROR}</div>
     <!-- END: error -->
 
-    <form method="post" action="" enctype="multipart/form-data">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">{LANG.book_info}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.title} <span class="text-danger">*</span></label>
-                                    <input type="text" name="title" value="{BOOK.title}" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.category} <span class="text-danger">*</span></label>
-                                    <select name="cat_id" class="form-select" required>
-                                        <option value="">{LANG.select_category}</option>
-                                        <!-- BEGIN: cat_option -->
-                                        <option value="{CAT.id}" {CAT.selected}>{CAT.title}</option>
-                                        <!-- END: cat_option -->
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+    <form action="{FORM_ACTION}" method="post" enctype="multipart/form-data" style="background: #fff; border: 1px solid #ddd; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.title}</label>
+    <input type="text" name="title" value="{BOOK.title}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" required />
+    </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.author} <span class="text-danger">*</span></label>
-                                    <input type="text" name="author" value="{BOOK.author}" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.publisher}</label>
-                                    <input type="text" name="publisher" value="{BOOK.publisher}" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.category}</label>
+    <select name="cat_id" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" required>
+    <option value="">{LANG.select_category}</option>
+    <!-- BEGIN: cat_option -->
+    <option value="{CAT.id}" {CAT.selected}>{CAT.title}</option>
+    <!-- END: cat_option -->
+    </select>
+    </div>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.publish_year}</label>
-                                    <input type="number" name="publish_year" value="{BOOK.publish_year}" class="form-control" min="1900" max="2025">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.price} (VNĐ) <span class="text-danger">*</span></label>
-                                    <input type="number" name="price" value="{BOOK.price}" class="form-control" min="0" step="1000" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">{LANG.stock_quantity} <span class="text-danger">*</span></label>
-                                    <input type="number" name="stock_quantity" value="{BOOK.stock_quantity}" class="form-control" min="0" required>
-                                </div>
-                            </div>
-                        </div>
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.author}</label>
+    <input type="text" name="author" value="{BOOK.author}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" required />
+    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">{LANG.isbn}</label>
-                            <input type="text" name="isbn" value="{BOOK.isbn}" class="form-control">
-                        </div>
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.publisher}</label>
+    <input type="text" name="publisher" value="{BOOK.publisher}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" />
+    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">{LANG.description}</label>
-                            <textarea name="description" class="form-control" rows="5">{BOOK.description}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.publish_year}</label>
+    <input type="number" name="publish_year" value="{BOOK.publish_year}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" min="1000" max="{CURRENT_YEAR}" />
+    </div>
 
-            <div class="col-lg-4">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">{LANG.image}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <input type="file" name="image" class="form-control" accept="image/*">
-                            <small class="text-muted">Chọn hình ảnh sách mới (JPG, PNG, GIF). Để trống nếu không muốn thay đổi.</small>
-                        </div>
-                        <!-- BEGIN: current_image -->
-                        <div class="mb-3">
-                            <label class="form-label">{LANG.current_image}:</label>
-                            <div>
-                                <img src="{IMAGE_URL}" alt="Current image" class="img-fluid rounded" style="max-width: 200px;">
-                            </div>
-                        </div>
-                        <!-- END: current_image -->
-                    </div>
-                </div>
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.isbn}</label>
+    <input type="text" name="isbn" value="{BOOK.isbn}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" />
+    </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">{LANG.settings}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input type="checkbox" name="status" value="1" {BOOK.status_checked} class="form-check-input" id="status">
-                                <label class="form-check-label" for="status">{LANG.active}</label>
-                            </div>
-                        </div>
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.description}</label>
+    <textarea name="description" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; height: 120px;">{BOOK.description}</textarea>
+    </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" name="submit" class="btn btn-primary">
-                            {LANG.update}
-                            </button>
-                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" class="btn btn-secondary">
-                                {LANG.cancel}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.image}</label>
+    <input type="file" name="image" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" />
+    <!-- BEGIN: current_image -->
+    <div style="margin-top: 10px;">
+    <label style="display: block; font-size: 16px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.current_image}:</label>
+    <img src="{IMAGE_URL}" alt="Current image" style="max-width: 200px; border: 1px solid #ddd; border-radius: 4px;" />
+    </div>
+    <!-- END: current_image -->
+    </div>
+
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.price}</label>
+    <input type="number" name="price" value="{BOOK.price}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" step="0.01" min="0" />
+    </div>
+
+    <div style="margin-bottom: 20px;">
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.stock_quantity}</label>
+    <input type="number" name="stock_quantity" value="{BOOK.stock_quantity}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" min="0" />
+    </div>
+
+    <div style="margin-bottom: 30px;">
+            <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.status}</label>
+    <input type="checkbox" name="status" value="1" {BOOK.status_checked} style="margin-right: 10px;" /> <span style="font-size: 16px; color: #333;">{LANG.active}</span>
+    </div>
+
+    <div style="text-align: center;">
+            <button type="submit" name="submit" style="padding: 12px 24px; background: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; margin-right: 10px;">{LANG.update}</button>
+    <a href="{BACK_LINK}" style="padding: 12px 24px; background: #6c757d; color: #fff; text-decoration: none; border-radius: 4px; font-size: 18px; font-weight: bold;">{LANG.cancel}</a>
+    </div>
     </form>
 </div>
 <!-- END: main -->
