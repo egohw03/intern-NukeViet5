@@ -1,18 +1,18 @@
+<!-- INCLUDE: shared_styles.tpl -->
+
 <!-- BEGIN: main -->
-<div class="container-fluid" style="font-size: 20px; line-height: 1.8;">
-    <div class="page-header">
-        <div class="d-flex justify-content-between align-items-center py-4">
-            <div>
-                <h1 class="h2 mb-2" style="color: #333;">{LANG.orders}</h1>
-                <p class="text-muted mb-0" style="font-size: 18px;">Quản lý các đơn hàng</p>
-            </div>
-            <!-- BEGIN: export_button -->
-            <a href="{EXPORT_URL}" class="btn btn-success btn-lg" style="font-size: 18px; font-weight: bold;">
-                <i class="fas fa-file-excel"></i> Xuất Excel
-            </a>
-            <!-- END: export_button -->
-        </div>
-    </div>
+<div style="width: 100%; font-size: 20px; line-height: 1.8; padding: 25px; background: #f8f9fa;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;">
+<div>
+<h1 style="font-size: 32px; margin: 0; color: #333;">{LANG.orders}</h1>
+<p style="font-size: 18px; color: #666; margin: 5px 0 0;">Quản lý các đơn hàng</p>
+</div>
+<!-- BEGIN: export_button -->
+<a href="{EXPORT_URL}" style="padding: 12px 24px; background: #28a745; color: #fff; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold;">
+<i class="fas fa-file-excel"></i> Xuất Excel
+</a>
+<!-- END: export_button -->
+</div>
 
     <!-- BEGIN: admin_message -->
     <div style="background: #d1ecf1; border: 2px solid #bee5eb; color: #0c5460; padding: 20px; border-radius: 8px; font-size: 18px; margin-bottom: 25px;">{ADMIN_MESSAGE}</div>
@@ -46,12 +46,12 @@
     <!-- Orders Table -->
     <div style="background: #fff; border: 3px solid #333; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
         <div style="padding: 25px; background: #f8f9fa; border-bottom: 2px solid #333;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="font-size: 24px; margin: 0; color: #333;">{LANG.orders}</h2>
-                <p style="font-size: 18px; color: #666; margin: 0;">Hiển thị {TOTAL_ORDERS} đơn hàng</p>
-            </div>
-        </div>
-            <div style="overflow-x: auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2 style="font-size: 24px; margin: 0; color: #333;">{LANG.orders}</h2>
+    <p style="font-size: 18px; color: #666; margin: 0;">Hiển thị {TOTAL_ORDERS} đơn hàng</p>
+    </div>
+    </div>
+    <div style="overflow-x: auto;">
             <style>
             .orders-table tbody tr { background: #f9f9f9; border-bottom: 1px solid #ddd; }
             .orders-table tbody tr:hover { background: #f1f3f4 !important; }
