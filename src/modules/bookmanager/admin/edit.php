@@ -68,16 +68,13 @@ if ($nv_Request->isset_request('submit', 'post')) {
             }
         }
 
-        $upload = new Upload($upload_info = [
-            'nv_path' => NV_UPLOADS_DIR . '/' . $module_upload,
-            'path' => '',
-            'maxfile' => '',
-            'type' => ''
+        $upload = new Upload([
+            'images'
         ], $global_config['forbid_extensions'], $global_config['forbid_mimes'], NV_UPLOAD_MAX_FILESIZE, NV_MAX_WIDTH, NV_MAX_HEIGHT);
 
-        $upload->setLanguage($nv_Lang);
+        $upload->setLanguage($lang_global);
 
-        $upload_info = $upload->save_file($_FILES['image'], NV_UPLOADS_REAL_DIR . '/' . $module_upload, false, $global_config['auto_resize']);
+        $upload_info = $upload->save_file($_FILES['image'], NV_UPLOADS_REAL_DIR . '/' . $module_upload, false, $global_config['nv_auto_resize']);
 
         if (empty($upload_info['error'])) {
             $book['image'] = $upload_info['basename'];

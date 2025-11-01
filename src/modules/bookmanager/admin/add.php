@@ -15,6 +15,8 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 global $lang_module, $lang_global, $nv_Lang, $module_upload;
 
+use NukeViet\Files\Upload;
+
 $page_title = $nv_Lang->getModule('add_book');
 
 $errors = [];
@@ -58,15 +60,12 @@ if ($nv_Request->isset_request('submit', 'post')) {
     // Upload image
     if (isset($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
         $upload = new Upload([
-            'nv_path' => NV_UPLOADS_DIR . '/' . $module_upload,
-            'path' => '',
-            'maxfile' => '',
-            'type' => ''
+            'images'
         ], $global_config['forbid_extensions'], $global_config['forbid_mimes'], NV_UPLOAD_MAX_FILESIZE, NV_MAX_WIDTH, NV_MAX_HEIGHT);
 
-        $upload->setLanguage($nv_Lang);
+        $upload->setLanguage($lang_global);
 
-        $upload_info = $upload->save_file($_FILES['image'], NV_UPLOADS_REAL_DIR . '/' . $module_upload, false, $global_config['auto_resize']);
+        $upload_info = $upload->save_file($_FILES['image'], NV_UPLOADS_REAL_DIR . '/' . $module_upload, false, $global_config['nv_auto_resize']);
 
         if (empty($upload_info['error'])) {
             $book['image'] = $upload_info['basename'];
