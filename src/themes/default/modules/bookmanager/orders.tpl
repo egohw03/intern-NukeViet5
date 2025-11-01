@@ -1,4 +1,10 @@
 <!-- BEGIN: main -->
+<style>
+.wraper { width: 100% !important; max-width: 100% !important; }
+.container { width: 100% !important; max-width: 100% !important; }
+.col-md-24 { width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+.row { margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+</style>
 <div style="width: 100%; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
 <h1 style="margin: 0; font-size: 42px; color: #2c3e50; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">📋 Đơn hàng của tôi</h1>

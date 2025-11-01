@@ -1,6 +1,10 @@
 <!-- BEGIN: main -->
 <style>
 .breadcrumbs-wrap { display: none !important; }
+.wraper { width: 100% !important; max-width: 100% !important; }
+.container { width: 100% !important; max-width: 100% !important; }
+.col-md-24 { width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+.row { margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
 </style>
 <div style="width: 100%; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; margin-bottom: 60px;">

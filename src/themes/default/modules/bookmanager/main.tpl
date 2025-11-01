@@ -1,5 +1,11 @@
 <!-- BEGIN: main -->
-<div class="bookmanager-container" style="max-width: 1400px; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
+<style>
+.wraper { width: 100% !important; max-width: 100% !important; }
+.container { width: 100% !important; max-width: 100% !important; }
+.col-md-24 { width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+.row { margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+</style>
+<div class="bookmanager-container" style="width: 100%; margin: 0 auto; padding: 40px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;">
 <!-- BEGIN: user_logged_in -->
 <div style="text-align: center; margin-bottom: 40px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
 <div style="margin-bottom: 20px; font-size: 24px; font-weight: 600;">{LANG.welcome_user}, <strong>{USER_NAME}</strong>!</div>
