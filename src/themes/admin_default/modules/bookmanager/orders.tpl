@@ -15,31 +15,30 @@
     </div>
 
     <!-- BEGIN: admin_message -->
-    <div class="alert alert-info" style="font-size: 18px; padding: 20px;">{ADMIN_MESSAGE}</div>
+    <div style="background: #d1ecf1; border: 2px solid #bee5eb; color: #0c5460; padding: 20px; border-radius: 8px; font-size: 18px; margin-bottom: 25px;">{ADMIN_MESSAGE}</div>
     <!-- END: admin_message -->
 
     <!-- Filter Tabs -->
-    <div class="card mb-4" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 12px;">
-        <div class="card-header bg-primary text-white" style="font-size: 20px; font-weight: bold; padding: 20px;">
-            <h5 class="mb-0" style="font-size: 24px;">Lọc đơn hàng</h5>
+    <div style="background: #fff; border: 3px solid #007bff; padding: 25px; border-radius: 15px; margin-bottom: 35px; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
+        <div style="margin-bottom: 20px;">
+            <h5 style="font-size: 24px; margin: 0; color: #333;">Lọc đơn hàng</h5>
         </div>
-        <div class="card-body" style="padding: 25px;">
             <div class="d-flex flex-wrap gap-3">
-                <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" class="btn btn-outline-primary btn-lg" style="font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 8px;">
-                    {LANG.all} <span class="badge bg-secondary ms-2" style="font-size: 14px;">{ALL_COUNT}</span>
-                </a>
-                <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=0" class="btn btn-outline-warning btn-lg" style="font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 8px;">
-                    {LANG.order_pending} <span class="badge bg-warning text-dark ms-2" style="font-size: 14px;">{PENDING_COUNT}</span>
-                </a>
-                <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=1" class="btn btn-outline-info btn-lg" style="font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 8px;">
-                    {LANG.order_processing} <span class="badge bg-info ms-2" style="font-size: 14px;">{PROCESSING_COUNT}</span>
-                </a>
-                <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=2" class="btn btn-outline-success btn-lg" style="font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 8px;">
-                    {LANG.order_delivered} <span class="badge bg-success ms-2" style="font-size: 14px;">{DELIVERED_COUNT}</span>
-                </a>
-                <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=3" class="btn btn-outline-danger btn-lg" style="font-size: 18px; font-weight: bold; padding: 12px 20px; border-radius: 8px;">
-                    {LANG.order_cancelled} <span class="badge bg-danger ms-2" style="font-size: 14px;">{CANCELLED_COUNT}</span>
-                </a>
+            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" style="padding: 12px 20px; background: transparent; color: #007bff; border: 2px solid #007bff; border-radius: 8px; font-size: 16px; font-weight: bold; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='#007bff'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#007bff';">
+            {LANG.all} <span style="background: #6c757d; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 8px;">{ALL_COUNT}</span>
+            </a>
+            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=0" style="padding: 12px 20px; background: transparent; color: #ffc107; border: 2px solid #ffc107; border-radius: 8px; font-size: 16px; font-weight: bold; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='#ffc107'; this.style.color='#000';" onmouseout="this.style.background='transparent'; this.style.color='#ffc107';">
+            {LANG.order_pending} <span style="background: #ffc107; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 8px;">{PENDING_COUNT}</span>
+            </a>
+            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=1" style="padding: 12px 20px; background: transparent; color: #17a2b8; border: 2px solid #17a2b8; border-radius: 8px; font-size: 16px; font-weight: bold; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='#17a2b8'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#17a2b8';">
+            {LANG.order_processing} <span style="background: #17a2b8; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 8px;">{PROCESSING_COUNT}</span>
+            </a>
+            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=2" style="padding: 12px 20px; background: transparent; color: #28a745; border: 2px solid #28a745; border-radius: 8px; font-size: 16px; font-weight: bold; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='#28a745'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#28a745';">
+            {LANG.order_delivered} <span style="background: #28a745; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 8px;">{DELIVERED_COUNT}</span>
+            </a>
+            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders&status=3" style="padding: 12px 20px; background: transparent; color: #dc3545; border: 2px solid #dc3545; border-radius: 8px; font-size: 16px; font-weight: bold; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.background='#dc3545'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#dc3545';">
+            {LANG.order_cancelled} <span style="background: #dc3545; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 8px;">{CANCELLED_COUNT}</span>
+            </a>
             </div>
         </div>
     </div>
@@ -55,6 +54,7 @@
             <div style="overflow-x: auto;">
             <style>
             .orders-table tbody tr { background: #f9f9f9; border-bottom: 1px solid #ddd; }
+            .orders-table tbody tr:hover { background: #f1f3f4 !important; }
             </style>
             <table class="orders-table" style="width: 100%; border-collapse: collapse; font-size: 18px;">
             <thead>
@@ -109,7 +109,7 @@
                                     <option value="3" {ORDER.order_status_3_selected}>Đã hủy</option>
                                     </select>
                                     <input type="hidden" name="order_id" value="{ORDER.id}">
-                                    <button type="submit" name="update_status" class="btn btn-success btn-lg">Cập nhật</button>
+                                    <button type="submit" name="update_status" style="padding: 8px 16px; background: #28a745; color: #fff; border: 2px solid #28a745; border-radius: 6px; font-size: 16px; font-weight: bold;">Cập nhật</button>
                                 </form>
                             </td>
                             <td style="padding: 20px;">
@@ -119,7 +119,7 @@
                                     <option value="1" {ORDER.payment_status_1_selected} {ORDER.payment_disabled}>Đã thanh toán</option>
                                     </select>
                                     <input type="hidden" name="order_id" value="{ORDER.id}">
-                                    <button type="submit" name="update_status" class="btn btn-warning btn-lg">Cập nhật</button>
+                                    <button type="submit" name="update_status" style="padding: 8px 16px; background: #ffc107; color: #333; border: 2px solid #ffc107; border-radius: 6px; font-size: 16px; font-weight: bold;">Cập nhật</button>
                                 </form>
                             </td>
                             <td style="padding: 20px;">
@@ -132,8 +132,8 @@
                                 </div>
                                 <!-- END: edit_time -->
                             </td>
-                            <td class="text-center" style="padding: 20px;">
-                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=view_order&id={ORDER.id}" class="btn btn-primary btn-lg" title="{LANG.view_order}">
+                            <td style="padding: 20px; text-align: center;">
+                            <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=view_order&id={ORDER.id}" style="padding: 8px 16px; background: #28a745; color: #fff; text-decoration: none; border-radius: 6px; font-size: 16px; font-weight: bold;" title="{LANG.view_order}">
                             {LANG.view}
                             </a>
                             </td>
