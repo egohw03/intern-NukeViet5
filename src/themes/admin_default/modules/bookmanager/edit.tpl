@@ -1,12 +1,17 @@
 <!-- BEGIN: main -->
-<div style="width: 100%; font-size: 16px; line-height: 1.6;">
-    <h1 style="font-size: 24px; margin-bottom: 20px; color: #333;">{LANG.edit_book}: {BOOK.title}</h1>
+<div style="width: 100%; font-size: 20px; line-height: 1.8; padding: 25px; background: #f8f9fa;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;">
+        <div>
+            <h1 style="font-size: 32px; margin: 0; color: #333;">{LANG.edit_book}: {BOOK.title}</h1>
+            <p style="font-size: 18px; color: #666; margin: 5px 0 0;">Chỉnh sửa thông tin sách</p>
+        </div>
+    </div>
 
     <!-- BEGIN: error -->
-    <div style="background: #f8d7da; color: #721c24; padding: 15px; border: 1px solid #f5c6cb; border-radius: 4px; margin-bottom: 20px;">{ERROR}</div>
+    <div style="background: #f8d7da; color: #721c24; padding: 20px; border: 2px solid #f5c6cb; border-radius: 8px; margin-bottom: 25px; font-size: 18px;">{ERROR}</div>
     <!-- END: error -->
 
-    <form action="{FORM_ACTION}" method="post" enctype="multipart/form-data" style="background: #fff; border: 1px solid #ddd; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <form action="{FORM_ACTION}" method="post" enctype="multipart/form-data" style="background: #fff; border: 3px solid #007bff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
     <div style="margin-bottom: 20px;">
     <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.title}</label>
     <input type="text" name="title" value="{BOOK.title}" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;" required />

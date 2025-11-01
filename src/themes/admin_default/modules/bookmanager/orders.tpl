@@ -45,22 +45,27 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="card" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 12px;">
-        <div class="card-header bg-dark text-white" style="font-size: 20px; font-weight: bold; padding: 20px;">
-            <h5 class="mb-0" style="font-size: 24px;">{LANG.orders}</h5>
+    <div style="background: #fff; border: 3px solid #333; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
+        <div style="padding: 25px; background: #f8f9fa; border-bottom: 2px solid #333;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 24px; margin: 0; color: #333;">{LANG.orders}</h2>
+                <p style="font-size: 18px; color: #666; margin: 0;">Hiển thị {TOTAL_ORDERS} đơn hàng</p>
+            </div>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover mb-0" style="font-size: 18px;">
-                    <thead class="table-dark" style="font-size: 20px;">
-                        <tr>
-                            <th class="text-center" style="padding: 20px;">{LANG.order_code}</th>
-                            <th style="padding: 20px;">{LANG.customer_name}</th>
-                            <th style="padding: 20px;">{LANG.total_amount}</th>
-                            <th style="padding: 20px;">{LANG.order_status}</th>
-                            <th style="padding: 20px;">{LANG.payment_status}</th>
-                            <th style="padding: 20px;">{LANG.add_time}</th>
-                            <th class="text-center" style="padding: 20px;">{LANG.actions}</th>
+            <div style="overflow-x: auto;">
+            <style>
+            .orders-table tbody tr { background: #f9f9f9; border-bottom: 1px solid #ddd; }
+            </style>
+            <table class="orders-table" style="width: 100%; border-collapse: collapse; font-size: 18px;">
+            <thead>
+            <tr style="background: #007bff; color: #fff;">
+            <th style="padding: 20px; text-align: center; font-size: 20px;">{LANG.order_code}</th>
+            <th style="padding: 20px; font-size: 20px;">{LANG.customer_name}</th>
+            <th style="padding: 20px; font-size: 20px;">{LANG.total_amount}</th>
+                <th style="padding: 20px; font-size: 20px;">{LANG.order_status}</th>
+                    <th style="padding: 20px; font-size: 20px;">{LANG.payment_status}</th>
+                            <th style="padding: 20px; font-size: 20px;">{LANG.add_time}</th>
+                            <th style="padding: 20px; text-align: center; font-size: 20px;">{LANG.actions}</th>
                         </tr>
                     </thead>
                     <tbody>

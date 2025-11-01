@@ -19,7 +19,10 @@
         </div>
 
         <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 18px;">
+            <table class="categories-table" style="width: 100%; border-collapse: collapse; font-size: 18px;">
+                <style>
+                    .categories-table tbody tr:hover { background: #f1f3f4 !important; }
+                </style>
                 <thead>
                     <tr style="background: #007bff; color: #fff;">
                         <th style="padding: 20px; text-align: center; font-size: 20px; width: 80px;">ID</th>

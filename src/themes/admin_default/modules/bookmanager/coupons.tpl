@@ -1,48 +1,40 @@
 <!-- INCLUDE: shared_styles.tpl -->
 
 <!-- BEGIN: main -->
-<div class="bookmanager-admin">
-    <div style="background: white; border-bottom: 1px solid #ddd; padding: 20px 0;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-    <div style="display: flex; align-items: center;">
+<div style="width: 100%; font-size: 20px; line-height: 1.8; padding: 25px; background: #f8f9fa;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px;">
     <div>
-    <h1 style="margin: 0 0 5px 0; font-size: 24px;">{LANG.coupons}</h1>
-    <div style="color: #666; font-size: 14px;">Danh sách tất cả mã giảm giá</div>
+        <h1 style="font-size: 32px; margin: 0; color: #333;">{LANG.coupons}</h1>
+        <p style="font-size: 18px; color: #666; margin: 5px 0 0;">Danh sách tất cả mã giảm giá</p>
     </div>
-    </div>
-    <div>
-    <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=coupons&action=add" style="display: inline-block; padding: 10px 20px; background: #f8f9fa; color: #333; text-decoration: none; border: 1px solid #ddd; border-radius: 4px;">
-    {LANG.add_coupon}
-    </a>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=coupons&action=add" style="padding: 12px 24px; background: #28a745; color: #fff; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold;">{LANG.add_coupon}</a>
+</div>
 
     <!-- Coupons Table -->
-    <div style="background: white; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <div style="background: #f8f9fa; padding: 20px; border-bottom: 1px solid #ddd; border-radius: 8px 8px 0 0;">
-    <h5 style="margin: 0; font-size: 18px; font-weight: bold;">{LANG.coupons}</h5>
-    </div>
-    <div style="overflow-x: auto; padding: 0 20px;">
-    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-    <thead>
-            <tr style="background: #f8f9fa;">
-            <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-weight: bold;">{LANG.code}</th>
-            <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-weight: bold;">{LANG.discount}</th>
-            <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-weight: bold;">{LANG.valid_period}</th>
-            <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-weight: bold;">{LANG.usage_stats}</th>
-            <th style="padding: 15px; text-align: left; border-bottom: 1px solid #ddd; font-weight: bold;">{LANG.status}</th>
-            <th style="padding: 15px; text-align: center; border-bottom: 1px solid #ddd; font-weight: bold;">{LANG.actions}</th>
+    <div style="background: #fff; border: 3px solid #333; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.15);">
+        <div style="padding: 25px; background: #f8f9fa; border-bottom: 2px solid #333;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 24px; margin: 0; color: #333;">{LANG.coupons}</h2>
+                <p style="font-size: 18px; color: #666; margin: 0;">Hiển thị {TOTAL_COUPONS} mã giảm giá</p>
+            </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 18px;">
+                <thead>
+            <tr style="background: #007bff; color: #fff;">
+                <th style="padding: 20px; text-align: center; font-size: 20px;">{LANG.code}</th>
+            <th style="padding: 20px; font-size: 20px;">{LANG.discount}</th>
+                        <th style="padding: 20px; font-size: 20px;">{LANG.valid_period}</th>
+                        <th style="padding: 20px; font-size: 20px;">{LANG.usage_stats}</th>
+                        <th style="padding: 20px; font-size: 20px;">{LANG.status}</th>
+                        <th style="padding: 20px; text-align: center; font-size: 20px;">{LANG.actions}</th>
             </tr>
     </thead>
                     <tbody>
                         <!-- BEGIN: coupon_loop -->
-                        <tr style="border-bottom: 1px solid #eee; background: white; hover: background: #f9f9f9;">
-                        <td style="padding: 15px; border-bottom: 1px solid #eee;">
+                        <tr style="background: #f9f9f9; border-bottom: 1px solid #ddd;">
+                        <td style="padding: 20px;">
                         <div style="display: flex; align-items: center;">
 
                         <div>
