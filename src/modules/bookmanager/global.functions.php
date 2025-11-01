@@ -663,8 +663,8 @@ function nv_get_book_rating($book_id)
     $row = $db->query($sql)->fetch();
 
     return [
-        'avg_rating' => round($row['avg_rating'], 1),
-        'total_reviews' => intval($row['total_reviews'])
+    'avg_rating' => round($row['avg_rating'] ?? 0, 1),
+    'total_reviews' => intval($row['total_reviews'] ?? 0)
     ];
 }
 
