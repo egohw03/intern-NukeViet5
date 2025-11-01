@@ -72,7 +72,7 @@
                 <thead>
                     <tr style="background: #007bff; color: #fff;">
                         <th style="padding: 20px; text-align: center; font-size: 20px; width: 140px;">Mã đơn hàng</th>
-                        <th style="padding: 20px; font-size: 20px; width: 120px;">Khách hàng</th>
+                        <th style="padding: 20px; font-size: 20px; width: 100px;">Khách hàng</th>
                         <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Tổng tiền</th>
                         <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Trạng thái</th>
                         <th style="padding: 20px; text-align: center; font-size: 20px; width: 130px;">Thanh toán</th>
@@ -90,15 +90,15 @@
                             <!-- END: transaction_id -->
                         </td>
                         <td style="padding: 20px;">
-                            <div style="display: flex; align-items: center;">
-                                <div style="width: 45px; height: 45px; background: #007bff; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; margin-right: 15px;">
-                                    {ORDER.customer_initial}
-                                </div>
-                                <div>
-                                    <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px;">{ORDER.customer_name}</div>
-                                    <div style="font-size: 14px; color: #666;">{ORDER.customer_email}</div>
-                                </div>
-                            </div>
+                        <div style="display: flex; align-items: center;">
+                        <div style="width: 30px; height: 30px; background: #007bff; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-right: 8px;">
+                        {ORDER.customer_initial}
+                        </div>
+                        <div>
+                        <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 3px;">{ORDER.customer_name}</div>
+                        <div style="font-size: 12px; color: #666;">{ORDER.customer_email}</div>
+                        </div>
+                        </div>
                         </td>
                         <td style="padding: 20px; text-align: center; font-size: 18px; font-weight: bold; color: #28a745;">{ORDER.total_amount_format}</td>
                         <td style="padding: 20px; text-align: center;">
