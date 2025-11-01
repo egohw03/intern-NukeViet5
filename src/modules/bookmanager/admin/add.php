@@ -123,7 +123,8 @@ $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE 
 $xtpl->assign('BACK_LINK', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
 $xtpl->assign('CURRENT_YEAR', date('Y'));
 
-$xtpl->assign('BOOK.status_checked', ($book['status'] == 1) ? 'checked' : '');
+$xtpl->assign('BOOK.status_active_checked', ($book['status'] == 1) ? 'checked' : '');
+$xtpl->assign('BOOK.status_inactive_checked', ($book['status'] == 0) ? 'checked' : '');
 
 foreach ($categories as $cat) {
     $xtpl->assign('CAT', $cat);

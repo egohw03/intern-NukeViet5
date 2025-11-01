@@ -74,8 +74,15 @@
     </div>
 
     <div style="margin-bottom: 30px;">
-            <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.status}</label>
-    <input type="checkbox" name="status" value="1" {BOOK.status_checked} style="margin-right: 10px;" /> <span style="font-size: 16px; color: #333;">{LANG.active}</span>
+    <label style="display: block; font-size: 18px; font-weight: bold; margin-bottom: 5px; color: #333;">{LANG.status}</label>
+    <div style="display: flex; gap: 20px; align-items: center;">
+    <label style="font-size: 16px; color: #333;">
+    <input type="radio" name="status" value="1" {BOOK.status_active_checked} style="margin-right: 8px;" /> {LANG.active}
+    </label>
+    <label style="font-size: 16px; color: #333;">
+    <input type="radio" name="status" value="0" {BOOK.status_inactive_checked} style="margin-right: 8px;" /> {LANG.inactive}
+    </label>
+    </div>
     </div>
 
     <div style="text-align: center;">
