@@ -62,22 +62,50 @@ if (!empty($_SESSION['admin_message'])) {
     unset($_SESSION['admin_message']);
 }
 
-// Filter by status
+// Filters
 $status_filter = $nv_Request->get_int('status', 'get', -1);
+$payment_status_filter = $nv_Request->get_int('payment_status', 'get', -1);
+$search_query = $nv_Request->get_title('q', 'get', '');
 $page = $nv_Request->get_int('page', 'get', 1);
 $per_page = 20;
 
-$where = '';
+// Build WHERE clause
+$where = [];
+$params = [];
+
 if ($status_filter >= 0) {
-    $where = ' WHERE order_status = ' . $status_filter;
+    $where[] = 'order_status = ?';
+    $params[] = $status_filter;
 }
+
+if ($payment_status_filter >= 0) {
+    $where[] = 'payment_status = ?';
+    $params[] = $payment_status_filter;
+}
+
+if (!empty($search_query)) {
+    $where[] = '(order_code LIKE ? OR customer_name LIKE ? OR customer_email LIKE ?)';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+    $params[] = '%' . $search_query . '%';
+}
+
+$where_clause = !empty($where) ? ' WHERE ' . implode(' AND ', $where) : '';
 
 // Get orders with pagination
 $offset = ($page - 1) * $per_page;
-$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders' . $where . ' ORDER BY add_time DESC LIMIT ' . $per_page . ' OFFSET ' . $offset;
-$result = $db->query($sql);
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders' . $where_clause . ' ORDER BY add_time DESC LIMIT ' . $per_page . ' OFFSET ' . $offset;
+$stmt = $db->prepare($sql);
+$stmt->execute($params);
+$result = $stmt;
 
-// Get counts for tabs
+// Get total count for current filter
+$sql_total = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders' . $where_clause;
+$stmt_total = $db->prepare($sql_total);
+$stmt_total->execute($params);
+$total_records = $stmt_total->fetchColumn();
+
+// Get counts for display (all records)
 $counts = array();
 $sql_count = 'SELECT order_status, COUNT(*) as count FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders GROUP BY order_status';
 $result_count = $db->query($sql_count);
@@ -91,41 +119,17 @@ $processing_count = $counts[1] ?? 0;
 $delivered_count = $counts[2] ?? 0;
 $cancelled_count = $counts[3] ?? 0;
 
-// Get total for current filter
-$total_records = $all_count;
-if ($status_filter >= 0) {
-    $total_records = $counts[$status_filter] ?? 0;
-}
-
 $xtpl->assign('ALL_COUNT', $all_count);
 $xtpl->assign('PENDING_COUNT', $pending_count);
 $xtpl->assign('PROCESSING_COUNT', $processing_count);
 $xtpl->assign('DELIVERED_COUNT', $delivered_count);
 $xtpl->assign('CANCELLED_COUNT', $cancelled_count);
 $xtpl->assign('TOTAL_ORDERS', $total_records);
+$xtpl->assign('SEARCH_QUERY', $search_query);
 
-// Set active tab
-$all_bg = $status_filter == -1 ? '#007bff' : 'transparent';
-$all_color = $status_filter == -1 ? 'white' : '#007bff';
-$pending_bg = $status_filter == 0 ? '#ffc107' : 'transparent';
-$pending_color = $status_filter == 0 ? 'black' : '#ffc107';
-$processing_bg = $status_filter == 1 ? '#17a2b8' : 'transparent';
-$processing_color = $status_filter == 1 ? 'white' : '#17a2b8';
-$delivered_bg = $status_filter == 2 ? '#28a745' : 'transparent';
-$delivered_color = $status_filter == 2 ? 'white' : '#28a745';
-$cancelled_bg = $status_filter == 3 ? '#dc3545' : 'transparent';
-$cancelled_color = $status_filter == 3 ? 'white' : '#dc3545';
-
-$xtpl->assign('ALL_ACTIVE_BG', $all_bg);
-$xtpl->assign('ALL_ACTIVE_COLOR', $all_color);
-$xtpl->assign('PENDING_ACTIVE_BG', $pending_bg);
-$xtpl->assign('PENDING_ACTIVE_COLOR', $pending_color);
-$xtpl->assign('PROCESSING_ACTIVE_BG', $processing_bg);
-$xtpl->assign('PROCESSING_ACTIVE_COLOR', $processing_color);
-$xtpl->assign('DELIVERED_ACTIVE_BG', $delivered_bg);
-$xtpl->assign('DELIVERED_ACTIVE_COLOR', $delivered_color);
-$xtpl->assign('CANCELLED_ACTIVE_BG', $cancelled_bg);
-$xtpl->assign('CANCELLED_ACTIVE_COLOR', $cancelled_color);
+// Set selected values for filters
+$xtpl->assign('STATUS_SELECTED_' . $status_filter, 'selected');
+$xtpl->assign('PAYMENT_STATUS_SELECTED_' . $payment_status_filter, 'selected');
 
 $array = array();
 while ($row = $result->fetch()) {
@@ -205,29 +209,29 @@ if ($status_filter >= 0) {
 
 $total_pages = ceil($total_records / $per_page);
 if ($total_pages > 1) {
-// Previous
-if ($page > 1) {
-$xtpl->assign('PREV', ['link' => $base_url . '&page=' . ($page - 1), 'attr' => '', 'style' => '', 'color' => '#007bff']);
+    // Previous
+    if ($page > 1) {
+        $xtpl->assign('PREV', ['link' => $base_url . '&page=' . ($page - 1), 'attr' => '', 'style' => '', 'color' => '#007bff']);
     $xtpl->parse('main.generate_page.prev');
-}
+    }
 
-// Pages
-    for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++) {
+    // Pages
+for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++) {
     $xtpl->assign('PAGE', [
-        'num' => $i,
-    'link' => $base_url . '&page=' . $i,
-'style' => ($i == $page) ? 'background: #007bff; color: white; border-color: #007bff;' : '',
-'border' => '#007bff',
-'color' => ($i == $page) ? 'white' : '#007bff'
-]);
-$xtpl->parse('main.generate_page.page');
-}
+    'num' => $i,
+        'link' => $base_url . '&page=' . $i,
+            'style' => ($i == $page) ? 'background: #007bff; color: white !important; border-color: #007bff !important;' : '',
+            'border' => ($i == $page) ? '#007bff' : '#007bff',
+            'color' => ($i == $page) ? 'white' : '#007bff'
+        ]);
+        $xtpl->parse('main.generate_page.page');
+    }
 
-// Next
-    if ($page < $total_pages) {
+    // Next
+if ($page < $total_pages) {
     $xtpl->assign('NEXT', ['link' => $base_url . '&page=' . ($page + 1), 'attr' => '', 'style' => '', 'color' => '#007bff']);
     $xtpl->parse('main.generate_page.next');
-}
+    }
 
 $xtpl->parse('main.generate_page');
 }
