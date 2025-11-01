@@ -271,19 +271,25 @@
     color: #495057;
     margin-bottom: 0.5rem;
     display: block;
+    font-size: 1.1rem;
 }
 
 .form-control {
     border: 2px solid #e9ecef;
     border-radius: 0.5rem;
     padding: 0.75rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
     border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-check-label {
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .form-actions {

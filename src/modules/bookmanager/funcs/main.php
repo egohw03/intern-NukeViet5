@@ -69,6 +69,7 @@ if (!empty($search_query)) {
 }
 
 $where[] = 'b.status = 1';
+$where[] = 'c.status = 1';
 $where_clause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
 
 // Get books with pagination
@@ -88,7 +89,9 @@ $array_data[] = $row;
 }
 
 // Count total for pagination
-$sql_count = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books b ' . $where_clause;
+$sql_count = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_books b
+LEFT JOIN ' . NV_PREFIXLANG . '_' . $module_data . '_categories c ON b.cat_id = c.id
+' . $where_clause;
 $stmt_count = $db->prepare($sql_count);
 $stmt_count->execute($params);
 $total_books = $stmt_count->fetchColumn();

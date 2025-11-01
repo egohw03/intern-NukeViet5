@@ -102,7 +102,9 @@ $xtpl->parse('main.has_books_warning');
 }
 
 if ($category['status'] == 1) {
-    $xtpl->assign('CAT.status_checked', 'checked');
+    $xtpl->assign('CAT.status_active_checked', 'checked="checked"');
+} else {
+    $xtpl->assign('CAT.status_inactive_checked', 'checked="checked"');
 }
 
 if (!empty($error)) {

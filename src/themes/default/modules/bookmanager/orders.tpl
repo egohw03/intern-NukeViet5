@@ -38,60 +38,7 @@
         </div>
     </div>
 
-    <!-- Search and Filter Form -->
-    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 30px; border: 3px solid #007bff; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);">
-        <h3 style="margin-top: 0; margin-bottom: 20px; color: #007bff; font-size: 24px; font-weight: 700; text-align: center;">🔍 Tìm kiếm & Lọc đơn hàng</h3>
-        <form method="get" action="{NV_BASE_SITEURL}index.php" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: end; justify-content: center;">
-            <input type="hidden" name="{NV_LANG_VARIABLE}" value="{NV_LANG_DATA}" />
-            <input type="hidden" name="{NV_NAME_VARIABLE}" value="{MODULE_NAME}" />
-            <input type="hidden" name="{NV_OP_VARIABLE}" value="orders" />
-
-            <div style="flex: 1; min-width: 200px; max-width: 300px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #495057; font-size: 16px;">🔢 Mã đơn hàng</label>
-                <input type="text" name="order_code" value="{SEARCH.order_code}" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px;" placeholder="Nhập mã đơn hàng..." />
-            </div>
-
-            <div style="flex: 1; min-width: 200px; max-width: 300px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #495057; font-size: 16px;">👤 Tên khách hàng</label>
-                <input type="text" name="customer_name" value="{SEARCH.customer_name}" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px;" placeholder="Nhập tên khách hàng..." />
-            </div>
-
-            <div style="min-width: 180px; max-width: 200px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #495057; font-size: 16px;">📊 Trạng thái</label>
-                <select name="order_status" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px; background: white;">
-                    <option value="">Tất cả trạng thái</option>
-                    <option value="0" {SEARCH.order_status_0}>{LANG.order_pending}</option>
-                    <option value="1" {SEARCH.order_status_1}>{LANG.order_processing}</option>
-                    <option value="2" {SEARCH.order_status_2}>{LANG.order_delivered}</option>
-                    <option value="3" {SEARCH.order_status_3}>{LANG.order_cancelled}</option>
-                </select>
-            </div>
-
-            <div style="min-width: 180px; max-width: 200px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #495057; font-size: 16px;">💳 Thanh toán</label>
-                <select name="payment_status" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px; background: white;">
-                    <option value="">Tất cả</option>
-                    <option value="0" {SEARCH.payment_status_0}>{LANG.payment_pending}</option>
-                    <option value="1" {SEARCH.payment_status_1}>{LANG.payment_paid}</option>
-                </select>
-            </div>
-
-            <div style="flex: 1; min-width: 150px; max-width: 180px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #495057; font-size: 16px;">📅 {LANG.date_from}</label>
-            <input type="text" name="date_from" value="{SEARCH.date_from}" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px;" placeholder="dd/mm/yyyy" />
-            </div>
-
-            <div style="flex: 1; min-width: 150px; max-width: 180px;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #495057; font-size: 16px;">📅 {LANG.date_to}</label>
-            <input type="text" name="date_to" value="{SEARCH.date_to}" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px;" placeholder="dd/mm/yyyy" />
-            </div>
-
-            <div style="display: flex; gap: 10px; align-items: end;">
-                <button type="submit" style="padding: 12px 25px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);">🔍 Tìm kiếm</button>
-                <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}&{NV_OP_VARIABLE}=orders" style="padding: 12px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);">🗑️ Xóa lọc</a>
-            </div>
-        </form>
-    </div>
+    
 
     <!-- Search Results Info -->
     <!-- BEGIN: search_results -->

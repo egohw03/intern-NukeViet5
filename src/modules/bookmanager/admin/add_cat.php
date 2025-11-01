@@ -80,12 +80,12 @@ $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('OP', $op);
 
-$xtpl->assign('DATA', $array);
+$xtpl->assign('CAT', $array);
 
 if ($array['status'] == 1) {
-    $xtpl->assign('STATUS_ACTIVE', 'selected="selected"');
+$xtpl->assign('CAT.status_active_checked', 'checked="checked"');
 } else {
-    $xtpl->assign('STATUS_INACTIVE', 'selected="selected"');
+$xtpl->assign('CAT.status_inactive_checked', 'checked="checked"');
 }
 
 if (!empty($error)) {
