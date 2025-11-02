@@ -107,13 +107,15 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                 $order_code = $order_result['order_code'];
                 $order_id = $order_result['order_id'];
 
-                // Send confirmation email (don't fail the order if email fails)
+                // Send confirmation email (MOVED TO WEBHOOK - only send after successful payment)
+                /*
                 try {
                     nv_send_order_confirmation_email($order_code, $customer_info);
                 } catch (Exception $e) {
                     // Log email error but don't stop the order process
                     error_log('Email sending failed: ' . $e->getMessage());
                 }
+                */
 
                 // Payment routing
                 if ($payment_method == 'PAYOS') {
