@@ -68,14 +68,14 @@
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phương thức thanh toán</label>
                                 <div style="display: flex; flex-direction: column; gap: 10px;">
                                     <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" onclick="selectPaymentMethod('COD')">
-                                        <input type="radio" name="payment_method" value="COD" style="margin-right: 10px;" checked>
+                                        <input type="radio" name="payment_method" value="COD" style="margin-right: 10px;" {COD_CHECKED}>
                                         <div>
                                             <strong>Thanh toán khi nhận hàng (COD)</strong><br>
                                             <small style="color: #666;">Thanh toán bằng tiền mặt khi nhận hàng tại nhà</small>
                                         </div>
                                     </label>
                                     <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" onclick="selectPaymentMethod('PAYOS')">
-                                        <input type="radio" name="payment_method" value="PAYOS" style="margin-right: 10px;">
+                                        <input type="radio" name="payment_method" value="PAYOS" style="margin-right: 10px;" {PAYOS_CHECKED}>
                                         <div>
                                             <strong>Thanh toán Online (PayOS)</strong><br>
                                             <small style="color: #666;">Thẻ tín dụng, VietQR, Ví điện tử - An toàn & bảo mật</small>
@@ -91,21 +91,7 @@
                         </div>
                         </div>
 
-                <!-- Coupon -->
-                <div style="background: white; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px;">
-                    <div style="background: #f8f9fa; padding: 15px; border-bottom: 1px solid #ddd; border-radius: 8px 8px 0 0;">
-                        <h5 style="margin: 0;">Mã giảm giá</h5>
-                    </div>
-                    <div style="padding: 20px;">
-                        <div style="display: flex; margin-bottom: 20px;">
-                            <input type="text" name="coupon_code" value="{COUPON_CODE}" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px 0 0 4px;" placeholder="Nhập mã giảm giá">
-                            <button type="submit" name="apply_coupon" style="padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 0 4px 4px 0; cursor: pointer;">Áp dụng</button>
-                        </div>
-                        <!-- BEGIN: coupon_message -->
-                        <div style="background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 4px;">{COUPON_MESSAGE}</div>
-                        <!-- END: coupon_message -->
-                    </div>
-                </div>
+                
             </div>
 
             <div>
@@ -118,30 +104,20 @@
                         <div style="overflow-x: auto;">
                             <table style="width: 100%; border-collapse: collapse;">
                                 <tbody>
-                                    <!-- BEGIN: cart_items -->
-                                    <tr>
-                                        <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
-                                            <div style="font-weight: bold;">{ITEM.title}</div>
-                                            <small style="color: #666;">x{ITEM.quantity}</small>
-                                        </td>
-                                        <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">{ITEM.subtotal}</td>
-                                    </tr>
-                                    <!-- END: cart_items -->
+                                <!-- BEGIN: cart_items -->
+                                <tr>
+                                <td style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                                <div style="font-weight: bold;">{ITEM.title}</div>
+                                <small style="color: #666;">x{ITEM.quantity}</small>
+                                </td>
+                                <td style="padding: 8px 0; border-bottom: 1px solid #eee; text-align: right;">{ITEM.subtotal}</td>
+                                </tr>
+                                <!-- END: cart_items -->
                                 </tbody>
                                 <tfoot>
-                                <tr>
-                                <th style="text-align: right; padding: 10px 0;">Tạm tính:</th>
-                                <th style="text-align: right; padding: 10px 0;">{TOTAL}</th>
-                                </tr>
-                                    <!-- BEGIN: discount_row -->
-                                    <tr>
-                                        <th style="text-align: right; padding: 10px 0;">Giảm giá:</th>
-                                        <th style="text-align: right; padding: 10px 0; color: #28a745;">-{DISCOUNT}</th>
-                                    </tr>
-                                    <!-- END: discount_row -->
                                     <tr style="border-top: 1px solid #ddd;">
                                         <th style="text-align: right; padding: 10px 0;">Tổng cộng:</th>
-                                        <th style="text-align: right; padding: 10px 0; color: #007bff;">{FINAL_TOTAL}</th>
+                                        <th style="text-align: right; padding: 10px 0; color: #007bff;">{TOTAL}</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -183,33 +159,12 @@ document.querySelector('textarea[name="customer_address"]').value = address;
 }
 }
 
-function selectPaymentMethod(method) {
-    // Update radio buttons
-document.querySelectorAll('input[name="payment_method"]').forEach(function(radio) {
-    radio.checked = (radio.value === method);
-});
-
-    // Update visual styling
-    document.querySelectorAll('label[onclick*="selectPaymentMethod"]').forEach(function(label) {
-        if (label.onclick.toString().includes(method)) {
-            label.style.borderColor = '#007bff';
-            label.style.backgroundColor = '#f8f9fa';
-        } else {
-            label.style.borderColor = '#ddd';
-            label.style.backgroundColor = 'white';
-        }
-    });
-}
-
 // Fill address on page load if selected
 document.addEventListener('DOMContentLoaded', function() {
-    var select = document.querySelector('select[name="saved_address"]');
-    if (select && select.value) {
-        fillAddress(select.value);
+var select = document.querySelector('select[name="saved_address"]');
+if (select && select.value) {
+    fillAddress(select.value);
     }
-
-    // Initialize payment method selection
-    selectPaymentMethod('COD');
 });
 </script>
 <!-- END: main -->

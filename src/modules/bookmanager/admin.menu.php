@@ -24,6 +24,5 @@ $submenu['categories'] = $nv_Lang->getModule('categories');
 $submenu['add'] = $nv_Lang->getModule('add_book');
 $submenu['orders'] = $nv_Lang->getModule('orders');
 $submenu['reviews'] = $nv_Lang->getModule('reviews');
-$submenu['coupons'] = $nv_Lang->getModule('coupons');
 
-$allow_func = ['dashboard', 'main', 'add', 'edit', 'delete', 'categories', 'add_cat', 'edit_cat', 'del_cat', 'orders', 'view_order', 'reviews', 'coupons'];
+$allow_func = ['dashboard', 'main', 'add', 'edit', 'delete', 'categories', 'add_cat', 'edit_cat', 'del_cat', 'orders', 'view_order', 'reviews'];

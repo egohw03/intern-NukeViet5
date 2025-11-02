@@ -26,35 +26,20 @@ $page_title = $lang_module['checkout'];
 $key_words = $lang_module['checkout'];
 
 $total = nv_get_cart_total();
-$discount = 0;
-$coupon_applied = false;
-$coupon_message = '';
 
 // Get default address and all addresses
 $default_address = nv_get_default_address($user_info['userid']);
 $all_addresses = nv_get_user_addresses($user_info['userid']);
 
-// Handle apply coupon
-if ($nv_Request->isset_request('apply_coupon', 'post')) {
-$coupon_code = $nv_Request->get_title('coupon_code', 'post', '');
-$coupon_result = nv_apply_coupon($coupon_code, $total, $user_info['userid']);
-if ($coupon_result['valid']) {
-$discount = $coupon_result['discount'];
-$coupon_applied = true;
-$coupon_message = 'Mã giảm giá đã được áp dụng';
-} else {
-$coupon_message = $coupon_result['message'];
-}
-}
+
 
 // Load form values from session if not submitting
-if (!$nv_Request->isset_request('checkout', 'post') && !$nv_Request->isset_request('apply_coupon', 'post')) {
+if (!$nv_Request->isset_request('checkout', 'post')) {
     $customer_name = $_SESSION['checkout_form']['customer_name'] ?? $user_info['full_name'];
     $customer_email = $_SESSION['checkout_form']['customer_email'] ?? $user_info['email'];
     $customer_phone = $_SESSION['checkout_form']['customer_phone'] ?? ($default_address['phone'] ?? '');
     $customer_address = $_SESSION['checkout_form']['customer_address'] ?? ($default_address['address'] ?? '');
     $payment_method = $_SESSION['checkout_form']['payment_method'] ?? 'COD';
-    $coupon_code_input = $_SESSION['checkout_form']['coupon_code'] ?? '';
     $saved_address_id = $_SESSION['checkout_form']['saved_address_id'] ?? 0;
 } else {
     // Preserve form values
@@ -62,7 +47,6 @@ if (!$nv_Request->isset_request('checkout', 'post') && !$nv_Request->isset_reque
     $customer_email = $nv_Request->get_title('customer_email', 'post', $user_info['email']);
     $customer_phone = $nv_Request->get_title('customer_phone', 'post', $default_address['phone'] ?? '');
     $customer_address = $nv_Request->get_textarea('customer_address', 'post', $default_address['address'] ?? '', 'br');
-    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
     $saved_address_id = $nv_Request->get_int('saved_address', 'post', 0);
     if ($saved_address_id > 0 && $customer_name == $user_info['full_name'] && $customer_phone == ($default_address['phone'] ?? '') && $customer_address == ($default_address['address'] ?? '')) {
         // If user selected a saved address and hasn't modified the inputs, use the selected address
@@ -85,11 +69,9 @@ $_SESSION['checkout_form'] = [
     'customer_phone' => $customer_phone,
     'customer_address' => $customer_address,
     'payment_method' => $payment_method,
-    'coupon_code' => $coupon_code_input,
     'saved_address_id' => $saved_address_id,
 ];
 
-$final_total = $total - $discount;
 $order_created = false;
 $order_code = '';
 
@@ -118,7 +100,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         if (!$stock_check_passed) {
             $message = 'Một số sản phẩm trong giỏ hàng không còn đủ số lượng. Vui lòng cập nhật giỏ hàng.';
         } else {
-            $order_result = nv_create_order_with_coupon($customer_info, $payment_method, $coupon_applied ? $coupon_result['coupon']['id'] : 0, $discount);
+            $order_result = nv_create_order($customer_info, $payment_method);
             if ($order_result !== null) {
                 $order_code = $order_result['order_code'];
                 $order_id = $order_result['order_id'];
@@ -144,7 +126,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                     // 2. Gọi hàm cURL để tạo link
                     $checkout_url = nv_payos_create_payment_link(
                         $order_id,
-                        (int)$final_total,
+                        (int)$total,
                         $description,
                         $return_url,
                         $cancel_url
@@ -176,10 +158,6 @@ $xtpl = new XTemplate('checkout.tpl', NV_ROOTDIR . '/themes/' . $module_info['te
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('TOTAL', nv_format_price($total));
-$xtpl->assign('FINAL_TOTAL', nv_format_price($final_total));
-$xtpl->assign('DISCOUNT', nv_format_price($discount));
-$xtpl->assign('COUPON_MESSAGE', $coupon_message);
-$xtpl->assign('COUPON_APPLIED', $coupon_applied);
 
 if ($order_created) {
     $xtpl->assign('ORDER_CODE', $order_code);
@@ -215,10 +193,16 @@ if ($order_created) {
     $xtpl->assign('CUSTOMER_PHONE', $customer_phone);
     $xtpl->assign('CUSTOMER_ADDRESS', $customer_address);
     $xtpl->assign('COUPON_CODE', $coupon_code_input);
-
-    // Payment method is always COD
-    $xtpl->parse('main.checkout_form.cod_selected');
-
+    
+    // Gán trạng thái 'checked' cho phương thức thanh toán
+    if ($payment_method == 'PAYOS') {
+        $xtpl->assign('PAYOS_CHECKED', 'checked');
+        $xtpl->assign('COD_CHECKED', '');
+    } else {
+        // Mặc định là COD
+        $xtpl->assign('COD_CHECKED', 'checked');
+        $xtpl->assign('PAYOS_CHECKED', '');
+    }
     // Coupon message
     if (!empty($coupon_message)) {
         $xtpl->parse('main.checkout_form.coupon_message');

@@ -8,7 +8,16 @@
  * @Createdate Oct 19, 2025
  */
 
+// Load PayOS config
+require_once __DIR__ . '/payos_config.php';
 
+/**
+ * Format price
+ */
+function nv_format_price($price)
+{
+    return number_format($price, 0, ',', '.') . ' VNĐ';
+}
 
 /**
  * Get books list
@@ -19,7 +28,7 @@ function nv_get_books($limit = 10, $offset = 0, $active_only = true)
 
     // Temporarily disable cache to test
     // $cache_file = NV_LANG_DATA . '_books_' . $limit . '_' . $offset . '_' . ($active_only ? 'active' : 'all') . NV_CACHE_PREFIX . '.cache';
-    // if (($cache = $nv_Cache->getItem($module_name, $cache_file, 3600)) != false) {
+    // if (($cache = $nv_Cache->getItem($module_name, $cache_file)) != false) {
     //     return unserialize($cache);
     // }
 
@@ -292,7 +301,7 @@ function nv_create_order($customer_info, $payment_method = 'COD')
 
         // Insert order items
         foreach ($cart as $item) {
-        $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
+            $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
         }
 
         // Update stock quantities
@@ -319,17 +328,12 @@ function nv_get_user_orders($userid)
     $orders = [];
     $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE userid = ' . intval($userid) . ' ORDER BY add_time DESC';
     $result = $db->query($sql);
-
     while ($row = $result->fetch()) {
         $orders[] = $row;
     }
 
     return $orders;
 }
-
-
-
-
 
 /**
  * Get order by ID
@@ -394,7 +398,7 @@ function nv_send_order_confirmation_email($order_code, $customer_info)
 {
     global $db, $module_data, $module_name, $lang_module, $global_config;
 
-    // Skip sending email if disabled in development
+    // Skip sending email if in development mode
     if (defined('NV_IS_DEVELOPMENT') && NV_IS_DEVELOPMENT === true) {
         error_log('Email sending skipped in development mode for order: ' . $order_code);
         return true;
@@ -419,9 +423,11 @@ function nv_send_order_confirmation_email($order_code, $customer_info)
     $message = "Kính chào " . $customer_info['name'] . ",
 
 ";
+
     $message .= "Đơn hàng của bạn đã được đặt thành công!
 
 ";
+
     $message .= "Mã đơn hàng: " . $order_code . "
 ";
     $message .= "Ngày đặt: " . date('d/m/Y H:i', $order['add_time']) . "
@@ -467,21 +473,11 @@ Thông tin giao hàng:
     return $result;
 }
 
-/*
- * VNPay integration removed - only COD payment is supported
- * Function nv_generate_vnpay_payment_url() has been removed
-*/
-
 /**
  * Tạo link thanh toán PayOS bằng cURL (Không cần SDK)
  */
 function nv_payos_create_payment_link($order_id, $amount, $description, $return_url, $cancel_url)
 {
-    // Lấy API keys từ config (hoặc hardcode tạm)
-    $PAYOS_CLIENT_ID = 'c0106937-c219-4e59-a728-0650783e8db5';
-    $PAYOS_API_KEY = '7579836f-deb7-41e9-b273-970220d95130';
-    $PAYOS_CHECKSUM_KEY = '4f56b5991899d9732a561e6cc4e6190c7db78008c9c0d70f75971fd015cab0d4';
-
     $api_url = 'https://api-merchant.payos.vn/v2/payment-requests';
 
     // 1. Dữ liệu
@@ -502,9 +498,6 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
         $data_to_sign .= $key . '=' . $value . '&';
     }
     $data_to_sign = rtrim($data_to_sign, '&');
-
-    // Load PayOS config
-    require_once __DIR__ . '/payos_config.php';
 
     // 4. Tạo Signature
     $signature = hash_hmac('sha256', $data_to_sign, PAYOS_CHECKSUM_KEY);
@@ -571,6 +564,7 @@ function nv_payos_verify_webhook($checksum_key = null)
     // Chữ ký không hợp lệ
     return null;
 }
+
 /**
  * Get book reviews
  */
@@ -593,34 +587,118 @@ function nv_get_book_reviews($book_id, $limit = 10, $offset = 0)
 }
 
 /**
- * Get average rating for book
+ * Get user addresses
  */
-function nv_get_book_rating($book_id)
+function nv_get_user_addresses($userid)
 {
     global $db, $module_data;
 
-    $sql = 'SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM ' . NV_PREFIXLANG . '_' . $module_data . '_reviews
-    WHERE book_id = ' . intval($book_id) . ' AND status = 1';
-    $row = $db->query($sql)->fetch();
+    $addresses = [];
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_addresses WHERE userid = ' . intval($userid) . ' ORDER BY is_default DESC, add_time DESC';
+    $result = $db->query($sql);
+    while ($row = $result->fetch()) {
+        $addresses[] = $row;
+    }
 
-    return [
-    'avg_rating' => round($row['avg_rating'] ?? 0, 1),
-    'total_reviews' => intval($row['total_reviews'] ?? 0)
-    ];
+    return $addresses;
+}
+
+/**
+ * Get default address
+ */
+function nv_get_default_address($userid)
+{
+    $addresses = nv_get_user_addresses($userid);
+    foreach ($addresses as $address) {
+        if ($address['is_default']) {
+            return $address;
+        }
+    }
+    return $addresses[0] ?? null;
+}
+
+/**
+ * Add user address
+ */
+function nv_add_user_address($userid, $data)
+{
+    global $db, $module_data;
+
+    // If this is default, unset other defaults
+    if ($data['is_default']) {
+        $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_addresses SET is_default = 0 WHERE userid = ' . $userid);
+    }
+
+    $sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_addresses
+    (userid, full_name, phone, address, is_default, add_time)
+    VALUES (:userid, :full_name, :phone, :address, :is_default, :add_time)';
+
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
+    $stmt->bindParam(':full_name', $data['full_name'], PDO::PARAM_STR);
+    $stmt->bindParam(':phone', $data['phone'], PDO::PARAM_STR);
+    $stmt->bindParam(':address', $data['address'], PDO::PARAM_STR);
+    $stmt->bindParam(':is_default', $data['is_default'], PDO::PARAM_INT);
+    $stmt->bindValue(':add_time', NV_CURRENTTIME, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
+
+/**
+ * Update user address
+ */
+function nv_update_user_address($userid, $address_id, $data)
+{
+    global $db, $module_data;
+
+    // Check ownership
+    $address = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_addresses WHERE id = ' . intval($address_id) . ' AND userid = ' . $userid)->fetch();
+    if (!$address) {
+        return false;
+    }
+
+    // If this is default, unset other defaults
+    if ($data['is_default']) {
+        $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_addresses SET is_default = 0 WHERE userid = ' . $userid);
+    }
+
+    $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_addresses SET
+    full_name = :full_name, phone = :phone, address = :address, is_default = :is_default
+    WHERE id = :id AND userid = :userid';
+
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':full_name', $data['full_name'], PDO::PARAM_STR);
+    $stmt->bindParam(':phone', $data['phone'], PDO::PARAM_STR);
+    $stmt->bindParam(':address', $data['address'], PDO::PARAM_STR);
+    $stmt->bindParam(':is_default', $data['is_default'], PDO::PARAM_INT);
+    $stmt->bindParam(':id', $address_id, PDO::PARAM_INT);
+    $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
+
+/**
+ * Delete user address
+ */
+function nv_delete_user_address($userid, $address_id)
+{
+    global $db, $module_data;
+
+    // Check ownership
+    $address = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_addresses WHERE id = ' . intval($address_id) . ' AND userid = ' . $userid)->fetch();
+    if (!$address) {
+        return false;
+    }
+
+    return $db->query('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_addresses WHERE id = ' . intval($address_id) . ' AND userid = ' . $userid);
 }
 
 /**
  * Add book review
  */
-function nv_add_book_review($book_id, $rating, $title = '', $content = '')
+function nv_add_book_review($book_id, $userid, $rating, $title = '', $content = '')
 {
-    global $db, $module_data, $user_info;
-
-    if (!defined('NV_IS_USER')) {
-        return null;
-    }
-
-    $userid = $user_info['userid'];
+    global $db, $module_data;
 
     // Check if user already reviewed this book
     $existing = $db->query('SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . '_reviews WHERE book_id = ' . $book_id . ' AND userid = ' . $userid)->fetch();
@@ -638,61 +716,8 @@ function nv_add_book_review($book_id, $rating, $title = '', $content = '')
     $stmt->bindParam(':title', $title, PDO::PARAM_STR);
     $stmt->bindParam(':content', $content, PDO::PARAM_STR);
     $stmt->bindValue(':add_time', NV_CURRENTTIME, PDO::PARAM_INT);
-    $stmt->bindValue(':status', 1, PDO::PARAM_INT); // Auto approve for now
+    $stmt->bindValue(':status', 0, PDO::PARAM_INT); // Pending approval
 
     return $stmt->execute();
 }
-
-/**
- * Get user addresses
- */
-function nv_get_user_addresses($userid)
-{
-    global $db, $module_data;
-
-    $addresses = [];
-    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_addresses WHERE userid = ' . intval($userid) . ' ORDER BY is_default DESC, id ASC';
-    $result = $db->query($sql);
-
-    while ($row = $result->fetch()) {
-        $addresses[] = $row;
-    }
-
-    return $addresses;
-}
-
-/**
- * Get default address
- */
-function nv_get_default_address($userid)
-{
-    global $db, $module_data;
-
-    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_addresses WHERE userid = ' . intval($userid) . ' AND is_default = 1';
-    return $db->query($sql)->fetch();
-}
-
-/**
- * Add user address
- */
-function nv_add_user_address($userid, $full_name, $phone, $address, $is_default = false)
-{
-    global $db, $module_data;
-
-    // If setting as default, unset other defaults
-    if ($is_default) {
-        $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_addresses SET is_default = 0 WHERE userid = ' . $userid);
-    }
-
-    $sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_addresses (userid, full_name, phone, address, is_default)
-    VALUES (:userid, :full_name, :phone, :address, :is_default)';
-
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
-    $stmt->bindParam(':full_name', $full_name, PDO::PARAM_STR);
-    $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
-    $stmt->bindParam(':address', $address, PDO::PARAM_STR);
-    $stmt->bindParam(':is_default', $is_default, PDO::PARAM_INT);
-
-    return $stmt->execute();
-}
+?>

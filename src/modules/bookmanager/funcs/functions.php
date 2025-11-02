@@ -9,8 +9,6 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-
-
 /**
  * Format price
  */
@@ -20,3 +18,4 @@ function nv_format_price($price)
 }
 
 
+?>

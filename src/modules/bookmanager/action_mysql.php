@@ -81,9 +81,6 @@ customer_email VARCHAR(255) NOT NULL,
 customer_phone VARCHAR(20) DEFAULT NULL,
 customer_address TEXT NOT NULL,
 total_amount DECIMAL(15,2) NOT NULL DEFAULT 0.00,
-coupon_id INT(11) DEFAULT NULL,
-coupon_code VARCHAR(50) DEFAULT NULL,
-discount_amount DECIMAL(15,2) NOT NULL DEFAULT 0.00,
 transaction_id VARCHAR(100) DEFAULT NULL,
 payment_info TEXT DEFAULT NULL,
 order_status TINYINT(1) NOT NULL DEFAULT 0,
@@ -97,7 +94,6 @@ KEY idx_userid (userid),
 KEY idx_order_code (order_code),
 KEY idx_order_status (order_status),
 KEY idx_payment_status (payment_status),
-KEY idx_coupon_id (coupon_id),
 KEY idx_add_time (add_time)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
@@ -140,23 +136,7 @@ KEY idx_book_id (book_id),
 KEY idx_status (status)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-// Coupons table
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_coupons (
-id INT(11) NOT NULL AUTO_INCREMENT,
-code VARCHAR(50) NOT NULL UNIQUE,
-discount_type ENUM('percentage','fixed') NOT NULL DEFAULT 'percentage',
-discount_value DECIMAL(15,2) NOT NULL,
-max_discount DECIMAL(15,2) DEFAULT NULL,
-usage_limit INT(11) DEFAULT NULL,
-usage_count INT(11) NOT NULL DEFAULT 0,
-min_order_amount DECIMAL(15,2) DEFAULT NULL,
-start_time INT(11) NOT NULL,
-end_time INT(11) NOT NULL,
-status TINYINT(1) NOT NULL DEFAULT 1,
-PRIMARY KEY (id),
-KEY idx_code (code),
-KEY idx_status (status)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+
 
 // User addresses table
 $sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_addresses (
@@ -171,18 +151,7 @@ PRIMARY KEY (id),
 KEY idx_userid (userid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-// Coupon usage table
-$sql_create_module[] = "CREATE TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_coupon_usage (
-id INT(11) NOT NULL AUTO_INCREMENT,
-coupon_id INT(11) NOT NULL,
-order_id INT(11) NOT NULL,
-userid INT(11) NOT NULL,
-used_time INT(11) NOT NULL,
-PRIMARY KEY (id),
-KEY idx_coupon_id (coupon_id),
-KEY idx_order_id (order_id),
-KEY idx_userid (userid)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+
 
 // Insert sample categories (Vietnamese)
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_categories (title, alias, description, weight, status) VALUES
@@ -254,12 +223,12 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 // (5, 10, 1, 400000.00),
 // (6, 12, 1, 220000.00)";
 
-// Insert sample coupons
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_coupons (code, discount_type, discount_value, max_discount, usage_limit, min_order_amount, start_time, end_time, status) VALUES
-('WELCOME10', 'percentage', 10.00, NULL, 100, 100000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
-('SUMMER20', 'percentage', 20.00, 200000.00, 50, 200000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
-('SAVE50K', 'fixed', 50000.00, NULL, 200, 150000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
-('NEWYEAR30', 'percentage', 30.00, 300000.00, 20, 500000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1)";
+
 
 // Update existing orders to use COD only (for migration)
 $sql_create_module[] = "UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders SET payment_method = 'COD', payment_status = 1 WHERE payment_method IN ('bank_transfer', 'card')";
+
+// Remove coupon columns from orders table (if exist)
+$sql_create_module[] = "ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders DROP COLUMN IF EXISTS coupon_id";
+$sql_create_module[] = "ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders DROP COLUMN IF EXISTS coupon_code";
+$sql_create_module[] = "ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders DROP COLUMN IF EXISTS discount_amount";
