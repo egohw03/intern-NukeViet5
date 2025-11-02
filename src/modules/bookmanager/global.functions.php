@@ -122,7 +122,7 @@ function nv_add_to_cart($book_id, $quantity = 1)
     global $db, $module_data, $user_info;
 
     if (!defined('NV_IS_USER')) {
-        return false;
+        return null;
     }
 
     $userid = $user_info['userid'];
@@ -130,7 +130,7 @@ function nv_add_to_cart($book_id, $quantity = 1)
     // Check if book exists and in stock
     $book = nv_get_book($book_id);
     if (empty($book) || $book['stock_quantity'] < $quantity) {
-        return false;
+        return null;
     }
 
     // Check if already in cart
@@ -186,7 +186,7 @@ function nv_update_cart($book_id, $quantity)
     global $db, $module_data, $user_info;
 
     if (!defined('NV_IS_USER')) {
-        return false;
+        return null;
     }
 
     $userid = $user_info['userid'];
@@ -212,7 +212,7 @@ function nv_remove_from_cart($book_id)
     global $db, $module_data, $user_info;
 
     if (!defined('NV_IS_USER')) {
-        return false;
+        return null;
     }
 
     $userid = $user_info['userid'];
@@ -267,12 +267,12 @@ function nv_create_order_with_coupon($customer_info, $payment_method = 'COD', $c
     global $db, $module_data, $user_info;
 
     if (!defined('NV_IS_USER')) {
-        return false;
+        return null;
     }
 
     $cart = nv_get_cart();
     if (empty($cart)) {
-        return false;
+        return null;
     }
 
     $userid = $user_info['userid'];
@@ -306,9 +306,9 @@ function nv_create_order_with_coupon($customer_info, $payment_method = 'COD', $c
     $stmt->bindValue(':add_time', NV_CURRENTTIME, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-    $order_id = $db->lastInsertId();
+        $order_id = $db->lastInsertId();
 
-    // Insert order items
+        // Insert order items
         foreach ($cart as $item) {
         $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
     }
@@ -327,10 +327,10 @@ function nv_create_order_with_coupon($customer_info, $payment_method = 'COD', $c
         // Clear cart
         $db->query('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cart WHERE userid = ' . $userid);
 
-        return $order_code;
+        return ['order_code' => $order_code, 'order_id' => $order_id];
     }
 
-    return false;
+    return null;
 }
 
 /**
@@ -502,7 +502,7 @@ function nv_send_order_confirmation_email($order_code, $customer_info)
     $order = $stmt->fetch();
 
     if (!$order) {
-        return false;
+        return null;
     }
 
     // Get order items
@@ -565,6 +565,97 @@ Thông tin giao hàng:
  * VNPay integration removed - only COD payment is supported
  * Function nv_generate_vnpay_payment_url() has been removed
 */
+
+/**
+ * Tạo link thanh toán PayOS bằng cURL (Không cần SDK)
+ */
+function nv_payos_create_payment_link($order_id, $amount, $description, $return_url, $cancel_url)
+{
+    // Lấy API keys từ config (hoặc hardcode tạm)
+    $PAYOS_CLIENT_ID = 'c0106937-c219-4e59-a728-0650783e8db5';
+    $PAYOS_API_KEY = '7579836f-deb7-41e9-b273-970220d95130';
+    $PAYOS_CHECKSUM_KEY = '4f56b5991899d9732a561e6cc4e6190c7db78008c9c0d70f75971fd015cab0d4';
+
+    $api_url = 'https://api-merchant.payos.vn/v2/payment-requests';
+
+    // 1. Dữ liệu
+    $data = [
+        'orderCode' => $order_id, // Phải là SỐ (int)
+        'amount' => (int) $amount,
+        'description' => $description,
+        'cancelUrl' => $cancel_url,
+        'returnUrl' => $return_url
+    ];
+
+    // 2. Sắp xếp data theo alphabet
+    ksort($data);
+
+    // 3. Tạo data_to_sign
+    $data_to_sign = '';
+    foreach ($data as $key => $value) {
+        $data_to_sign .= $key . '=' . $value . '&';
+    }
+    $data_to_sign = rtrim($data_to_sign, '&');
+
+    // 4. Tạo Signature
+    $signature = hash_hmac('sha256', $data_to_sign, $PAYOS_CHECKSUM_KEY);
+
+    // 5. Gọi cURL
+    $headers = [
+        'x-client-id: ' . $PAYOS_CLIENT_ID,
+        'x-api-key: ' . $PAYOS_API_KEY,
+        'Content-Type: application/json'
+    ];
+    $data['signature'] = $signature; // Thêm signature vào body
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $api_url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code == 200) {
+        $result = json_decode($response, true);
+        if ($result['code'] == '00') {
+            return $result['data']['checkoutUrl'];
+        }
+    }
+
+    // Ghi log lỗi
+    error_log("PayOS Create Link Failed: " . $response);
+    return false;
+}
+
+/**
+ * Xác thực Webhook PayOS bằng cURL (Không cần SDK)
+ */
+function nv_payos_verify_webhook($checksum_key)
+{
+    // 1. Lấy dữ liệu
+    $raw_body = file_get_contents('php://input');
+    $payos_signature = $_SERVER['HTTP_PAYOS_SIGNATURE'] ?? '';
+
+    if (empty($payos_signature)) {
+        return null;
+    }
+
+    // 2. Tạo signature từ phía mình
+    $my_signature = hash_hmac('sha256', $raw_body, $checksum_key);
+
+    // 3. So sánh
+    if (hash_equals($my_signature, $payos_signature)) {
+        // Chữ ký hợp lệ, trả về dữ liệu
+        return json_decode($raw_body, true);
+    }
+
+    // Chữ ký không hợp lệ
+    return null;
+}
 /**
  * Get book reviews
  */
@@ -611,7 +702,7 @@ function nv_add_book_review($book_id, $rating, $title = '', $content = '')
     global $db, $module_data, $user_info;
 
     if (!defined('NV_IS_USER')) {
-        return false;
+        return null;
     }
 
     $userid = $user_info['userid'];
@@ -619,7 +710,7 @@ function nv_add_book_review($book_id, $rating, $title = '', $content = '')
     // Check if user already reviewed this book
     $existing = $db->query('SELECT id FROM ' . NV_PREFIXLANG . '_' . $module_data . '_reviews WHERE book_id = ' . $book_id . ' AND userid = ' . $userid)->fetch();
     if ($existing) {
-        return false; // User already reviewed
+        return null; // User already reviewed
     }
 
     $sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_reviews (book_id, userid, rating, title, content, add_time, status)

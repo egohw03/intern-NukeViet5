@@ -169,20 +169,20 @@ if (!empty($orders)) {
         $order['order_status_text'] = $order_statuses[$order['order_status']] ?? $lang_module['unknown'];
         $order['payment_status_text'] = $payment_statuses[$order['payment_status']] ?? $lang_module['unknown'];
 
-        // Status badges for styling
+        // Enhanced status badges with icons and colors
         $status_badges = [
-        0 => 'warning', // Pending
-        1 => 'info',    // Processing
-        2 => 'success', // Delivered
-        3 => 'danger'   // Cancelled
+            0 => ['class' => 'warning', 'icon' => '⏳', 'bg' => '#ffc107', 'text' => 'Chờ xử lý'],
+            1 => ['class' => 'info', 'icon' => '⚙️', 'bg' => '#17a2b8', 'text' => 'Đang xử lý'],
+            2 => ['class' => 'success', 'icon' => '✅', 'bg' => '#28a745', 'text' => 'Đã giao'],
+            3 => ['class' => 'danger', 'icon' => '❌', 'bg' => '#dc3545', 'text' => 'Đã hủy']
         ];
-        $order['status_class'] = $status_badges[$order['order_status']] ?? 'secondary';
+        $order['status_config'] = $status_badges[$order['order_status']] ?? ['class' => 'secondary', 'icon' => '❓', 'bg' => '#6c757d', 'text' => 'Không xác định'];
 
         $payment_badges = [
-            0 => 'warning', // Pending
-            1 => 'success'  // Paid
+            0 => ['class' => 'warning', 'icon' => '💰', 'bg' => '#ffc107', 'text' => 'Chưa thanh toán'],
+            1 => ['class' => 'success', 'icon' => '💳', 'bg' => '#28a745', 'text' => 'Đã thanh toán']
         ];
-        $order['payment_class'] = $payment_badges[$order['payment_status']] ?? 'secondary';
+        $order['payment_config'] = $payment_badges[$order['payment_status']] ?? ['class' => 'secondary', 'icon' => '❓', 'bg' => '#6c757d', 'text' => 'Không xác định'];
 
         // Payment method text
         $payment_methods = [

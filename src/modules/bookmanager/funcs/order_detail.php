@@ -63,20 +63,29 @@ $order['total_amount_format'] = nv_format_price($order['total_amount']);
 $order['order_status_text'] = $order_statuses[$order['order_status']] ?? $lang_module['unknown'];
 $order['payment_status_text'] = $payment_statuses[$order['payment_status']] ?? $lang_module['unknown'];
 
-// Status badges
+// Enhanced status badges with icons and progress
 $status_badges = [
-    0 => 'warning',
-    1 => 'info',
-    2 => 'success',
-    3 => 'danger'
+    0 => ['class' => 'warning', 'icon' => '⏳', 'bg' => '#ffc107', 'text' => 'Chờ xử lý'],
+    1 => ['class' => 'info', 'icon' => '⚙️', 'bg' => '#17a2b8', 'text' => 'Đang xử lý'],
+    2 => ['class' => 'success', 'icon' => '✅', 'bg' => '#28a745', 'text' => 'Đã giao'],
+    3 => ['class' => 'danger', 'icon' => '❌', 'bg' => '#dc3545', 'text' => 'Đã hủy']
 ];
-$order['status_class'] = $status_badges[$order['order_status']] ?? 'secondary';
+$order['status_config'] = $status_badges[$order['order_status']] ?? ['class' => 'secondary', 'icon' => '❓', 'bg' => '#6c757d', 'text' => 'Không xác định'];
 
 $payment_badges = [
-    0 => 'warning',
-    1 => 'success'
+    0 => ['class' => 'warning', 'icon' => '💰', 'bg' => '#ffc107', 'text' => 'Chưa thanh toán'],
+    1 => ['class' => 'success', 'icon' => '💳', 'bg' => '#28a745', 'text' => 'Đã thanh toán']
 ];
-$order['payment_class'] = $payment_badges[$order['payment_status']] ?? 'secondary';
+$order['payment_config'] = $payment_badges[$order['payment_status']] ?? ['class' => 'secondary', 'icon' => '❓', 'bg' => '#6c757d', 'text' => 'Không xác định'];
+
+// Progress bar percentage
+$order['progress_percentage'] = 0;
+switch ($order['order_status']) {
+    case 0: $order['progress_percentage'] = 25; break;
+    case 1: $order['progress_percentage'] = 50; break;
+    case 2: $order['progress_percentage'] = 100; break;
+    case 3: $order['progress_percentage'] = 0; break;
+}
 
 // Breadcrumbs
 $array_mod_title[] = [
@@ -92,6 +101,22 @@ $xtpl = new XTemplate('order_detail.tpl', NV_ROOTDIR . '/themes/' . $module_info
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('ORDER', $order);
+
+// Status description parsing
+switch ($order['order_status']) {
+    case 0:
+        $xtpl->parse('main.status_desc_pending');
+        break;
+    case 1:
+        $xtpl->parse('main.status_desc_processing');
+        break;
+    case 2:
+        $xtpl->parse('main.status_desc_delivered');
+        break;
+    case 3:
+        $xtpl->parse('main.status_desc_cancelled');
+        break;
+}
 
 // Order items
 if (!empty($order_items)) {

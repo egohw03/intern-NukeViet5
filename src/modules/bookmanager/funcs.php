@@ -26,7 +26,7 @@ $array_op[] = 'order_detail';
 $array_op[] = 'search';
 $array_op[] = 'address';
 $array_op[] = 'success';
-$array_op[] = 'payment';
+$array_op[] = 'webhook';
 
 // Default function
 $op = in_array($op, $array_op) ? $op : 'main';
