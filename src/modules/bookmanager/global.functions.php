@@ -602,8 +602,8 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
 
     // 5. Gọi cURL
     $headers = [
-        'x-client-id: ' . $PAYOS_CLIENT_ID,
-        'x-api-key: ' . $PAYOS_API_KEY,
+        'x-client-id: ' . PAYOS_CLIENT_ID,
+        'x-api-key: ' . PAYOS_API_KEY,
         'Content-Type: application/json'
     ];
     $data['signature'] = $signature; // Thêm signature vào body
@@ -634,8 +634,14 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
 /**
  * Xác thực Webhook PayOS bằng cURL (Không cần SDK)
  */
-function nv_payos_verify_webhook($checksum_key)
+function nv_payos_verify_webhook($checksum_key = null)
 {
+    // Load PayOS config if checksum_key not provided
+    if ($checksum_key === null) {
+        require_once __DIR__ . '/payos_config.php';
+        $checksum_key = PAYOS_CHECKSUM_KEY;
+    }
+
     // 1. Lấy dữ liệu
     $raw_body = file_get_contents('php://input');
     $payos_signature = $_SERVER['HTTP_PAYOS_SIGNATURE'] ?? '';

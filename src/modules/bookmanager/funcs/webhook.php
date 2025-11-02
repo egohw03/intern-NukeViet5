@@ -5,10 +5,8 @@ define('NV_SYSTEM', true);
 // Nạp CSDL và các hàm core của NukeViet
 require_once dirname(dirname(dirname(__DIR__))) . '/includes/mainfile.php';
 
-$PAYOS_CHECKSUM_KEY = '4f56b5991899d9732a561e6cc4e6190c7db78008c9c0d70f75971fd015cab0d4';
-
-// 1. Xác thực Webhook
-$webhookData = nv_payos_verify_webhook($PAYOS_CHECKSUM_KEY);
+// 1. Xác thực Webhook (tự động load config)
+$webhookData = nv_payos_verify_webhook();
 
 if ($webhookData && $webhookData['code'] == '00') {
     $order_id = $webhookData['data']['orderCode']; // Đây là ID (số)
