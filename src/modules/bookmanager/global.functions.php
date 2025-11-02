@@ -289,10 +289,14 @@ function nv_create_order($customer_info, $payment_method = 'COD')
 
     if ($stmt->execute()) {
         $order_id = $db->lastInsertId();
+        error_log('Order inserted with ID: ' . $order_id);
 
         // Insert order items
         foreach ($cart as $item) {
-        $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
+        $result = $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
+            if (!$result) {
+                error_log('Failed to insert order item for book ID: ' . $item['book_id']);
+            }
         }
 
         // Update stock quantities
@@ -301,7 +305,8 @@ function nv_create_order($customer_info, $payment_method = 'COD')
         }
 
         // Clear cart
-        $db->query('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cart WHERE userid = ' . $userid);
+        $cart_cleared = $db->query('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cart WHERE userid = ' . $userid);
+        error_log('Cart cleared for user ID: ' . $userid . ', result: ' . ($cart_cleared ? 'success' : 'failed'));
 
         return ['order_code' => $order_code, 'order_id' => $order_id];
     }

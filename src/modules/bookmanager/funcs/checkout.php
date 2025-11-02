@@ -104,22 +104,21 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         } else {
             $order_result = nv_create_order($customer_info, $payment_method);
             if ($order_result !== null) {
+                error_log('Order created successfully: ' . $order_result['order_code']);
                 $order_code = $order_result['order_code'];
                 $order_id = $order_result['order_id'];
 
                 // Send confirmation email (don't fail the order if email fails)
-                // Skip email in development mode to avoid mail server errors
-                if (!defined('NV_IS_DEVELOPMENT') || NV_IS_DEVELOPMENT !== true) {
-                    try {
-                        nv_send_order_confirmation_email($order_code, $customer_info);
-                    } catch (Exception $e) {
-                        // Log email error but don't stop the order process
-                        error_log('Email sending failed: ' . $e->getMessage());
-                    }
+                try {
+                    nv_send_order_confirmation_email($order_code, $customer_info);
+                } catch (Exception $e) {
+                    // Log email error but don't stop the order process
+                    error_log('Email sending failed: ' . $e->getMessage());
                 }
 
                 // Payment routing
                 if ($payment_method == 'PAYOS') {
+                    error_log('Processing PayOS payment for order: ' . $order_code);
                     // 1. Chuẩn bị URL
                     $return_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=success&order_code=' . $order_code;
                     $cancel_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart';
@@ -134,6 +133,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                         $cancel_url
                     );
 
+                    error_log('PayOS checkout URL: ' . ($checkout_url ?: 'null'));
                     // 3. Chuyển hướng
                     if ($checkout_url) {
                         nv_redirect_location($checkout_url);
