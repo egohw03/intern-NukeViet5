@@ -42,8 +42,8 @@ function nv_create_order($customer_info, $payment_method)
         return null;
     }
 
-    // Tạo mã đơn hàng duy nhất
-    $order_code = 'BKM-' . strtoupper(uniqid());
+    // Tạo mã đơn hàng duy nhất (10 ký tự: BKM- + 6 ký tự)
+    $order_code = 'BKM-' . strtoupper(substr(uniqid(), -6));
     $payment_status = ($payment_method == 'COD') ? 0 : 0; // 0 = Chưa thanh toán
     $order_status = 0; // 0 = Chờ xử lý
 
