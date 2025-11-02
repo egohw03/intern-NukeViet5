@@ -188,23 +188,7 @@ $lang_module['submit_review'] = 'Gửi đánh giá';
 $lang_module['average_rating'] = 'Đánh giá trung bình';
 $lang_module['total_reviews'] = 'Tổng đánh giá';
 
-// New features - Coupons
-$lang_module['coupons'] = 'Mã giảm giá';
-$lang_module['coupon'] = 'Mã giảm giá';
-$lang_module['coupons_management'] = 'Quản lý mã giảm giá';
-$lang_module['add_coupon'] = 'Thêm mã giảm giá';
-$lang_module['edit_coupon'] = 'Sửa mã giảm giá';
-$lang_module['delete_coupon'] = 'Xóa mã giảm giá';
-$lang_module['coupon_code'] = 'Mã giảm giá';
-$lang_module['discount'] = 'Giảm giá';
-$lang_module['percentage'] = 'Phần trăm';
-$lang_module['fixed_amount'] = 'Số tiền cố định';
-$lang_module['apply_coupon'] = 'Áp dụng mã giảm giá';
-$lang_module['remove_coupon'] = 'Xóa mã giảm giá';
-$lang_module['invalid_coupon'] = 'Mã giảm giá không hợp lệ hoặc đã hết hạn';
-$lang_module['coupon_applied'] = 'Mã giảm giá đã được áp dụng';
-$lang_module['no_coupons'] = 'Chưa có mã giảm giá nào';
-$lang_module['enter_coupon_code'] = 'Nhập mã giảm giá';
+
 
 // New features - Addresses
 $lang_module['addresses'] = 'Địa chỉ giao hàng';

@@ -59,7 +59,7 @@ if (!$nv_Request->isset_request('checkout', 'post')) {
             }
         }
     }
-    $coupon_code_input = $nv_Request->get_title('coupon_code', 'post', '');
+
 }
 
 // Save to session
@@ -192,7 +192,6 @@ if ($order_created) {
     $xtpl->assign('CUSTOMER_EMAIL', $customer_email);
     $xtpl->assign('CUSTOMER_PHONE', $customer_phone);
     $xtpl->assign('CUSTOMER_ADDRESS', $customer_address);
-    $xtpl->assign('COUPON_CODE', $coupon_code_input);
     
     // Gán trạng thái 'checked' cho phương thức thanh toán
     if ($payment_method == 'PAYOS') {
@@ -202,15 +201,6 @@ if ($order_created) {
         // Mặc định là COD
         $xtpl->assign('COD_CHECKED', 'checked');
         $xtpl->assign('PAYOS_CHECKED', '');
-    }
-    // Coupon message
-    if (!empty($coupon_message)) {
-        $xtpl->parse('main.checkout_form.coupon_message');
-    }
-
-    // Discount row
-    if ($discount > 0) {
-        $xtpl->parse('main.checkout_form.discount_row');
     }
 
     $xtpl->parse('main.checkout_form');

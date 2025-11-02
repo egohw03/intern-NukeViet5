@@ -21,10 +21,7 @@ $total_categories = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $
 $total_orders = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders')->fetchColumn();
 $total_reviews = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_reviews WHERE status = 1')->fetchColumn();
 
-// Coupon statistics
-$total_coupons = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupons')->fetchColumn();
-$total_coupon_usage = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupon_usage')->fetchColumn();
-$active_coupons = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_coupons WHERE status = 1')->fetchColumn();
+
 
 // Revenue statistics
 $revenue_today = $db->query('SELECT SUM(total_amount) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE order_status = 2 AND DATE(FROM_UNIXTIME(add_time)) = CURDATE()')->fetchColumn();
@@ -60,12 +57,6 @@ $xtpl->assign('TOTAL_BOOKS', $total_books);
 $xtpl->assign('TOTAL_CATEGORIES', $total_categories);
 $xtpl->assign('TOTAL_ORDERS', $total_orders);
 $xtpl->assign('TOTAL_REVIEWS', $total_reviews);
-$usage_rate = $total_coupons > 0 ? round($total_coupon_usage / $total_coupons, 1) : 0;
-
-$xtpl->assign('TOTAL_COUPONS', $total_coupons);
-$xtpl->assign('TOTAL_COUPON_USAGE', $total_coupon_usage);
-$xtpl->assign('ACTIVE_COUPONS', $active_coupons);
-$xtpl->assign('USAGE_RATE', $usage_rate);
 
 // Revenue stats
 $xtpl->assign('REVENUE_TODAY', ($revenue_today ? number_format($revenue_today, 0, ',', '.') : '0') . ' VND');

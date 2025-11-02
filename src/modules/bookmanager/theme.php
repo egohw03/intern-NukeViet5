@@ -213,18 +213,13 @@ function book_detail_theme($book, $reviews = [], $avg_rating = 0, $total_reviews
 /**
  * book_cart_theme()
  */
-function book_cart_theme($cart_items, $total, $total_format, $discount = 0, $discount_format = '0 VND', $final_total = 0, $final_total_format = '0 VND', $coupon_code = '', $coupon_error = '', $coupon_applied = false)
+function book_cart_theme($cart_items, $total, $total_format)
 {
     global $nv_Lang;
 
     $xtpl = new XTemplate('cart.tpl', get_module_tpl_dir('cart.tpl'));
     $xtpl->assign('LANG', $nv_Lang->getModule());
     $xtpl->assign('GLANG', $nv_Lang->getGlobal());
-    $xtpl->assign('DISCOUNT', $discount_format);
-    $xtpl->assign('FINAL_TOTAL', $final_total_format);
-    $xtpl->assign('COUPON_CODE', $coupon_code);
-    $xtpl->assign('COUPON_ERROR', $coupon_error);
-    $xtpl->assign('COUPON_APPLIED', $coupon_applied);
 
     if (!empty($cart_items)) {
         foreach ($cart_items as $item) {
