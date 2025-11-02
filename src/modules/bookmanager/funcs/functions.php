@@ -117,6 +117,8 @@ function nv_create_order($customer_info, $payment_method)
 function nv_payos_create_payment_link($order_id, $amount, $description, $return_url, $cancel_url)
 {
     $payos_api_url = 'https://api-merchant.payos.vn/v2/payment-requests';
+
+    // 1. Dữ liệu gốc (để gửi trong body)
     $data = [
         'orderCode' => $order_id,
         'amount' => $amount,
@@ -125,11 +127,27 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
         'cancelUrl' => $cancel_url
     ];
     $json_data = json_encode($data);
-    $signature = hash_hmac('sha256', $json_data, PAYOS_CHECKSUM_KEY);
+
+    // 2. TẠO CHỮ KÝ ĐÚNG (SỬA LỖI Ở ĐÂY)
+    // Dữ liệu để tạo chữ ký phải được sắp xếp theo key
+    $data_to_sign = $data; // Copy mảng
+    ksort($data_to_sign); // Sắp xếp các key theo thứ tự alphabet
+
+    // Tạo chuỗi canonical (key1=value1&key2=value2...)
+    $canonical_string = '';
+    foreach ($data_to_sign as $key => $value) {
+        $canonical_string .= $key . '=' . $value . '&';
+    }
+    $canonical_string = rtrim($canonical_string, '&');
+
+    // 3. Tạo chữ ký từ chuỗi đã sắp xếp
+    $signature = hash_hmac('sha256', $canonical_string, PAYOS_CHECKSUM_KEY);
+
+    // 4. Chuẩn bị header (dùng chữ ký vừa tạo)
     $headers = [
         'x-client-id: ' . PAYOS_CLIENT_ID,
         'x-api-key: ' . PAYOS_API_KEY,
-        'x-signature: ' . $signature,
+        'x-signature: ' . $signature, // Chữ ký đã được sửa
         'Content-Type: application/json'
     ];
 
@@ -137,24 +155,19 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $payos_api_url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data); // Body là JSON của dữ liệu gốc
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        // ===========================================
-        // BẮT ĐẦU SỬA LỖI SSL CHO LOCALHOST
-        // ===========================================
+        
+        // Bỏ qua xác thực SSL (cho localhost)
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        // ===========================================
-        // KẾT THÚC SỬA LỖI SSL
-        // ===========================================
 
         $response_body = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        // Thêm code ghi log lỗi cURL
         if ($http_code != 200 && $http_code != 201) {
+             // Ghi log lỗi cURL
              error_log('PayOS cURL Error: ' . curl_error($ch));
         }
 
@@ -164,6 +177,9 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
             $response_data = json_decode($response_body, true);
             if ($response_data && $response_data['code'] == '00' && isset($response_data['data']['checkoutUrl'])) {
                 return $response_data['data']['checkoutUrl'];
+            } else {
+                // Ghi log nếu PayOS trả về lỗi (như lỗi code 20)
+                error_log('PayOS API Error: ' . $response_body); 
             }
         }
     } catch (Exception $e) {
