@@ -38,56 +38,64 @@ $order['total_amount_format'] = number_format($order['total_amount'], 0, ',', '.
 
 // Order status
 switch ($order['order_status']) {
-case 0:
-$order['order_status_text'] = $lang_module['order_pending'];
-$order['order_status_class'] = 'warning';
-$order['order_status_bg_warning'] = true;
-    $order['order_status_icon'] = true;
-break;
-case 1:
-$order['order_status_text'] = $lang_module['order_processing'];
+    case 0:
+        $order['order_status_text'] = $lang_module['order_pending'];
+        $order['order_status_class'] = 'warning';
+        $order['order_status_bg'] = '#fff3cd'; // Light yellow
+    $order['order_status_bg_warning'] = true;
+$order['order_status_icon'] = true;
+    break;
+    case 1:
+        $order['order_status_text'] = $lang_module['order_processing'];
 $order['order_status_class'] = 'info';
+$order['order_status_bg'] = '#d1ecf1'; // Light blue
 $order['order_status_bg_info'] = true;
-$order['order_status_icon_processing'] = true;
-break;
+       $order['order_status_icon_processing'] = true;
+        break;
 case 2:
-$order['order_status_text'] = $lang_module['order_delivered'];
-$order['order_status_class'] = 'success';
-$order['order_status_bg_success'] = true;
-    $order['order_status_icon_delivered'] = true;
+    $order['order_status_text'] = $lang_module['order_delivered'];
+    $order['order_status_class'] = 'success';
+$order['order_status_bg'] = '#d4edda'; // Light green
+    $order['order_status_bg_success'] = true;
+        $order['order_status_icon_delivered'] = true;
 break;
 case 3:
-$order['order_status_text'] = $lang_module['order_cancelled'];
-$order['order_status_class'] = 'danger';
-$order['order_status_bg_danger'] = true;
+    $order['order_status_text'] = $lang_module['order_cancelled'];
+    $order['order_status_class'] = 'danger';
+        $order['order_status_bg'] = '#f8d7da'; // Light red
+        $order['order_status_bg_danger'] = true;
     $order['order_status_icon_cancelled'] = true;
     break;
 default:
-$order['order_status_text'] = 'Không xác định';
-$order['order_status_class'] = 'secondary';
-$order['order_status_bg_secondary'] = true;
-$order['order_status_icon'] = true;
+        $order['order_status_text'] = 'Không xác định';
+        $order['order_status_class'] = 'secondary';
+        $order['order_status_bg'] = '#e2e3e5'; // Light gray
+        $order['order_status_bg_secondary'] = true;
+        $order['order_status_icon'] = true;
 }
 
 // Payment status
 switch ($order['payment_status']) {
-case 0:
-$order['payment_status_text'] = $lang_module['payment_pending'];
-$order['payment_status_class'] = 'danger';
-$order['payment_status_bg_danger'] = true;
-    $order['payment_status_icon'] = true;
-break;
-case 1:
-$order['payment_status_text'] = $lang_module['payment_paid'];
-$order['payment_status_class'] = 'success';
-$order['payment_status_bg_success'] = true;
-$order['payment_status_icon_paid'] = true;
+    case 0:
+        $order['payment_status_text'] = $lang_module['payment_pending'];
+        $order['payment_status_class'] = 'danger';
+        $order['payment_status_bg'] = '#f8d7da'; // Light red
+    $order['payment_status_bg_danger'] = true;
+$order['payment_status_icon'] = true;
     break;
-    default:
+case 1:
+    $order['payment_status_text'] = $lang_module['payment_paid'];
+$order['payment_status_class'] = 'success';
+$order['payment_status_bg'] = '#d4edda'; // Light green
+$order['payment_status_bg_success'] = true;
+    $order['payment_status_icon_paid'] = true;
+    break;
+default:
     $order['payment_status_text'] = 'Không xác định';
     $order['payment_status_class'] = 'secondary';
-    $order['payment_status_bg_secondary'] = true;
-    $order['payment_status_icon'] = true;
+        $order['payment_status_bg'] = '#e2e3e5'; // Light gray
+        $order['payment_status_bg_secondary'] = true;
+        $order['payment_status_icon'] = true;
 }
 
 // Get order items

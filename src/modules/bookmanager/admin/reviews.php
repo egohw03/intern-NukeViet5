@@ -63,8 +63,12 @@ if (!empty($reviews)) {
 foreach ($reviews as $review) {
 $review['status_text'] = $review['status'] ? $lang_module['approved'] : $lang_module['pending'];
 $review['status_class'] = $review['status'] ? 'success' : 'warning';
+$review['status_bg'] = $review['status'] ? '#28a745' : '#ffc107';
+$review['status_icon'] = $review['status'] ? '✓ ' : '⏳ ';
 
 $xtpl->assign('REVIEW', $review);
+
+$xtpl->parse('main.review_loop.status_icon');
 
 // Parse stars
 for ($i = 1; $i <= $review['rating']; $i++) {

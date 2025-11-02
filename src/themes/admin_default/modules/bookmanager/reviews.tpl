@@ -51,7 +51,12 @@
                     <td style="padding: 15px;">{REVIEW.username}</td>
                     <td style="padding: 20px;">{REVIEW.add_time_format}</td>
                     <td style="padding: 20px;">
-                    <span style="background: {REVIEW.status_bg}; color: #fff; padding: 5px 10px; border-radius: 4px;">{REVIEW.status_text}</span>
+                    <div style="display: inline-block; background: {REVIEW.status_bg}; color: #fff; padding: 8px 12px; border-radius: 8px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); font-size: 14px;">
+                        <!-- BEGIN: status_icon -->
+                        {REVIEW.status_icon}
+                        <!-- END: status_icon -->
+                        {REVIEW.status_text}
+                    </div>
                     </td>
                     <td style="padding: 20px; text-align: center;">
                         <!-- BEGIN: approve -->
