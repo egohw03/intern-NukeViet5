@@ -107,48 +107,109 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                 $order_code = $order_result['order_code'];
                 $order_id = $order_result['order_id'];
 
-                // Send confirmation email (MOVED TO WEBHOOK - only send after successful payment)
-                /*
-                try {
-                    nv_send_order_confirmation_email($order_code, $customer_info);
-                } catch (Exception $e) {
-                    // Log email error but don't stop the order process
-                    error_log('Email sending failed: ' . $e->getMessage());
-                }
-                */
-
                 // Payment routing
                 if ($payment_method == 'PAYOS') {
 
                     // ===========================================
-                    // BẮT ĐẦU SỬA LỖI URL LOCALHOST
-                    // Định nghĩa URL gốc của ngrok (phải khớp với ngrok đang chạy)
-                    $ngrok_base_url = 'https://unhumbled-paulita-noncreatively.ngrok-free.dev/nukeviet-nukeviet5.0/src/';
+                    // BẮT ĐẦU GIẢI PHÁP JAVASCRIPT BYPASS cURL
+                    // ===========================================
 
-                    // 1. Chuẩn bị URL
+                    // 1. Lấy Keys
+                    require_once NV_ROOTDIR . '/modules/bookmanager/payos_config.php';
+                    
+                    // 2. Chuẩn bị URL (DÙNG URL NGROK MỚI NHẤT CỦA BẠN)
+                    // URL NGROK TỪ LOG CỦA BẠN: https://unhumbled-paulita-noncreatively.ngrok-free.dev
+                    $ngrok_base_url = 'https://unhumbled-paulita-noncreatively.ngrok-free.dev/nukeviet-nukeviet5.0/src/';
+                    
                     $return_url = $ngrok_base_url . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=success&order_code=' . $order_code;
                     $cancel_url = $ngrok_base_url . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart';
+                    $description = 'Order ' . $order_id;
+
+                    // 3. Chuẩn bị data
+                    $order_id_int = (int)$order_id;
+                    $amount_int = (int)$total;
+
+                    $data_to_send = [
+                        'orderCode' => $order_id_int,
+                        'amount' => $amount_int,
+                        'description' => $description,
+                        'returnUrl' => $return_url,
+                        'cancelUrl' => $cancel_url
+                    ];
+                    
+                    // 4. Tạo chuỗi chữ ký (giống hệt funcs/functions.php)
+                    $canonical_string = "amount=" . $amount_int . "&cancelUrl=" . $cancel_url . "&description=" . $description . "&orderCode=" . $order_id_int . "&returnUrl=" . $return_url;
+                    
+                    // 5. Tạo chữ ký
+                    $signature = hash_hmac('sha256', $canonical_string, PAYOS_CHECKSUM_KEY);
+
+                    // 6. TẮT HEADER/FOOTER và IN HTML/JS
+                    @ob_end_clean(); // Xóa bộ đệm (nếu có)
+                    define('NV_NO_HEADER', true); // Tắt header NukeViet
+                    define('NV_NO_FOOTER', true); // Tắt footer NukeViet
+                    
+                    echo '<html><head><title>Đang chuyển hướng đến PayOS...</title>';
+                    echo '<style>body{font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f4; margin: 0;} .loader { border: 8px solid #f3f3f3; border-top: 8px solid #3498db; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>';
+                    echo '</head><body>';
+                    echo '<div style="text-align: center;">';
+                    echo '<div class="loader"></div>';
+                    echo '<p style="margin-top: 20px; font-size: 1.2em;">Đang chuyển hướng đến cổng thanh toán...</p>';
+                    echo '<p style="color: #777;">Vui lòng không tắt trình duyệt.</p>';
+                    echo '</div>';
+
+                    // 7. Nhúng dữ liệu vào JavaScript
+                    echo '<script>';
+                    echo 'const payosData = ' . json_encode($data_to_send) . ';';
+                    echo 'const payosApiUrl = "https://api-sandbox.payos.vn/v2/payment-requests";';
+                    echo 'const payosHeaders = {
+                            "x-client-id": "' . PAYOS_CLIENT_ID . '",
+                            "x-api-key": "' . PAYOS_API_KEY . '",
+                            "x-signature": "' . $signature . '",
+                            "Content-Type": "application/json"
+                          };';
+                          
+                    echo '
+                        async function redirectToPayOS() {
+                            try {
+                                const response = await fetch(payosApiUrl, {
+                                    method: "POST",
+                                    headers: payosHeaders,
+                                    body: JSON.stringify(payosData)
+                                });
+                                
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    throw new Error("Lỗi " + response.status + ": " + (errorData.desc || response.statusText));
+                                }
+                                
+                                const result = await response.json();
+                                
+                                if (result.code === "00" && result.data && result.data.checkoutUrl) {
+                                    // Thành công! Chuyển hướng
+                                    window.location.href = result.data.checkoutUrl;
+                                } else {
+                                    throw new Error("PayOS không trả về URL (Mã: " + result.code + "): " + (result.desc || "Lỗi không xác định"));
+                                }
+                            } catch (error) {
+                                console.error("Lỗi khi gọi PayOS:", error);
+                                alert("Không thể kết nối đến cổng thanh toán. Chi tiết: " + error.message + ". Vui lòng thử lại sau.");
+                                // Chuyển về giỏ hàng
+                                window.location.href = "' . $cancel_url . '"; 
+                            }
+                        }
+                        
+                        // Tự động chạy
+                        redirectToPayOS();
+                    ';
+                    echo '</script>';
+                    echo '</body></html>';
+                    
+                    // 8. Dừng NukeViet
+                    die();
+
                     // ===========================================
-                    // KẾT THÚC SỬA LỖI URL LOCALHOST
-
-                    $description = 'Order ' . $order_id; // Rút ngắn để dưới 25 ký tự
-
-                    // 2. Gọi hàm cURL để tạo link
-                    $checkout_url = nv_payos_create_payment_link(
-                        $order_id,
-                        (int)$total,
-                        $description,
-                        $return_url,
-                        $cancel_url
-                    );
-
-                    // 3. Chuyển hướng
-                    if ($checkout_url) {
-                        nv_redirect_location($checkout_url);
-                    } else {
-                        // Xử lý lỗi (ví dụ: hiển thị lỗi cho người dùng)
-                        $message = 'Không thể tạo link thanh toán. Vui lòng thử lại sau.';
-                    }
+                    // KẾT THÚC GIẢI PHÁP JAVASCRIPT
+                    // ===========================================
 
                 } else { // Nếu là COD
                     $order_created = true;
@@ -158,13 +219,14 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                         nv_send_order_confirmation_email($order_code, $customer_info);
                     } catch (Exception $e) {
                         // Log email error but don't stop the order process
-                        error_log('Email sending failed for COD order: ' . $e->getMessage());
+                        error_log('Email sending failed for COD order: ' . $e.getMessage());
                     }
                 }
             }
+        }
     }
 }
-}
+
 
 // Breadcrumbs
 $array_mod_title[] = [
@@ -178,12 +240,9 @@ $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('TOTAL', nv_format_price($total));
 
 if ($order_created) {
+    // Đoạn này chỉ chạy khi là COD
     $xtpl->assign('ORDER_CODE', $order_code);
-    if ($payment_method == 'PAYOS') {
-        $xtpl->parse('main.success.payos');
-    } else {
-        $xtpl->parse('main.success.cod');
-    }
+    $xtpl->parse('main.success.cod');
     $xtpl->parse('main.success');
 } else {
     // Cart items
@@ -240,3 +299,5 @@ $contents = $xtpl->text('main');
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);
 include NV_ROOTDIR . '/includes/footer.php';
+
+?>
