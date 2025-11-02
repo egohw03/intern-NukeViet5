@@ -233,26 +233,26 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 (10, 'Dac nhan tam', 'dac-nhan-tam', 'Dale Carnegie', 'NXB Lao dong Xa hoi', 2016, '978-6041150000', 'Sach kinh dien ve phat trien ky nang giao tiep.', 90000.00, 35, " . NV_CURRENTTIME . ", 1)";
 
 // Insert sample orders (without user dependencies for demo)
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders (userid, order_code, customer_name, customer_email, customer_phone, customer_address, total_amount, coupon_code, discount_amount, transaction_id, payment_info, order_status, payment_status, payment_method, order_note, add_time, edit_time) VALUES
-(0, 'ORD001', 'Nguyen Van A', 'nguyenvana@example.com', '0123456789', '123 Duong ABC, Ha Noi', 500000.00, '', 0.00, NULL, NULL, 2, 1, 'COD', 'Giao hang nhanh', " . (NV_CURRENTTIME - 86400*2) . ", " . NV_CURRENTTIME . "),
-(0, 'ORD002', 'Tran Thi B', 'tranthib@example.com', '0987654321', '456 Duong XYZ, TP.HCM', 320000.00, 'WELCOME10', 32000.00, 'TXN001', 'Payment processed via bank transfer', 2, 1, 'Bank Transfer', 'Goi ky', " . (NV_CURRENTTIME - 86400*1) . ", " . NV_CURRENTTIME . "),
-(0, 'ORD003', 'Le Van C', 'levanc@example.com', '0111111111', '789 Duong DEF, Da Nang', 180000.00, '', 0.00, NULL, NULL, 0, 0, 'COD', 'Dang xu ly', " . NV_CURRENTTIME . ", NULL),
-(0, 'ORD004', 'Pham Thi D', 'phamthid@example.com', '0222222222', '321 Duong GHI, Can Tho', 750000.00, 'SUMMER20', 150000.00, 'TXN002', 'Credit card payment successful', 2, 1, 'Credit Card', 'Thanh toan online', " . (NV_CURRENTTIME - 86400*3) . ", " . NV_CURRENTTIME . "),
-(0, 'ORD005', 'Hoang Van E', 'hoangvane@example.com', '0333333333', '654 Duong JKL, Hai Phong', 400000.00, '', 0.00, NULL, NULL, 3, 0, 'COD', 'Khach hang huy', " . (NV_CURRENTTIME - 86400*7) . ", " . NV_CURRENTTIME . "),
-(0, 'ORD006', 'Test Customer', 'test@example.com', '0444444444', 'Test Address', 220000.00, '', 0.00, NULL, NULL, 1, 0, 'COD', 'Dang van chuyen', " . (NV_CURRENTTIME - 86400*5) . ", " . NV_CURRENTTIME . ")";
+// $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders (userid, order_code, customer_name, customer_email, customer_phone, customer_address, total_amount, coupon_code, discount_amount, transaction_id, payment_info, order_status, payment_status, payment_method, order_note, add_time, edit_time) VALUES
+// (0, 'ORD001', 'Nguyen Van A', 'nguyenvana@example.com', '0123456789', '123 Duong ABC, Ha Noi', 500000.00, '', 0.00, NULL, NULL, 2, 1, 'COD', 'Giao hang nhanh', " . (NV_CURRENTTIME - 86400*2) . ", " . NV_CURRENTTIME . "),
+// (0, 'ORD002', 'Tran Thi B', 'tranthib@example.com', '0987654321', '456 Duong XYZ, TP.HCM', 320000.00, 'WELCOME10', 32000.00, 'TXN001', 'Payment processed via bank transfer', 2, 1, 'Bank Transfer', 'Goi ky', " . (NV_CURRENTTIME - 86400*1) . ", " . NV_CURRENTTIME . "),
+// (0, 'ORD003', 'Le Van C', 'levanc@example.com', '0111111111', '789 Duong DEF, Da Nang', 180000.00, '', 0.00, NULL, NULL, 0, 0, 'COD', 'Dang xu ly', " . NV_CURRENTTIME . ", NULL),
+// (0, 'ORD004', 'Pham Thi D', 'phamthid@example.com', '0222222222', '321 Duong GHI, Can Tho', 750000.00, 'SUMMER20', 150000.00, 'TXN002', 'Credit card payment successful', 2, 1, 'Credit Card', 'Thanh toan online', " . (NV_CURRENTTIME - 86400*3) . ", " . NV_CURRENTTIME . "),
+// (0, 'ORD005', 'Hoang Van E', 'hoangvane@example.com', '0333333333', '654 Duong JKL, Hai Phong', 400000.00, '', 0.00, NULL, NULL, 3, 0, 'COD', 'Khach hang huy', " . (NV_CURRENTTIME - 86400*7) . ", " . NV_CURRENTTIME . "),
+// (0, 'ORD006', 'Test Customer', 'test@example.com', '0444444444', 'Test Address', 220000.00, '', 0.00, NULL, NULL, 1, 0, 'COD', 'Dang van chuyen', " . (NV_CURRENTTIME - 86400*5) . ", " . NV_CURRENTTIME . ")";
 
 // Insert sample order items
-$sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_order_items (order_id, book_id, quantity, price) VALUES
-(1, 1, 2, 150000.00),
-(1, 4, 1, 200000.00),
-(2, 3, 1, 120000.00),
-(2, 7, 1, 200000.00),
-(3, 2, 1, 180000.00),
-(4, 6, 1, 190000.00),
-(4, 9, 2, 280000.00),
-(4, 11, 1, 400000.00),
-(5, 10, 1, 400000.00),
-(6, 12, 1, 220000.00)";
+// $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_order_items (order_id, book_id, quantity, price) VALUES
+// (1, 1, 2, 150000.00),
+// (1, 4, 1, 200000.00),
+// (2, 3, 1, 120000.00),
+// (2, 7, 1, 200000.00),
+// (3, 2, 1, 180000.00),
+// (4, 6, 1, 190000.00),
+// (4, 9, 2, 280000.00),
+// (4, 11, 1, 400000.00),
+// (5, 10, 1, 400000.00),
+// (6, 12, 1, 220000.00)";
 
 // Insert sample coupons
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_coupons (code, discount_type, discount_value, max_discount, usage_limit, min_order_amount, start_time, end_time, status) VALUES
@@ -260,5 +260,3 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 ('SUMMER20', 'percentage', 20.00, 200000.00, 50, 200000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
 ('SAVE50K', 'fixed', 50000.00, NULL, 200, 150000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
 ('NEWYEAR30', 'percentage', 30.00, 300000.00, 20, 500000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1)";
-
-
