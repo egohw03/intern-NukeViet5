@@ -172,10 +172,10 @@ if (!empty($orders)) {
 
         // Enhanced status badges with icons and colors
         $status_badges = [
-            0 => ['class' => 'warning', 'icon' => '⏳', 'bg' => '#ffc107', 'text' => 'Chờ xử lý'],
-            1 => ['class' => 'info', 'icon' => '⚙️', 'bg' => '#17a2b8', 'text' => 'Đang xử lý'],
-            2 => ['class' => 'success', 'icon' => '✅', 'bg' => '#28a745', 'text' => 'Đã giao'],
-            3 => ['class' => 'danger', 'icon' => '❌', 'bg' => '#dc3545', 'text' => 'Đã hủy']
+        0 => ['class' => 'warning', 'icon' => '⏳', 'bg' => '#ffc107', 'text' => 'Chờ xử lý'],
+        1 => ['class' => 'info', 'icon' => '🚚', 'bg' => '#17a2b8', 'text' => 'Đang giao hàng'],
+        2 => ['class' => 'success', 'icon' => '✅', 'bg' => '#28a745', 'text' => 'Đã giao hàng'],
+        3 => ['class' => 'danger', 'icon' => '❌', 'bg' => '#dc3545', 'text' => 'Đã hủy']
         ];
         $order['status_config'] = $status_badges[$order['order_status']] ?? ['class' => 'secondary', 'icon' => '❓', 'bg' => '#6c757d', 'text' => 'Không xác định'];
 
