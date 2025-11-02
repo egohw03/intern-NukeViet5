@@ -11,5 +11,7 @@ define('PAYOS_CHECKSUM_KEY', '4f56b5991899d9732a561e6cc4e6190c7db78008c9c0d70f75
 
 // Webhook URL
 // (Hãy đảm bảo tên miền ngrok là đúng với cái đang chạy)
+
+// URL đúng (trỏ tới file .php trực tiếp, không qua index.php)
 define('PAYOS_WEBHOOK_URL', 'https://unhumbled-paulita-noncreatively.ngrok-free.dev/nukeviet-nukeviet5.0/src/modules/bookmanager/funcs/webhook.php');
 ?>
