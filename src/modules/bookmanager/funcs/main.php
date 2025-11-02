@@ -11,6 +11,9 @@
 
 require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
 
+global $op_theme;
+$op_theme = 'full';
+
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
 

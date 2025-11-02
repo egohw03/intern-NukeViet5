@@ -11,7 +11,8 @@
 
 require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
 
-global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $module_upload, $user_info, $module_info, $module_file, $array_mod_title;
+global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $module_upload, $user_info, $module_info, $module_file, $array_mod_title, $op_theme;
+$op_theme = 'full';
 // Temporarily allow access without login for testing
 // if (!defined('NV_IS_USER')) {
 //     nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
@@ -193,7 +194,7 @@ if (!empty($orders)) {
         $order['payment_method_text'] = $payment_methods[$order['payment_method']] ?? $order['payment_method'];
 
         // Add view detail link
-        $order['view_detail_link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order_detail&id=' . $order['id'];
+        $order['view_detail_link'] = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order_detail&id=' . $order['id'], true);
 
         $xtpl->assign('ORDER', $order);
         $xtpl->parse('main.order_loop.view_detail');

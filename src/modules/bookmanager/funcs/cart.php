@@ -15,7 +15,8 @@ ini_set('display_errors', 1);
 
 require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
 
-global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $module_upload, $user_info, $module_info, $module_file, $array_mod_title;
+global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $module_upload, $user_info, $module_info, $module_file, $array_mod_title, $op_theme;
+$op_theme = 'full';
 
 
 

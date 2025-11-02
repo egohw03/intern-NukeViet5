@@ -13,22 +13,27 @@ if (!defined('NV_SYSTEM')) {
     die('Stop!!!');
 }
 
-global $module_file;
+global $module_file, $op_theme;
 
-// Frontend functions
-$array_op = array();
-$array_op[] = 'main';
-$array_op[] = 'detail';
-$array_op[] = 'cart';
-$array_op[] = 'checkout';
-$array_op[] = 'orders';
-$array_op[] = 'order_detail';
-$array_op[] = 'search';
-$array_op[] = 'address';
-$array_op[] = 'success';
-$array_op[] = 'webhook';
+// Set full width layout for all pages
+$op_theme = 'full';
+define('NV_IS_FULL', true);
+
+// Frontend functions with SEO URLs
+$array_op = array(
+    'main' => '',
+    'detail' => 'detail',
+    'cart' => 'cart',
+    'checkout' => 'checkout',
+    'orders' => 'orders',
+    'order_detail' => 'order_detail',
+    'search' => 'search',
+    'address' => 'address',
+    'success' => 'success',
+    'webhook' => 'webhook'
+);
 
 // Default function
-$op = in_array($op, $array_op) ? $op : 'main';
+$op = array_key_exists($op, $array_op) ? $op : 'main';
 
 // Functions included in each file
