@@ -260,3 +260,6 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 ('SUMMER20', 'percentage', 20.00, 200000.00, 50, 200000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
 ('SAVE50K', 'fixed', 50000.00, NULL, 200, 150000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1),
 ('NEWYEAR30', 'percentage', 30.00, 300000.00, 20, 500000.00, " . NV_CURRENTTIME . ", " . (NV_CURRENTTIME + 2592000) . ", 1)";
+
+// Update existing orders to use COD only (for migration)
+$sql_create_module[] = "UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders SET payment_method = 'COD', payment_status = 1 WHERE payment_method IN ('bank_transfer', 'card')";

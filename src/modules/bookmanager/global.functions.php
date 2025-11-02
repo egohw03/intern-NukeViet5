@@ -561,75 +561,10 @@ Thông tin giao hàng:
     return $result;
 }
 
-/**
- * Generate VNPay payment URL (placeholder - needs actual VNPay integration)
- */
-function nv_generate_vnpay_payment_url($order_code, $amount)
-{
-    // This is a placeholder for VNPay integration
-    // In real implementation, you would:
-    // 1. Configure VNPay credentials (vnp_TmnCode, vnp_HashSecret, etc.)
-    // 2. Generate payment URL with required parameters
-    // 3. Handle return URL and IPN (Instant Payment Notification)
-
-    // For now, return a placeholder URL
-    return NV_BASE_SITEURL . 'index.php?payment=success&order=' . $order_code;
-
-    /*
-    Example real implementation:
-
-    $vnp_TmnCode = "YOUR_TMNCODE"; // Mã website tại VNPAY
-    $vnp_HashSecret = "YOUR_HASHSECRET"; // Chuỗi bí mật
-    $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    $vnp_Returnurl = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=bookmanager&" . NV_OP_VARIABLE . "=payment_callback";
-
-    $vnp_TxnRef = $order_code; // Mã giao dịch
-    $vnp_OrderInfo = "Thanh toan don hang " . $order_code;
-    $vnp_OrderType = "billpayment";
-    $vnp_Amount = $amount * 100; // VNPay expects amount in smallest currency unit
-    $vnp_Locale = "vn";
-    $vnp_BankCode = "";
-    $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-
-    $inputData = array(
-        "vnp_Version" => "2.1.0",
-        "vnp_TmnCode" => $vnp_TmnCode,
-        "vnp_Amount" => $vnp_Amount,
-        "vnp_Command" => "pay",
-        "vnp_CreateDate" => date('YmdHis'),
-        "vnp_CurrCode" => "VND",
-        "vnp_IpAddr" => $vnp_IpAddr,
-        "vnp_Locale" => $vnp_Locale,
-        "vnp_OrderInfo" => $vnp_OrderInfo,
-        "vnp_OrderType" => $vnp_OrderType,
-        "vnp_ReturnUrl" => $vnp_Returnurl,
-        "vnp_TxnRef" => $vnp_TxnRef,
-    );
-
-    ksort($inputData);
-    $query = "";
-    $i = 0;
-    $hashdata = "";
-    foreach ($inputData as $key => $value) {
-        if ($i == 1) {
-            $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
-        } else {
-            $hashdata .= urlencode($key) . "=" . urlencode($value);
-            $i = 1;
-        }
-        $query .= urlencode($key) . "=" . urlencode($value) . '&';
-    }
-
-    $vnp_Url = $vnp_Url . "?" . $query;
-    if (isset($vnp_HashSecret)) {
-        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
-        $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
-    }
-
-    return $vnp_Url;
-    */
-}
-
+/*
+ * VNPay integration removed - only COD payment is supported
+ * Function nv_generate_vnpay_payment_url() has been removed
+*/
 /**
  * Get book reviews
  */

@@ -68,12 +68,9 @@
                                 <input type="tel" name="customer_phone" value="{CUSTOMER_PHONE}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
                             </div>
                             <div>
-                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phương thức thanh toán</label>
-                                <select name="payment_method" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                                    <option value="COD" <!-- BEGIN: cod_selected -->selected<!-- END: cod_selected -->>Thanh toán khi nhận hàng (COD)</option>
-                                    <option value="bank_transfer" <!-- BEGIN: bank_selected -->selected<!-- END: bank_selected -->>Chuyển khoản ngân hàng</option>
-                                    <option value="card" <!-- BEGIN: card_selected -->selected<!-- END: card_selected -->>Thẻ tín dụng</option>
-                                </select>
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phương thức thanh toán</label>
+                            <input type="hidden" name="payment_method" value="COD">
+                            <div style="padding: 8px; background: #e9ecef; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; color: #495057;">Thanh toán khi nhận hàng (COD)</div>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">

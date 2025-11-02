@@ -42,23 +42,7 @@ if (!empty($order_code)) {
     $order['payment_time_format'] = !empty($order['payment_time']) ? nv_date('d/m/Y H:i', $order['payment_time']) : '';
 }
 
-// Handle payment confirmation (for bank transfer)
-$payment_confirmed = false;
-$confirmation_message = '';
-
-if ($action == 'confirm_payment' && !empty($order_code)) {
-    // In real implementation, this would verify bank transfer
-    // For now, just mark as paid
-    if (nv_update_order_payment_status($order_code, 1)) {
-        $payment_confirmed = true;
-        $confirmation_message = 'Thanh toán đã được xác nhận thành công!';
-
-        // Update order status to processing
-        $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_orders SET order_status = 1 WHERE order_code = "' . $order_code . '"');
-    } else {
-        $confirmation_message = 'Có lỗi xảy ra khi xác nhận thanh toán.';
-    }
-}
+// Payment confirmation not needed for COD only system
 
 // Breadcrumbs
 $array_mod_title[] = [
@@ -87,44 +71,15 @@ if (!empty($order)) {
 
     $xtpl->assign('PAYMENT_STATUS', $payment_statuses[$order['payment_status']] ?? 'N/A');
 
-    // Payment instructions based on method
-    if ($order['payment_method'] == 'bank_transfer' && $order['payment_status'] == 0) {
-        $bank_info = [
-            'bank_name' => 'Ngân hàng TMCP Ngoại thương Việt Nam (Vietcombank)',
-            'account_number' => '1234567890',
-            'account_holder' => 'CONG TY TNHH BOOKMANAGER',
-            'amount' => $order['total_amount'],
-            'content' => 'Thanh toan don hang ' . $order_code
-        ];
-
-        $xtpl->assign('BANK_NAME', $bank_info['bank_name']);
-        $xtpl->assign('ACCOUNT_NUMBER', $bank_info['account_number']);
-        $xtpl->assign('ACCOUNT_HOLDER', $bank_info['account_holder']);
-        $xtpl->assign('AMOUNT_FORMAT', nv_format_price($bank_info['amount']));
-        $xtpl->assign('CONTENT', $bank_info['content']);
-
-        // Show confirm payment button for demo
-        $xtpl->assign('CONFIRM_LINK', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_code=' . $order_code . '&action=confirm_payment');
-        $xtpl->parse('main.order_details.bank_transfer_pending');
-        $xtpl->parse('main.order_details.bank_transfer');
-    } elseif ($order['payment_method'] == 'COD') {
+    // Payment instructions - only COD is supported
+    if ($order['payment_method'] == 'COD') {
         $xtpl->parse('main.order_details.cod');
     }
 
     $xtpl->parse('main.order_details');
 }
 
-// Success message
-if ($payment_confirmed) {
-    $xtpl->assign('SUCCESS_MESSAGE', $confirmation_message);
-    $xtpl->parse('main.success');
-}
-
-// Error message
-if (!empty($confirmation_message) && !$payment_confirmed) {
-    $xtpl->assign('ERROR_MESSAGE', $confirmation_message);
-    $xtpl->parse('main.error');
-}
+// No payment confirmation needed for COD
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');

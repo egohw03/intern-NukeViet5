@@ -62,13 +62,7 @@ if (!$nv_Request->isset_request('checkout', 'post') && !$nv_Request->isset_reque
     $customer_email = $nv_Request->get_title('customer_email', 'post', $user_info['email']);
     $customer_phone = $nv_Request->get_title('customer_phone', 'post', $default_address['phone'] ?? '');
     $customer_address = $nv_Request->get_textarea('customer_address', 'post', $default_address['address'] ?? '', 'br');
-    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
-    // Normalize payment method values
-    if ($payment_method == 'Bank Transfer') {
-        $payment_method = 'bank_transfer';
-    } elseif ($payment_method == 'Credit Card') {
-        $payment_method = 'card';
-    }
+    $payment_method = 'COD'; // Only COD is supported
     $saved_address_id = $nv_Request->get_int('saved_address', 'post', 0);
     if ($saved_address_id > 0 && $customer_name == $user_info['full_name'] && $customer_phone == ($default_address['phone'] ?? '') && $customer_address == ($default_address['address'] ?? '')) {
         // If user selected a saved address and hasn't modified the inputs, use the selected address
@@ -108,13 +102,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         'address' => $nv_Request->get_textarea('customer_address', 'post', '', 'br')
     ];
 
-    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
-    // Normalize payment method values
-    if ($payment_method == 'Bank Transfer') {
-        $payment_method = 'bank_transfer';
-    } elseif ($payment_method == 'Credit Card') {
-        $payment_method = 'card';
-    }
+    $payment_method = 'COD'; // Only COD is supported
 
     if (!empty($customer_info['name']) && !empty($customer_info['email']) && !empty($customer_info['phone']) && !empty($customer_info['address'])) {
         // Check stock availability before creating order
@@ -132,22 +120,16 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         } else {
             $order_code = nv_create_order_with_coupon($customer_info, $payment_method, $coupon_applied ? $coupon_result['coupon']['id'] : 0, $discount);
             if ($order_code) {
-    // Send confirmation email (don't fail the order if email fails)
-    try {
-        nv_send_order_confirmation_email($order_code, $customer_info);
-    } catch (Exception $e) {
-        // Log email error but don't stop the order process
-        error_log('Email sending failed: ' . $e->getMessage());
-    }
+                // Send confirmation email (don't fail the order if email fails)
+                try {
+                    nv_send_order_confirmation_email($order_code, $customer_info);
+                } catch (Exception $e) {
+                    // Log email error but don't stop the order process
+                    error_log('Email sending failed: ' . $e->getMessage());
+                }
 
-        if ($payment_method == 'card') {
-                // Redirect to VNPay payment gateway
-                $vnpay_url = nv_generate_vnpay_payment_url($order_code, $final_total);
-                nv_redirect_location($vnpay_url);
-            } else {
                 $order_created = true;
             }
-        }
     }
 }
 }
@@ -202,14 +184,8 @@ if ($order_created) {
     $xtpl->assign('CUSTOMER_ADDRESS', $customer_address);
     $xtpl->assign('COUPON_CODE', $coupon_code_input);
 
-    // Payment method selected
-    if ($payment_method == 'COD') {
-        $xtpl->parse('main.checkout_form.cod_selected');
-    } elseif ($payment_method == 'bank_transfer') {
-        $xtpl->parse('main.checkout_form.bank_selected');
-    } elseif ($payment_method == 'card') {
-        $xtpl->parse('main.checkout_form.card_selected');
-    }
+    // Payment method is always COD
+    $xtpl->parse('main.checkout_form.cod_selected');
 
     // Coupon message
     if (!empty($coupon_message)) {
