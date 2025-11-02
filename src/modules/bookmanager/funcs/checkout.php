@@ -131,7 +131,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                     // ===========================================
                     // KẾT THÚC SỬA LỖI URL LOCALHOST
 
-                    $description = $order_code; // Rút ngắn (đã sửa ở bước trước)
+                    $description = 'Order ' . $order_id; // Rút ngắn để dưới 25 ký tự
 
                     // 2. Gọi hàm cURL để tạo link
                     $checkout_url = nv_payos_create_payment_link(
