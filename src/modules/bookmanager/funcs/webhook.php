@@ -53,21 +53,20 @@ try {
             $stmt_update->bindParam(':order_id', $order_id, PDO::PARAM_INT);
             $stmt_update->execute();
 
-            // 4. Gửi email xác nhận thanh toán thành công
-            $customer_info = [
-                'name' => $order['customer_name'],
-                'email' => $order['customer_email'],
-                'phone' => $order['customer_phone'],
-                'address' => $order['customer_address']
-            ];
-
-            try {
-                // global.functions.php đã được nạp bởi NukeViet
-                nv_send_order_confirmation_email($order['order_code'], $customer_info);
-                error_log('Payment confirmation email sent for order: ' . $order['order_code']);
-            } catch (Exception $e) {
-                error_log('Failed to send payment confirmation email: ' . $e->getMessage());
-            }
+            // Email disabled
+            // $customer_info = [
+            //     'name' => $order['customer_name'],
+            //     'email' => $order['customer_email'],
+            //     'phone' => $order['customer_phone'],
+            //     'address' => $order['customer_address']
+            // ];
+            //
+            // try {
+            //     nv_send_order_confirmation_email($order['order_code'], $customer_info);
+            //     error_log('Payment confirmation email sent for order: ' . $order['order_code']);
+            // } catch (Exception $e) {
+            //     error_log('Failed to send payment confirmation email: ' . $e->getMessage());
+            // }
         }
 
         // 5. Phản hồi 200 OK cho PayOS

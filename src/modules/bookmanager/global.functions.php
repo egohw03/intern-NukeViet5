@@ -331,16 +331,16 @@ function nv_update_order_payment_status($order_code, $payment_status)
     return $stmt->execute();
 }
 
-/**
- * Send order confirmation email
- */
+/** 
+* Send order confirmation email
+*/
 function nv_send_order_confirmation_email($order_code, $customer_info)
 {
     global $db, $module_data, $module_name, $lang_module, $global_config;
 
-    // Skip sending email if disabled in development
-    if (defined('NV_IS_DEVELOPMENT') && NV_IS_DEVELOPMENT === true) {
-        error_log('Email sending skipped in development mode for order: ' . $order_code);
+    // Check if SMTP is configured in NukeViet
+    if (empty($global_config['smtp_host'])) {
+        error_log('Email sending skipped - SMTP not configured in NukeViet for order: ' . $order_code);
         return true;
     }
 

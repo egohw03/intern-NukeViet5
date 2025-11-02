@@ -13,6 +13,9 @@ if (!defined('NV_IS_FILE_ADMIN'))
 
 global $db, $nv_Request, $lang_module, $lang_global, $module_data, $module_name, $global_config, $module_upload;
 
+// Debug: check admin theme
+// echo $global_config['admin_theme']; die;
+
 $id = $nv_Request->get_int('id', 'get', 0);
 
 if ($id <= 0) {
@@ -35,48 +38,56 @@ $order['total_amount_format'] = number_format($order['total_amount'], 0, ',', '.
 
 // Order status
 switch ($order['order_status']) {
-case 0:
-$order['order_status_text'] = $lang_module['order_pending'];
-$order['order_status_class'] = 'warning';
-$order['order_status_text_dark'] = true;
-    break;
-case 1:
-$order['order_status_text'] = $lang_module['order_processing'];
-$order['order_status_class'] = 'info';
-    $order['order_status_text_dark'] = true;
-break;
-case 2:
-$order['order_status_text'] = $lang_module['order_delivered'];
-    $order['order_status_class'] = 'success';
-$order['order_status_text_white'] = true;
-break;
-case 3:
-    $order['order_status_text'] = $lang_module['order_cancelled'];
-$order['order_status_class'] = 'danger';
-$order['order_status_text_white'] = true;
+    case 0:
+        $order['order_status_text'] = $lang_module['order_pending'];
+        $order['order_status_class'] = 'warning';
+        $order['order_status_text_dark'] = true;
+    $order['order_status_icon'] = true;
         break;
+    case 1:
+        $order['order_status_text'] = $lang_module['order_processing'];
+    $order['order_status_class'] = 'info';
+        $order['order_status_text_dark'] = true;
+        $order['order_status_icon_processing'] = true;
+        break;
+case 2:
+        $order['order_status_text'] = $lang_module['order_delivered'];
+        $order['order_status_class'] = 'success';
+        $order['order_status_text_white'] = true;
+    $order['order_status_icon_delivered'] = true;
+        break;
+    case 3:
+    $order['order_status_text'] = $lang_module['order_cancelled'];
+        $order['order_status_class'] = 'danger';
+    $order['order_status_text_white'] = true;
+    $order['order_status_icon_cancelled'] = true;
+    break;
     default:
         $order['order_status_text'] = 'Không xác định';
         $order['order_status_class'] = 'secondary';
         $order['order_status_text_dark'] = true;
+        $order['order_status_icon'] = true;
 }
 
 // Payment status
 switch ($order['payment_status']) {
-case 0:
-$order['payment_status_text'] = $lang_module['payment_pending'];
-$order['payment_status_class'] = 'danger';
-$order['payment_status_text_white'] = true;
+    case 0:
+        $order['payment_status_text'] = $lang_module['payment_pending'];
+        $order['payment_status_class'] = 'danger';
+        $order['payment_status_text_white'] = true;
+    $order['payment_status_icon'] = true;
+        break;
+    case 1:
+        $order['payment_status_text'] = $lang_module['payment_paid'];
+    $order['payment_status_class'] = 'success';
+        $order['payment_status_text_white'] = true;
+        $order['payment_status_icon_paid'] = true;
     break;
-case 1:
-$order['payment_status_text'] = $lang_module['payment_paid'];
-$order['payment_status_class'] = 'success';
-    $order['payment_status_text_white'] = true;
-break;
 default:
-        $order['payment_status_text'] = 'Không xác định';
+    $order['payment_status_text'] = 'Không xác định';
         $order['payment_status_class'] = 'secondary';
         $order['payment_status_text_dark'] = true;
+        $order['payment_status_icon'] = true;
 }
 
 // Get order items
@@ -103,17 +114,33 @@ $xtpl->assign('OP', $op);
 $xtpl->assign('ORDER', $order);
 $xtpl->assign('BACK_LINK', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders');
 
-// Parse text color for badges
+// Parse text color and icons for alerts
 if (!empty($order['order_status_text_white'])) {
     $xtpl->parse('main.order_status_text_white');
 } elseif (!empty($order['order_status_text_dark'])) {
     $xtpl->parse('main.order_status_text_dark');
 }
 
+if (!empty($order['order_status_icon'])) {
+    $xtpl->parse('main.order_status_icon');
+} elseif (!empty($order['order_status_icon_processing'])) {
+    $xtpl->parse('main.order_status_icon_processing');
+} elseif (!empty($order['order_status_icon_delivered'])) {
+    $xtpl->parse('main.order_status_icon_delivered');
+} elseif (!empty($order['order_status_icon_cancelled'])) {
+    $xtpl->parse('main.order_status_icon_cancelled');
+}
+
 if (!empty($order['payment_status_text_white'])) {
     $xtpl->parse('main.payment_status_text_white');
 } elseif (!empty($order['payment_status_text_dark'])) {
     $xtpl->parse('main.payment_status_text_dark');
+}
+
+if (!empty($order['payment_status_icon'])) {
+    $xtpl->parse('main.payment_status_icon');
+} elseif (!empty($order['payment_status_icon_paid'])) {
+    $xtpl->parse('main.payment_status_icon_paid');
 }
 
 // Order items

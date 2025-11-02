@@ -212,15 +212,14 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                     // ===========================================
 
                 } else { // Nếu là COD
-                    $order_created = true;
+                $order_created = true;
 
-                    // Gửi email xác nhận ngay lập tức vì là COD
-                    try {
-                        nv_send_order_confirmation_email($order_code, $customer_info);
-                    } catch (Exception $e) {
-                        // Log email error but don't stop the order process
-                        error_log('Email sending failed for COD order: ' . $e.getMessage());
-                    }
+                // Email disabled
+                // try {
+                //     nv_send_order_confirmation_email($order_code, $customer_info);
+                // } catch (Exception $e) {
+                //     error_log('Email sending failed for COD order: ' . $e.getMessage());
+                // }
                 }
             }
         }
