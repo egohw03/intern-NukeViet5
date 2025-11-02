@@ -116,34 +116,34 @@ function nv_create_order($customer_info, $payment_method)
  */
 function nv_payos_create_payment_link($order_id, $amount, $description, $return_url, $cancel_url)
 {
-    $payos_api_url = 'https://api-merchant.payos.vn/v2/payment-requests';
+    // Load config (để lấy keys)
+    require_once NV_ROOTDIR . '/modules/bookmanager/payos_config.php';
+    
+    $payos_api_url = 'https://api-sandbox.payos.vn/v2/payment-requests';
 
-    // 1. Dữ liệu gốc (để gửi trong body)
+    // 1. Đảm bảo các kiểu dữ liệu là ĐÚNG
+    $order_id_int = (int)$order_id;
+    $amount_int = (int)$amount;
+
+    // 2. Dữ liệu gốc (để gửi trong body JSON)
     $data = [
-        'orderCode' => $order_id,
-        'amount' => $amount,
+        'orderCode' => $order_id_int,
+        'amount' => $amount_int,
         'description' => $description,
         'returnUrl' => $return_url,
         'cancelUrl' => $cancel_url
     ];
     $json_data = json_encode($data);
 
-    // 2. TẠO CHỮ KÝ ĐÚNG (SỬA LỖI Ở ĐÂY)
-    // Dữ liệu để tạo chữ ký phải được sắp xếp theo key
-    $data_to_sign = $data; // Copy mảng
-    ksort($data_to_sign); // Sắp xếp các key theo thứ tự alphabet
+    // 3. TẠO CHỮ KÝ ĐÚNG (Thứ tự CỤ THỂ)
+    // Thứ tự phải là: amount, cancelUrl, description, orderCode, returnUrl
+    
+    $canonical_string = "amount=" . $amount_int . "&cancelUrl=" . $cancel_url . "&description=" . $description . "&orderCode=" . $order_id_int . "&returnUrl=" . $return_url;
 
-    // Tạo chuỗi canonical (key1=value1&key2=value2...)
-    $canonical_string = '';
-    foreach ($data_to_sign as $key => $value) {
-        $canonical_string .= $key . '=' . $value . '&';
-    }
-    $canonical_string = rtrim($canonical_string, '&');
-
-    // 3. Tạo chữ ký từ chuỗi đã sắp xếp
+    // 4. Tạo chữ ký từ chuỗi đã sắp xếp CỤ THỂ
     $signature = hash_hmac('sha256', $canonical_string, PAYOS_CHECKSUM_KEY);
 
-    // 4. Chuẩn bị header (dùng chữ ký vừa tạo)
+    // 5. Chuẩn bị header
     $headers = [
         'x-client-id: ' . PAYOS_CLIENT_ID,
         'x-api-key: ' . PAYOS_API_KEY,
@@ -155,7 +155,7 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $payos_api_url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data); // Body là JSON của dữ liệu gốc
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data); // Body là JSON
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
@@ -167,7 +167,6 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($http_code != 200 && $http_code != 201) {
-             // Ghi log lỗi cURL
              error_log('PayOS cURL Error: ' . curl_error($ch));
         }
 
