@@ -132,9 +132,10 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                         $return_url,
                         $cancel_url
                     );
-                    // 3. Chuyển hướng
+                    // 3. Nếu tạo link thành công, hiển thị success với link thanh toán
                     if ($checkout_url) {
-                        nv_redirect_location($checkout_url);
+                        $order_created = true;
+                        $xtpl->assign('CHECKOUT_URL', $checkout_url);
                     } else {
                         // Xử lý lỗi (ví dụ: hiển thị lỗi cho người dùng)
                         $message = 'Không thể tạo link thanh toán. Vui lòng thử lại sau.';
@@ -161,6 +162,11 @@ $xtpl->assign('TOTAL', nv_format_price($total));
 
 if ($order_created) {
     $xtpl->assign('ORDER_CODE', $order_code);
+    if ($payment_method == 'PAYOS') {
+        $xtpl->parse('main.success.payos');
+    } else {
+        $xtpl->parse('main.success.cod');
+    }
     $xtpl->parse('main.success');
 } else {
     // Cart items
@@ -203,6 +209,11 @@ if ($order_created) {
         $xtpl->assign('PAYOS_CHECKED', '');
     }
 
+    if (!empty($message)) {
+        $xtpl->assign('MESSAGE', '<div class="alert alert-danger">' . $message . '</div>');
+    } else {
+        $xtpl->assign('MESSAGE', '');
+    }
     $xtpl->parse('main.checkout_form');
 }
 

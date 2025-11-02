@@ -141,8 +141,23 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+        // ===========================================
+        // BẮT ĐẦU SỬA LỖI SSL CHO LOCALHOST
+        // ===========================================
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        // ===========================================
+        // KẾT THÚC SỬA LỖI SSL
+        // ===========================================
+
         $response_body = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        // Thêm code ghi log lỗi cURL
+        if ($http_code != 200 && $http_code != 201) {
+             error_log('PayOS cURL Error: ' . curl_error($ch));
+        }
+
         curl_close($ch);
 
         if ($http_code == 200 || $http_code == 201) {
