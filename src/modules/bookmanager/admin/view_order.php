@@ -35,40 +35,48 @@ $order['total_amount_format'] = number_format($order['total_amount'], 0, ',', '.
 
 // Order status
 switch ($order['order_status']) {
-    case 0:
-        $order['order_status_text'] = $lang_module['order_pending'];
-        $order['order_status_class'] = 'warning';
-        break;
-    case 1:
-        $order['order_status_text'] = $lang_module['order_processing'];
-        $order['order_status_class'] = 'info';
-        break;
-    case 2:
-        $order['order_status_text'] = $lang_module['order_delivered'];
-        $order['order_status_class'] = 'success';
-        break;
-    case 3:
-        $order['order_status_text'] = $lang_module['order_cancelled'];
-        $order['order_status_class'] = 'danger';
+case 0:
+$order['order_status_text'] = $lang_module['order_pending'];
+$order['order_status_class'] = 'warning';
+$order['order_status_text_dark'] = true;
+    break;
+case 1:
+$order['order_status_text'] = $lang_module['order_processing'];
+$order['order_status_class'] = 'info';
+    $order['order_status_text_dark'] = true;
+break;
+case 2:
+$order['order_status_text'] = $lang_module['order_delivered'];
+    $order['order_status_class'] = 'success';
+$order['order_status_text_white'] = true;
+break;
+case 3:
+    $order['order_status_text'] = $lang_module['order_cancelled'];
+$order['order_status_class'] = 'danger';
+$order['order_status_text_white'] = true;
         break;
     default:
         $order['order_status_text'] = 'Không xác định';
         $order['order_status_class'] = 'secondary';
+        $order['order_status_text_dark'] = true;
 }
 
 // Payment status
 switch ($order['payment_status']) {
-    case 0:
-        $order['payment_status_text'] = $lang_module['payment_pending'];
-        $order['payment_status_class'] = 'danger';
-        break;
-    case 1:
-        $order['payment_status_text'] = $lang_module['payment_paid'];
-        $order['payment_status_class'] = 'success';
-        break;
-    default:
+case 0:
+$order['payment_status_text'] = $lang_module['payment_pending'];
+$order['payment_status_class'] = 'danger';
+$order['payment_status_text_white'] = true;
+    break;
+case 1:
+$order['payment_status_text'] = $lang_module['payment_paid'];
+$order['payment_status_class'] = 'success';
+    $order['payment_status_text_white'] = true;
+break;
+default:
         $order['payment_status_text'] = 'Không xác định';
         $order['payment_status_class'] = 'secondary';
+        $order['payment_status_text_dark'] = true;
 }
 
 // Get order items
@@ -94,6 +102,19 @@ $xtpl->assign('OP', $op);
 
 $xtpl->assign('ORDER', $order);
 $xtpl->assign('BACK_LINK', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders');
+
+// Parse text color for badges
+if (!empty($order['order_status_text_white'])) {
+    $xtpl->parse('main.order_status_text_white');
+} elseif (!empty($order['order_status_text_dark'])) {
+    $xtpl->parse('main.order_status_text_dark');
+}
+
+if (!empty($order['payment_status_text_white'])) {
+    $xtpl->parse('main.payment_status_text_white');
+} elseif (!empty($order['payment_status_text_dark'])) {
+    $xtpl->parse('main.payment_status_text_dark');
+}
 
 // Order items
 if (!empty($order_items)) {

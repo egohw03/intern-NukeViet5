@@ -138,40 +138,48 @@ while ($row = $result->fetch()) {
 
     // Order status
     switch ($row['order_status']) {
-        case 0:
-            $row['order_status_text'] = $nv_Lang->getModule('order_pending');
-            $row['order_status_class'] = 'warning';
-            break;
-        case 1:
-            $row['order_status_text'] = $nv_Lang->getModule('order_processing');
-            $row['order_status_class'] = 'info';
-            break;
-        case 2:
-            $row['order_status_text'] = $nv_Lang->getModule('order_delivered');
-            $row['order_status_class'] = 'success';
-            break;
-        case 3:
-            $row['order_status_text'] = $nv_Lang->getModule('order_cancelled');
-            $row['order_status_class'] = 'danger';
+    case 0:
+    $row['order_status_text'] = $nv_Lang->getModule('order_pending');
+    $row['order_status_class'] = 'warning';
+    $row['order_status_text_dark'] = true;
+        break;
+    case 1:
+    $row['order_status_text'] = $nv_Lang->getModule('order_processing');
+    $row['order_status_class'] = 'info';
+        $row['order_status_text_dark'] = true;
+    break;
+    case 2:
+    $row['order_status_text'] = $nv_Lang->getModule('order_delivered');
+        $row['order_status_class'] = 'success';
+    $row['order_status_text_white'] = true;
+    break;
+    case 3:
+        $row['order_status_text'] = $nv_Lang->getModule('order_cancelled');
+    $row['order_status_class'] = 'danger';
+    $row['order_status_text_white'] = true;
             break;
         default:
             $row['order_status_text'] = 'Unknown';
             $row['order_status_class'] = 'secondary';
+            $row['order_status_text_dark'] = true;
     }
 
     // Payment status
     switch ($row['payment_status']) {
-        case 0:
-            $row['payment_status_text'] = $nv_Lang->getModule('payment_pending');
-            $row['payment_status_class'] = 'danger';
-            break;
-        case 1:
-            $row['payment_status_text'] = $nv_Lang->getModule('payment_paid');
-            $row['payment_status_class'] = 'success';
-            break;
-        default:
+    case 0:
+    $row['payment_status_text'] = $nv_Lang->getModule('payment_pending');
+    $row['payment_status_class'] = 'danger';
+    $row['payment_status_text_white'] = true;
+        break;
+    case 1:
+    $row['payment_status_text'] = $nv_Lang->getModule('payment_paid');
+    $row['payment_status_class'] = 'success';
+        $row['payment_status_text_white'] = true;
+    break;
+    default:
             $row['payment_status_text'] = 'Unknown';
             $row['payment_status_class'] = 'secondary';
+            $row['payment_status_text_dark'] = true;
     }
 
     // Selected for dropdowns
@@ -195,6 +203,20 @@ if (!empty($array)) {
 foreach ($array as $order) {
 $order['LINK_VIEW'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=view_order&amp;id=' . $order['id'];
 $xtpl->assign('ORDER', $order);
+
+// Parse text color for badges
+if (!empty($order['order_status_text_white'])) {
+    $xtpl->parse('main.order_loop.order_status_text_white');
+} elseif (!empty($order['order_status_text_dark'])) {
+    $xtpl->parse('main.order_loop.order_status_text_dark');
+}
+
+if (!empty($order['payment_status_text_white'])) {
+    $xtpl->parse('main.order_loop.payment_status_text_white');
+} elseif (!empty($order['payment_status_text_dark'])) {
+    $xtpl->parse('main.order_loop.payment_status_text_dark');
+}
+
 $xtpl->parse('main.order_loop');
 }
 } else {
