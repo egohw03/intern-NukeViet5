@@ -251,68 +251,7 @@ function nv_get_cart_count()
     return $count;
 }
 
-/**
- * Create order
- */
-function nv_create_order($customer_info, $payment_method = 'COD')
-{
-    global $db, $module_data, $user_info;
 
-    if (!defined('NV_IS_USER')) {
-        return null;
-    }
-
-    $cart = nv_get_cart();
-    if (empty($cart)) {
-        return null;
-    }
-
-    $userid = $user_info['userid'];
-    $total_amount = nv_get_cart_total();
-    $order_code = 'ORD' . date('ymdHis') . rand(100, 999);
-
-    // Insert order
-    $sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_orders
-    (userid, order_code, customer_name, customer_email, customer_phone, customer_address, total_amount, order_status, payment_status, payment_method, add_time)
-    VALUES (:userid, :order_code, :customer_name, :customer_email, :customer_phone, :customer_address, :total_amount, 0, 0, :payment_method, :add_time)';
-
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':userid', $userid, PDO::PARAM_INT);
-    $stmt->bindParam(':order_code', $order_code, PDO::PARAM_STR);
-    $stmt->bindParam(':customer_name', $customer_info['name'], PDO::PARAM_STR);
-    $stmt->bindParam(':customer_email', $customer_info['email'], PDO::PARAM_STR);
-    $stmt->bindParam(':customer_phone', $customer_info['phone'], PDO::PARAM_STR);
-    $stmt->bindParam(':customer_address', $customer_info['address'], PDO::PARAM_STR);
-    $stmt->bindParam(':total_amount', $total_amount, PDO::PARAM_STR);
-    $stmt->bindParam(':payment_method', $payment_method, PDO::PARAM_STR);
-    $stmt->bindValue(':add_time', NV_CURRENTTIME, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-        $order_id = $db->lastInsertId();
-        error_log('Order inserted with ID: ' . $order_id);
-
-        // Insert order items
-        foreach ($cart as $item) {
-        $result = $db->query('INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . '_order_items (order_id, book_id, quantity, price) VALUES (' . $order_id . ', ' . $item['book_id'] . ', ' . $item['quantity'] . ', ' . $item['price'] . ')');
-            if (!$result) {
-                error_log('Failed to insert order item for book ID: ' . $item['book_id']);
-            }
-        }
-
-        // Update stock quantities
-        foreach ($cart as $item) {
-            $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_books SET stock_quantity = stock_quantity - ' . $item['quantity'] . ' WHERE id = ' . $item['book_id']);
-        }
-
-        // Clear cart
-        $cart_cleared = $db->query('DELETE FROM ' . NV_PREFIXLANG . '_' . $module_data . '_cart WHERE userid = ' . $userid);
-        error_log('Cart cleared for user ID: ' . $userid . ', result: ' . ($cart_cleared ? 'success' : 'failed'));
-
-        return ['order_code' => $order_code, 'order_id' => $order_id];
-    }
-
-    return null;
-}
 
 /**
  * Get user orders
@@ -480,6 +419,8 @@ Thông tin giao hàng:
 /**
  * Tạo link thanh toán PayOS bằng cURL (Không cần SDK)
  */
+// Function moved to funcs/functions.php
+/*
 function nv_payos_create_payment_link($order_id, $amount, $description, $return_url, $cancel_url)
 {
     // Lấy API keys từ config (hoặc hardcode tạm)
@@ -544,10 +485,12 @@ function nv_payos_create_payment_link($order_id, $amount, $description, $return_
     error_log("PayOS Create Link Failed: " . $response);
     return false;
 }
+*/
 
 /**
- * Xác thực Webhook PayOS bằng cURL (Không cần SDK)
+    * Xác thực Webhook PayOS bằng cURL (Không cần SDK) - MOVED TO funcs/functions.php
  */
+/*
 function nv_payos_verify_webhook($checksum_key = null)
 {
     // Load PayOS config if checksum_key not provided
@@ -576,6 +519,8 @@ function nv_payos_verify_webhook($checksum_key = null)
     // Chữ ký không hợp lệ
     return null;
 }
+*/
+
 /**
  * Get book reviews
  */

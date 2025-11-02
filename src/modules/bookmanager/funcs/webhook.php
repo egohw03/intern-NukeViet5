@@ -5,6 +5,9 @@ define('NV_SYSTEM', true);
 // Nạp CSDL và các hàm core của NukeViet
 require_once dirname(dirname(dirname(__DIR__))) . '/includes/mainfile.php';
 
+// THÊM DÒNG NÀY:
+require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
+
 // 1. Xác thực Webhook (tự động load config)
 $webhookData = nv_payos_verify_webhook();
 
