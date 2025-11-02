@@ -26,6 +26,7 @@ $page_title = $lang_module['checkout'];
 $key_words = $lang_module['checkout'];
 
 $total = nv_get_cart_total();
+$message = '';
 
 // Get default address and all addresses
 $default_address = nv_get_default_address($user_info['userid']);
@@ -47,6 +48,7 @@ if (!$nv_Request->isset_request('checkout', 'post')) {
     $customer_email = $nv_Request->get_title('customer_email', 'post', $user_info['email']);
     $customer_phone = $nv_Request->get_title('customer_phone', 'post', $default_address['phone'] ?? '');
     $customer_address = $nv_Request->get_textarea('customer_address', 'post', $default_address['address'] ?? '', 'br');
+    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
     $saved_address_id = $nv_Request->get_int('saved_address', 'post', 0);
     if ($saved_address_id > 0 && $customer_name == $user_info['full_name'] && $customer_phone == ($default_address['phone'] ?? '') && $customer_address == ($default_address['address'] ?? '')) {
         // If user selected a saved address and hasn't modified the inputs, use the selected address
