@@ -24,11 +24,9 @@ $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lan
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_order_items";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_reviews";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_coupons";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_addresses";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_categories";
 $sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_books";
-$sql_drop_module[] = "DROP TABLE IF EXISTS " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_coupon_usage";
 
 $sql_create_module = $sql_drop_module;
 
@@ -227,8 +225,3 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 
 // Update existing orders to use COD only (for migration)
 $sql_create_module[] = "UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders SET payment_method = 'COD', payment_status = 1 WHERE payment_method IN ('bank_transfer', 'card')";
-
-// Remove coupon columns from orders table (if exist)
-$sql_create_module[] = "ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders DROP COLUMN IF EXISTS coupon_id";
-$sql_create_module[] = "ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders DROP COLUMN IF EXISTS coupon_code";
-$sql_create_module[] = "ALTER TABLE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_orders DROP COLUMN IF EXISTS discount_amount";
