@@ -62,6 +62,7 @@ if (!$nv_Request->isset_request('checkout', 'post') && !$nv_Request->isset_reque
     $customer_email = $nv_Request->get_title('customer_email', 'post', $user_info['email']);
     $customer_phone = $nv_Request->get_title('customer_phone', 'post', $default_address['phone'] ?? '');
     $customer_address = $nv_Request->get_textarea('customer_address', 'post', $default_address['address'] ?? '', 'br');
+    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
     $saved_address_id = $nv_Request->get_int('saved_address', 'post', 0);
     if ($saved_address_id > 0 && $customer_name == $user_info['full_name'] && $customer_phone == ($default_address['phone'] ?? '') && $customer_address == ($default_address['address'] ?? '')) {
         // If user selected a saved address and hasn't modified the inputs, use the selected address
@@ -101,7 +102,7 @@ if ($nv_Request->isset_request('checkout', 'post')) {
         'address' => $nv_Request->get_textarea('customer_address', 'post', '', 'br')
     ];
 
-    $payment_method = $nv_Request->get_title('payment_method', 'post', 'COD');
+    // $payment_method already initialized above
 
     if (!empty($customer_info['name']) && !empty($customer_info['email']) && !empty($customer_info['phone']) && !empty($customer_info['address'])) {
         // Check stock availability before creating order
@@ -123,11 +124,14 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                 $order_id = $order_result['order_id'];
 
                 // Send confirmation email (don't fail the order if email fails)
-                try {
-                    nv_send_order_confirmation_email($order_code, $customer_info);
-                } catch (Exception $e) {
-                    // Log email error but don't stop the order process
-                    error_log('Email sending failed: ' . $e->getMessage());
+                // Skip email in development mode to avoid mail server errors
+                if (!defined('NV_IS_DEVELOPMENT') || NV_IS_DEVELOPMENT !== true) {
+                    try {
+                        nv_send_order_confirmation_email($order_code, $customer_info);
+                    } catch (Exception $e) {
+                        // Log email error but don't stop the order process
+                        error_log('Email sending failed: ' . $e->getMessage());
+                    }
                 }
 
                 // Payment routing
