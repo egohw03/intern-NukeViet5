@@ -16,8 +16,16 @@
                     <small style="color: #666;">Ngày đặt: {ORDER.add_time}</small>
                 </div>
                 <div style="text-align: right;">
-                    <span style="background: #{ORDER.status_class}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px;">{ORDER.order_status_text}</span>
-                    <span style="background: #{ORDER.payment_class}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; margin-left: 5px;">{ORDER.payment_status_text}</span>
+                <div style="display: flex; gap: 5px; justify-content: flex-end; flex-wrap: wrap; margin-bottom: 5px;">
+                    <span style="display: flex; align-items: center; background: linear-gradient(135deg, {ORDER.status_config.bg} 0%, {ORDER.status_config.bg}DD 100%); color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap;">
+                            <span style="font-size: 12px; margin-right: 4px;">{ORDER.status_config.icon}</span>
+                            {ORDER.status_config.text}
+                        </span>
+                        <span style="display: flex; align-items: center; background: linear-gradient(135deg, {ORDER.payment_config.bg} 0%, {ORDER.payment_config.bg}DD 100%); color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); white-space: nowrap;">
+                            <span style="font-size: 12px; margin-right: 4px;">{ORDER.payment_config.icon}</span>
+                            {ORDER.payment_config.text}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
