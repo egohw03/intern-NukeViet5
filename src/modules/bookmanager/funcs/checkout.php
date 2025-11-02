@@ -119,10 +119,19 @@ if ($nv_Request->isset_request('checkout', 'post')) {
 
                 // Payment routing
                 if ($payment_method == 'PAYOS') {
+
+                    // ===========================================
+                    // BẮT ĐẦU SỬA LỖI URL LOCALHOST
+                    // Định nghĩa URL gốc của ngrok (phải khớp với ngrok đang chạy)
+                    $ngrok_base_url = 'https://unhumbled-paulita-noncreatively.ngrok-free.dev/nukeviet-nukeviet5.0/src/';
+
                     // 1. Chuẩn bị URL
-                    $return_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=success&order_code=' . $order_code;
-                    $cancel_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart';
-                    $description = 'Thanh toan don hang ' . $order_code;
+                    $return_url = $ngrok_base_url . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=success&order_code=' . $order_code;
+                    $cancel_url = $ngrok_base_url . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart';
+                    // ===========================================
+                    // KẾT THÚC SỬA LỖI URL LOCALHOST
+
+                    $description = $order_code; // Rút ngắn (đã sửa ở bước trước)
 
                     // 2. Gọi hàm cURL để tạo link
                     $checkout_url = nv_payos_create_payment_link(
@@ -132,10 +141,10 @@ if ($nv_Request->isset_request('checkout', 'post')) {
                         $return_url,
                         $cancel_url
                     );
-                    // 3. Nếu tạo link thành công, hiển thị success với link thanh toán
+
+                    // 3. Chuyển hướng
                     if ($checkout_url) {
-                        $order_created = true;
-                        $xtpl->assign('CHECKOUT_URL', $checkout_url);
+                        nv_redirect_location($checkout_url);
                     } else {
                         // Xử lý lỗi (ví dụ: hiển thị lỗi cho người dùng)
                         $message = 'Không thể tạo link thanh toán. Vui lòng thử lại sau.';
@@ -143,6 +152,14 @@ if ($nv_Request->isset_request('checkout', 'post')) {
 
                 } else { // Nếu là COD
                     $order_created = true;
+
+                    // Gửi email xác nhận ngay lập tức vì là COD
+                    try {
+                        nv_send_order_confirmation_email($order_code, $customer_info);
+                    } catch (Exception $e) {
+                        // Log email error but don't stop the order process
+                        error_log('Email sending failed for COD order: ' . $e->getMessage());
+                    }
                 }
             }
     }

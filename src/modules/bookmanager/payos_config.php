@@ -10,5 +10,6 @@ define('PAYOS_API_KEY', '7579836f-deb7-41e9-b273-970220d95130');
 define('PAYOS_CHECKSUM_KEY', '4f56b5991899d9732a561e6cc4e6190c7db78008c9c0d70f75971fd015cab0d4');
 
 // Webhook URL
-define('PAYOS_WEBHOOK_URL', 'https://unhumbled-paulita-noncreatively.ngrok-free.dev/index.php?language=vi&nv=bookmanager&op=webhook');
+// (Hãy đảm bảo tên miền ngrok là đúng với cái đang chạy)
+define('PAYOS_WEBHOOK_URL', 'https://unhumbled-paulita-noncreatively.ngrok-free.dev/nukeviet-nukeviet5.0/src/modules/bookmanager/funcs/webhook.php');
 ?>

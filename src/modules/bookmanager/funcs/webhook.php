@@ -5,6 +5,25 @@ define('NV_SYSTEM', true);
 // Nạp CSDL và các hàm core của NukeViet
 require_once dirname(dirname(dirname(__DIR__))) . '/includes/mainfile.php';
 
+// ===========================================
+// BẮT ĐẦU SỬA LỖI 500
+// Phải khai báo thủ công các biến module vì file này chạy độc lập
+global $module_data, $module_name, $lang_module, $global_config;
+$module_name = 'bookmanager';
+$module_data = $module_name; // Trong NukeViet 5.x, $module_data chỉ là tên module
+
+// Nạp ngôn ngữ cho module (cần cho việc gửi mail)
+if (file_exists(NV_ROOTDIR . '/modules/bookmanager/language/' . NV_LANG_DATA . '.php')) {
+     require_once(NV_ROOTDIR . '/modules/bookmanager/language/' . NV_LANG_DATA . '.php');
+}
+
+// Nạp hàm global (chứa hàm nv_send_order_confirmation_email)
+if (file_exists(NV_ROOTDIR . '/modules/bookmanager/global.functions.php')) {
+    require_once(NV_ROOTDIR . '/modules/bookmanager/global.functions.php');
+}
+// ===========================================
+// KẾT THÚC SỬA LỖI 500
+
 // THÊM DÒNG NÀY:
 require_once NV_ROOTDIR . '/modules/bookmanager/funcs/functions.php';
 
