@@ -67,14 +67,14 @@
                             <div>
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phương thức thanh toán</label>
                                 <div style="display: flex; flex-direction: column; gap: 10px;">
-                                    <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" onclick="selectPaymentMethod('COD')">
+                                    <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
                                         <input type="radio" name="payment_method" value="COD" style="margin-right: 10px;" {COD_CHECKED}>
                                         <div>
                                             <strong>Thanh toán khi nhận hàng (COD)</strong><br>
                                             <small style="color: #666;">Thanh toán bằng tiền mặt khi nhận hàng tại nhà</small>
                                         </div>
                                     </label>
-                                    <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" onclick="selectPaymentMethod('PAYOS')">
+                                    <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
                                         <input type="radio" name="payment_method" value="PAYOS" style="margin-right: 10px;" {PAYOS_CHECKED}>
                                         <div>
                                             <strong>Thanh toán Online (PayOS)</strong><br>
