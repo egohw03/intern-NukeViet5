@@ -257,6 +257,7 @@ $lang_module['total_amount'] = 'Tổng giá trị';
 $lang_module['paid_amount'] = 'Đã thanh toán';
 $lang_module['pending_amount'] = 'Chưa thanh toán';
 $lang_module['shop_now'] = 'Mua sắm ngay';
+$lang_module['confirm_cancel'] = 'Bạn có chắc chắn muốn hủy đơn hàng này?';
 $lang_module['no_categories'] = 'Chưa có thể loại nào';
 $lang_module['no_categories_message'] = 'Hệ thống chưa có thể loại sách nào.';
 $lang_module['add_first_category'] = 'Thêm thể loại đầu tiên';

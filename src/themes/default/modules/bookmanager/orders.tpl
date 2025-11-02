@@ -83,10 +83,13 @@
         <div style="font-size: 32px; font-weight: 700; color: #dc3545; text-shadow: 2px 2px 4px rgba(220, 53, 69, 0.2);">{ORDER.total_amount_format}</div>
     </div>
     <!-- BEGIN: view_detail -->
-    <div>
-            <a href="{ORDER.view_detail_link}" style="display: inline-block; padding: 15px 25px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">👀 Xem chi tiết</a>
-            </div>
-                <!-- END: view_detail -->
+    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
+    <a href="{ORDER.view_detail_link}" style="display: inline-block; padding: 15px 25px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">👀 Xem chi tiết</a>
+    <!-- BEGIN: cancel_order -->
+        <a href="{ORDER.cancel_link}" onclick="return confirm('{LANG.confirm_cancel}');" style="display: inline-block; padding: 15px 25px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">❌ Hủy đơn</a>
+    <!-- END: cancel_order -->
+    </div>
+    <!-- END: view_detail -->
                 </div>
             </div>
         </div>

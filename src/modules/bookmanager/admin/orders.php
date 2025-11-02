@@ -33,6 +33,13 @@ if ($nv_Request->isset_request('update_status', 'post')) {
     }
 
     if ($order_id > 0) {
+        // If status changed to cancelled (3) from other status, restore stock
+        if ($order_status == 3 && $current['order_status'] != 3) {
+            $items = $db->query('SELECT book_id, quantity FROM ' . NV_PREFIXLANG . '_' . $module_data . '_order_items WHERE order_id = ' . $order_id)->fetchAll();
+            foreach ($items as $item) {
+                $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_books SET stock_quantity = stock_quantity + ' . $item['quantity'] . ' WHERE id = ' . $item['book_id']);
+            }
+        }
         $sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_orders SET order_status = :order_status, payment_status = :payment_status WHERE id = :id';
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':order_status', $order_status, PDO::PARAM_INT);

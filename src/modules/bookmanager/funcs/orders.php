@@ -23,6 +23,24 @@ $key_words = $lang_module['my_orders'];
 
 $userid = defined('NV_IS_USER') ? $user_info['userid'] : 1;
 
+// Handle cancel order
+$action = $nv_Request->get_title('action', 'get', '');
+$order_id = $nv_Request->get_int('id', 'get', 0);
+if ($action == 'cancel' && $order_id > 0) {
+    // Check if order belongs to user and status is pending
+    $order = $db->query('SELECT order_status FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE id = ' . $order_id . ' AND userid = ' . $userid)->fetch();
+    if ($order && $order['order_status'] == 0) {
+        // Get order items to restore stock
+        $items = $db->query('SELECT book_id, quantity FROM ' . NV_PREFIXLANG . '_' . $module_data . '_order_items WHERE order_id = ' . $order_id)->fetchAll();
+        foreach ($items as $item) {
+            $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_books SET stock_quantity = stock_quantity + ' . $item['quantity'] . ' WHERE id = ' . $item['book_id']);
+        }
+        // Update order status to cancelled
+        $db->query('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . '_orders SET order_status = 3 WHERE id = ' . $order_id);
+        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders');
+    }
+}
+
 // Search and filter parameters
 $search = [
     'order_code' => $nv_Request->get_title('order_code', 'get', ''),
@@ -196,7 +214,15 @@ if (!empty($orders)) {
         // Add view detail link
         $order['view_detail_link'] = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order_detail&id=' . $order['id'], true);
 
+        // Add cancel link if pending
+        if ($order['order_status'] == 0) {
+            $order['cancel_link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=orders&action=cancel&id=' . $order['id'];
+        }
+
         $xtpl->assign('ORDER', $order);
+        if (isset($order['cancel_link'])) {
+            $xtpl->parse('main.order_loop.view_detail.cancel_order');
+        }
         $xtpl->parse('main.order_loop.view_detail');
         $xtpl->parse('main.order_loop');
     }
