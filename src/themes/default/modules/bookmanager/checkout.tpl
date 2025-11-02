@@ -66,8 +66,22 @@
                             </div>
                             <div>
                                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Phương thức thanh toán</label>
-                                <input type="hidden" name="payment_method" value="COD">
-                                <div style="padding: 8px; background: #e9ecef; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; color: #495057;">Thanh toán khi nhận hàng (COD)</div>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" onclick="selectPaymentMethod('COD')">
+                                        <input type="radio" name="payment_method" value="COD" style="margin-right: 10px;" checked>
+                                        <div>
+                                            <strong>Thanh toán khi nhận hàng (COD)</strong><br>
+                                            <small style="color: #666;">Thanh toán bằng tiền mặt khi nhận hàng tại nhà</small>
+                                        </div>
+                                    </label>
+                                    <label style="display: flex; align-items: center; padding: 10px; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" onclick="selectPaymentMethod('PAYOS')">
+                                        <input type="radio" name="payment_method" value="PAYOS" style="margin-right: 10px;">
+                                        <div>
+                                            <strong>Thanh toán Online (PayOS)</strong><br>
+                                            <small style="color: #666;">Thẻ tín dụng, VietQR, Ví điện tử - An toàn & bảo mật</small>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div style="margin-bottom: 20px;">
@@ -169,12 +183,33 @@ document.querySelector('textarea[name="customer_address"]').value = address;
 }
 }
 
+function selectPaymentMethod(method) {
+    // Update radio buttons
+document.querySelectorAll('input[name="payment_method"]').forEach(function(radio) {
+    radio.checked = (radio.value === method);
+});
+
+    // Update visual styling
+    document.querySelectorAll('label[onclick*="selectPaymentMethod"]').forEach(function(label) {
+        if (label.onclick.toString().includes(method)) {
+            label.style.borderColor = '#007bff';
+            label.style.backgroundColor = '#f8f9fa';
+        } else {
+            label.style.borderColor = '#ddd';
+            label.style.backgroundColor = 'white';
+        }
+    });
+}
+
 // Fill address on page load if selected
 document.addEventListener('DOMContentLoaded', function() {
     var select = document.querySelector('select[name="saved_address"]');
     if (select && select.value) {
         fillAddress(select.value);
     }
+
+    // Initialize payment method selection
+    selectPaymentMethod('COD');
 });
 </script>
 <!-- END: main -->

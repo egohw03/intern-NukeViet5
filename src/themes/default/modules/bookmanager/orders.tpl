@@ -56,8 +56,14 @@
     <p style="margin: 0; font-size: 16px; opacity: 0.9;">🕒 Ngày đặt: {ORDER.add_time}</p>
     </div>
     <div style="display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap;">
-    <span style="background: #{ORDER.status_class}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); white-space: nowrap;">{ORDER.order_status_text}</span>
-    <span style="background: #{ORDER.payment_class}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); white-space: nowrap;">{ORDER.payment_status_text}</span>
+    <span style="display: flex; align-items: center; background: linear-gradient(135deg, {ORDER.status_config.bg} 0%, {ORDER.status_config.bg}DD 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); white-space: nowrap;">
+        <span style="font-size: 16px; margin-right: 6px;">{ORDER.status_config.icon}</span>
+        {ORDER.status_config.text}
+    </span>
+    <span style="display: flex; align-items: center; background: linear-gradient(135deg, {ORDER.payment_config.bg} 0%, {ORDER.payment_config.bg}DD 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); white-space: nowrap;">
+        <span style="font-size: 16px; margin-right: 6px;">{ORDER.payment_config.icon}</span>
+        {ORDER.payment_config.text}
+    </span>
     </div>
     </div>
     </div>

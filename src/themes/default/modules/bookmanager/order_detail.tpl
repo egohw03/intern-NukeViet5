@@ -23,12 +23,56 @@
         <p style="margin: 8px 0; font-size: 16px; display: flex; align-items: flex-start;"><strong style="color: #ffc107; width: 80px; flex-shrink: 0; margin-right: 10px;">📱 SĐT:</strong> <span style="color: #495057; font-weight: 600; flex: 1;">{ORDER.customer_phone}</span></p>
         <p style="margin: 8px 0; font-size: 16px; display: flex; align-items: flex-start;"><strong style="color: #dc3545; width: 80px; flex-shrink: 0; margin-right: 10px;">🏠 Địa chỉ:</strong> <span style="color: #495057; font-weight: 600; flex: 1;">{ORDER.customer_address}</span></p>
     <p style="margin: 8px 0; font-size: 16px; display: flex; align-items: flex-start;"><strong style="color: #6c757d; width: 80px; flex-shrink: 0; margin-right: 10px;">💳 PT TT:</strong> <span style="color: #495057; font-weight: 600; flex: 1;">{ORDER.payment_method_text}</span></p>
-    <div style="margin-top: 15px; padding-top: 15px; border-top: 2px solid #007bff;">
-        <div style="display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; margin-bottom: 10px;">
-            <span style="background: #{ORDER.status_class}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); white-space: nowrap;">{ORDER.order_status_text}</span>
-            <span style="background: #{ORDER.payment_class}; color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); white-space: nowrap;">{ORDER.payment_status_text}</span>
+    <div style="margin-top: 20px; padding-top: 20px; border-top: 3px solid #007bff;">
+    <!-- Status Overview -->
+    <div style="margin-bottom: 20px;">
+    <h5 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 18px; font-weight: 700;">📊 Trạng thái đơn hàng</h5>
+
+    <!-- Progress Bar -->
+            <div style="background: #e9ecef; border-radius: 25px; height: 12px; margin-bottom: 15px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                <div style="background: linear-gradient(90deg, {ORDER.status_config.bg} 0%, {ORDER.status_config.bg}DD 100%); height: 100%; width: {ORDER.progress_percentage}%; border-radius: 25px; transition: width 0.8s ease; position: relative;">
+                    <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 10px; color: white; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">{ORDER.progress_percentage}%</div>
+                </div>
             </div>
+
+            <!-- Status Badges -->
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                <!-- Order Status -->
+                <div style="display: flex; align-items: center; background: linear-gradient(135deg, {ORDER.status_config.bg} 0%, {ORDER.status_config.bg}DD 100%); color: white; padding: 12px 20px; border-radius: 25px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,0.15); white-space: nowrap; min-width: 150px; justify-content: center;">
+                    <span style="font-size: 20px; margin-right: 8px;">{ORDER.status_config.icon}</span>
+                    <span>{ORDER.status_config.text}</span>
+                </div>
+
+                <!-- Payment Status -->
+                <div style="display: flex; align-items: center; background: linear-gradient(135deg, {ORDER.payment_config.bg} 0%, {ORDER.payment_config.bg}DD 100%); color: white; padding: 12px 20px; border-radius: 25px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(0,0,0,0.15); white-space: nowrap; min-width: 150px; justify-content: center;">
+                    <span style="font-size: 20px; margin-right: 8px;">{ORDER.payment_config.icon}</span>
+                    <span>{ORDER.payment_config.text}</span>
+                </div>
             </div>
+
+            <!-- Status Description -->
+            <div style="background: rgba(255,255,255,0.9); padding: 15px; border-radius: 15px; border: 2px solid #e9ecef;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 18px; margin-right: 10px;">{ORDER.status_config.icon}</span>
+                    <strong style="color: #2c3e50; font-size: 16px;">{ORDER.order_status_text}</strong>
+                </div>
+                <p style="margin: 0; color: #666; font-size: 14px; line-height: 1.5;">
+                    <!-- BEGIN: status_desc_pending -->
+                    Đơn hàng đang chờ xử lý. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
+                    <!-- END: status_desc_pending -->
+                    <!-- BEGIN: status_desc_processing -->
+                    Đơn hàng đang được chuẩn bị và sẽ được giao trong thời gian quy định.
+                    <!-- END: status_desc_processing -->
+                    <!-- BEGIN: status_desc_delivered -->
+                    Đơn hàng đã được giao thành công. Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ!
+                    <!-- END: status_desc_delivered -->
+                    <!-- BEGIN: status_desc_cancelled -->
+                    Đơn hàng đã bị hủy. Vui lòng liên hệ bộ phận chăm sóc khách hàng để được hỗ trợ.
+                    <!-- END: status_desc_cancelled -->
+                </p>
+            </div>
+        </div>
+    </div>
         </div>
     <div style="text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: 15px; border: 3px solid #007bff;">
             <div style="margin-bottom: 15px;">
