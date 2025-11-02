@@ -24,7 +24,10 @@
 
         <div>
         <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 35px; border: 4px solid #17a2b8; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 15px 40px rgba(23, 162, 184, 0.2);">
-        <h1 style="margin: 0 0 25px 0; font-size: 36px; color: #2c3e50; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">📖 {BOOK.title}</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h1 style="margin: 0; font-size: 36px; color: #2c3e50; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">📖 {BOOK.title}</h1>
+        <a href="{NV_BASE_SITEURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}={MODULE_NAME}" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%); color: white; text-decoration: none; border-radius: 10px; font-size: 16px; font-weight: 600; box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">⬅️ Quay về</a>
+        </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; background: rgba(255,255,255,0.8); padding: 25px; border-radius: 15px; border: 2px solid #e9ecef;">
         <div style="font-size: 18px; line-height: 1.6;"><strong style="color: #17a2b8; font-size: 20px;">✍️ Tác giả:</strong> <span style="color: #495057; font-weight: 600;">{BOOK.author}</span></div>
@@ -133,6 +136,32 @@
                     <button type="submit" name="submit_review" style="padding: 15px 30px; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: 600; box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">📤 Gửi đánh giá</button>
                     </form>
                 </div>
+                <script>
+                // Star rating selection
+                $(document).ready(function() {
+                    $('input[name="rating"]').change(function() {
+                        // Remove selected style from all labels
+                        $('label[for^="rating"]').css({
+                            'border-color': '#e9ecef',
+                            'background': 'white'
+                        });
+                        // Add selected style to checked label
+                        var checkedId = $(this).attr('id');
+                        $('label[for="' + checkedId + '"]').css({
+                            'border-color': '#ffc107',
+                            'background': '#fff3cd'
+                        });
+                    });
+                    // Set initial selected
+                    var initialChecked = $('input[name="rating"]:checked');
+                    if (initialChecked.length) {
+                        $('label[for="' + initialChecked.attr('id') + '"]').css({
+                            'border-color': '#ffc107',
+                            'background': '#fff3cd'
+                        });
+                    }
+                });
+                </script>
                 <!-- END: review_form -->
 
                 <!-- Review Success Message -->
