@@ -15,7 +15,7 @@ if ($webhookData && $webhookData['code'] == '00') {
     $order_id = $webhookData['data']['orderCode']; // Đây là ID (số)
 
     // 2. Kiểm tra CSDL
-    $sql = 'SELECT payment_status FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE id = :order_id';
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_orders WHERE id = :order_id';
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':order_id', $order_id, PDO::PARAM_INT);
     $stmt->execute();
