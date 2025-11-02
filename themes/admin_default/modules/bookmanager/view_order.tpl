@@ -29,17 +29,17 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <p><strong>{LANG.order_status}:</strong></p>
-                            <span class="badge fs-5 p-2 bg-{ORDER.order_status_class}" style="<!-- BEGIN: order_status_text_white -->color: white !important;<!-- END: order_status_text_white --> <!-- BEGIN: order_status_text_dark -->color: black !important;<!-- END: order_status_text_dark -->">
-                                <i class="fas <!-- BEGIN: order_status_icon -->fa-clock<!-- END: order_status_icon --> <!-- BEGIN: order_status_icon_processing -->fa-cog<!-- END: order_status_icon_processing --> <!-- BEGIN: order_status_icon_delivered -->fa-check-circle<!-- END: order_status_icon_delivered --> <!-- BEGIN: order_status_icon_cancelled -->fa-times-circle<!-- END: order_status_icon_cancelled --> me-1"></i>
-                                {ORDER.order_status_text}
-                            </span>
+                            <div class="p-3 rounded <!-- BEGIN: order_status_bg_success -->bg-success<!-- END: order_status_bg_success --> <!-- BEGIN: order_status_bg_danger -->bg-danger<!-- END: order_status_bg_danger --> <!-- BEGIN: order_status_bg_warning -->bg-warning<!-- END: order_status_bg_warning --> <!-- BEGIN: order_status_bg_info -->bg-info<!-- END: order_status_bg_info --> <!-- BEGIN: order_status_bg_secondary -->bg-secondary<!-- END: order_status_bg_secondary -->">
+                                <i class="fas <!-- BEGIN: order_status_icon -->fa-clock<!-- END: order_status_icon --> <!-- BEGIN: order_status_icon_processing -->fa-cog<!-- END: order_status_icon_processing --> <!-- BEGIN: order_status_icon_delivered -->fa-check-circle<!-- END: order_status_icon_delivered --> <!-- BEGIN: order_status_icon_cancelled -->fa-times-circle<!-- END: order_status_icon_cancelled --> me-2 text-white"></i>
+                                <span class="fw-bold text-white">{ORDER.order_status_text}</span>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <p><strong>{LANG.payment_status}:</strong></p>
-                            <span class="badge fs-5 p-2 bg-{ORDER.payment_status_class}" style="<!-- BEGIN: payment_status_text_white -->color: white !important;<!-- END: payment_status_text_white --> <!-- BEGIN: payment_status_text_dark -->color: black !important;<!-- END: payment_status_text_dark -->">
-                                <i class="fas <!-- BEGIN: payment_status_icon -->fa-credit-card<!-- END: payment_status_icon --> <!-- BEGIN: payment_status_icon_paid -->fa-check-circle<!-- END: payment_status_icon_paid --> me-1"></i>
-                                {ORDER.payment_status_text}
-                            </span>
+                            <div class="p-3 rounded <!-- BEGIN: payment_status_bg_success -->bg-success<!-- END: payment_status_bg_success --> <!-- BEGIN: payment_status_bg_danger -->bg-danger<!-- END: payment_status_bg_danger --> <!-- BEGIN: payment_status_bg_warning -->bg-warning<!-- END: payment_status_bg_warning --> <!-- BEGIN: payment_status_bg_info -->bg-info<!-- END: payment_status_bg_info --> <!-- BEGIN: payment_status_bg_secondary -->bg-secondary<!-- END: payment_status_bg_secondary -->">
+                                <i class="fas <!-- BEGIN: payment_status_icon -->fa-credit-card<!-- END: payment_status_icon --> <!-- BEGIN: payment_status_icon_paid -->fa-check-circle<!-- END: payment_status_icon_paid --> me-2 text-white"></i>
+                                <span class="fw-bold text-white">{ORDER.payment_status_text}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
