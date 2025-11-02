@@ -93,7 +93,7 @@ $lang_module['order_note'] = 'Ghi chú đơn hàng';
 $lang_module['add_time'] = 'Thời gian đặt';
 $lang_module['total_amount'] = 'Tổng tiền';
 $lang_module['order_pending'] = 'Chờ xử lý';
-$lang_module['order_processing'] = 'Đang xử lý';
+$lang_module['order_shipping'] = 'Đang giao hàng';
 $lang_module['order_delivered'] = 'Đã giao';
 $lang_module['order_cancelled'] = 'Đã hủy';
 $lang_module['payment_pending'] = 'Chưa thanh toán';
@@ -213,7 +213,7 @@ $lang_module['sort_by_rating'] = 'Đánh giá cao nhất';
 
 // New features - Order status
 $lang_module['order_pending'] = 'Chờ xử lý';
-$lang_module['order_processing'] = 'Đang xử lý';
+$lang_module['order_shipping'] = 'Đang giao hàng';
 $lang_module['order_delivered'] = 'Đã giao hàng';
 $lang_module['order_cancelled'] = 'Đã hủy';
 $lang_module['payment_pending'] = 'Chưa thanh toán';

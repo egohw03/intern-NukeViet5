@@ -39,7 +39,7 @@ $order_items = nv_get_order_items($order['id']);
 // Status mapping
 $order_statuses = [
     0 => $lang_module['order_pending'],
-    1 => $lang_module['order_processing'],
+    1 => $lang_module['order_shipping'],
     2 => $lang_module['order_delivered'],
     3 => $lang_module['order_cancelled']
 ];
@@ -66,8 +66,8 @@ $order['payment_status_text'] = $payment_statuses[$order['payment_status']] ?? $
 // Enhanced status badges with icons and progress
 $status_badges = [
     0 => ['class' => 'warning', 'icon' => '⏳', 'bg' => '#ffc107', 'text' => 'Chờ xử lý'],
-    1 => ['class' => 'info', 'icon' => '⚙️', 'bg' => '#17a2b8', 'text' => 'Đang xử lý'],
-    2 => ['class' => 'success', 'icon' => '✅', 'bg' => '#28a745', 'text' => 'Đã giao'],
+    1 => ['class' => 'info', 'icon' => '🚚', 'bg' => '#17a2b8', 'text' => 'Đang giao hàng'],
+    2 => ['class' => 'success', 'icon' => '✅', 'bg' => '#28a745', 'text' => 'Đã giao hàng'],
     3 => ['class' => 'danger', 'icon' => '❌', 'bg' => '#dc3545', 'text' => 'Đã hủy']
 ];
 $order['status_config'] = $status_badges[$order['order_status']] ?? ['class' => 'secondary', 'icon' => '❓', 'bg' => '#6c757d', 'text' => 'Không xác định'];
@@ -82,7 +82,7 @@ $order['payment_config'] = $payment_badges[$order['payment_status']] ?? ['class'
 $order['progress_percentage'] = 0;
 switch ($order['order_status']) {
     case 0: $order['progress_percentage'] = 25; break;
-    case 1: $order['progress_percentage'] = 50; break;
+    case 1: $order['progress_percentage'] = 75; break;
     case 2: $order['progress_percentage'] = 100; break;
     case 3: $order['progress_percentage'] = 0; break;
 }
@@ -108,7 +108,7 @@ switch ($order['order_status']) {
         $xtpl->parse('main.status_desc_pending');
         break;
     case 1:
-        $xtpl->parse('main.status_desc_processing');
+        $xtpl->parse('main.status_desc_shipping');
         break;
     case 2:
         $xtpl->parse('main.status_desc_delivered');

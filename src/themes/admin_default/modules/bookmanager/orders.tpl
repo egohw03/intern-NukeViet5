@@ -29,8 +29,8 @@
                 <select name="status" onchange="this.form.submit()" style="width: 100%; padding: 12px; border: 2px solid #007bff; border-radius: 8px; font-size: 16px;">
                     <option value="-1" {STATUS_SELECTED_-1}>Tất cả</option>
                     <option value="0" {STATUS_SELECTED_0}>Chờ xử lý</option>
-                    <option value="1" {STATUS_SELECTED_1}>Đang xử lý</option>
-                    <option value="2" {STATUS_SELECTED_2}>Đã giao</option>
+                    <option value="1" {STATUS_SELECTED_1}>Đang giao hàng</option>
+                    <option value="2" {STATUS_SELECTED_2}>Đã giao hàng</option>
                     <option value="3" {STATUS_SELECTED_3}>Đã hủy</option>
                 </select>
             </div>
@@ -105,8 +105,8 @@
                             <form method="post" action="" style="display: inline-block;">
                                 <select name="order_status" style="width: 100%; font-size: 16px; padding: 8px 12px; margin-bottom: 8px; border: 2px solid #28a745; border-radius: 6px;">
                                 <option value="0" {ORDER.order_status_0_selected}>Chờ xử lý</option>
-                                <option value="1" {ORDER.order_status_1_selected}>Đang xử lý</option>
-                                <option value="2" {ORDER.order_status_2_selected}>Đã giao</option>
+                                <option value="1" {ORDER.order_status_1_selected}>Đang giao hàng</option>
+                                <option value="2" {ORDER.order_status_2_selected}>Đã giao hàng</option>
                                 <option value="3" {ORDER.order_status_3_selected}>Đã hủy</option>
                                 </select>
                                 <input type="hidden" name="order_id" value="{ORDER.id}">

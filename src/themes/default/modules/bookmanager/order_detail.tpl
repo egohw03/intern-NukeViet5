@@ -60,9 +60,9 @@
                     <!-- BEGIN: status_desc_pending -->
                     Đơn hàng đang chờ xử lý. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.
                     <!-- END: status_desc_pending -->
-                    <!-- BEGIN: status_desc_processing -->
-                    Đơn hàng đang được chuẩn bị và sẽ được giao trong thời gian quy định.
-                    <!-- END: status_desc_processing -->
+                    <!-- BEGIN: status_desc_shipping -->
+                    Đơn hàng đang được giao đến địa chỉ của bạn. Vui lòng chuẩn bị để nhận hàng.
+                    <!-- END: status_desc_shipping -->
                     <!-- BEGIN: status_desc_delivered -->
                     Đơn hàng đã được giao thành công. Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ!
                     <!-- END: status_desc_delivered -->

@@ -92,7 +92,7 @@ foreach ($all_orders as $order) {
 // Status mapping
 $order_statuses = [
     0 => $lang_module['order_pending'],
-    1 => $lang_module['order_processing'],
+    1 => $lang_module['order_shipping'],
     2 => $lang_module['order_delivered'],
     3 => $lang_module['order_cancelled']
 ];
